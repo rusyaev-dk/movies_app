@@ -3,7 +3,6 @@ import 'package:movies_app/core/data/storage/db_interface.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 
 
-
 class SecureStorage implements DataBaseInterface {
   static const _secureStorage = FlutterSecureStorage();
 

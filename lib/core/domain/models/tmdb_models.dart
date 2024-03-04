@@ -1,4 +1,3 @@
-
 enum TMDBMediaType { movie, tv, person }
 
 extension TMDBMediaTypeAsString on TMDBMediaType {
@@ -14,7 +13,14 @@ extension TMDBMediaTypeAsString on TMDBMediaType {
   }
 }
 
-abstract class TMDBModel {}
+abstract class TMDBModel {
+  TMDBModel._();
+
+  factory TMDBModel.fromJson(Map<String, dynamic> json) {
+    throw UnimplementedError(
+        'fromJson() method must be implemented in subclass.');
+  }
+}
 
 class MovieModel extends TMDBModel {
   final bool? adult;
@@ -50,8 +56,9 @@ class MovieModel extends TMDBModel {
     this.budget,
     this.revenue,
     this.runtime,
-  });
+  }): super._();
 
+  @override
   factory MovieModel.fromJSON(Map<String, dynamic> json) {
     return MovieModel(
       adult: json["adult"],
@@ -119,8 +126,9 @@ class TVSeriesModel extends TMDBModel {
     this.type,
     this.numberOfEpisodes,
     this.numberOfSeasons,
-  });
+  }): super._();
 
+  @override
   factory TVSeriesModel.fromJSON(Map<String, dynamic> json) {
     return TVSeriesModel(
       adult: json["adult"],
@@ -148,7 +156,6 @@ class TVSeriesModel extends TMDBModel {
   }
 }
 
-
 class PersonModel extends TMDBModel {
   final int? id;
   final String? name;
@@ -164,8 +171,9 @@ class PersonModel extends TMDBModel {
     required this.popularity,
     required this.gender,
     required this.profilePath,
-  });
+  }): super._();
 
+  @override
   factory PersonModel.fromJSON(Map<String, dynamic> json) {
     return PersonModel(
       id: json["id"],

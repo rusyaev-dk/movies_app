@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/presentation/blocs/screen_loader_bloc/screen_loader_bloc.dart';
+import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/screen_loader_cubit.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 
 class ScreenLoader extends StatelessWidget {
@@ -20,11 +20,11 @@ class ScreenLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ScreenLoaderBloc(
-         initialState: ScreenLoaderState.unknown,
+      create: (context) => ScreenLoaderCubit(
+        initialState: ScreenLoaderState.unknown,
         authBloc: BlocProvider.of<AuthBloc>(context),
       ),
-      child: BlocListener<ScreenLoaderBloc, ScreenLoaderState>(
+      child: BlocListener<ScreenLoaderCubit, ScreenLoaderState>(
         listenWhen: (prev, current) => current != ScreenLoaderState.unknown,
         listener: _onScreenLoaderBlocStateChanged,
         child: const Scaffold(

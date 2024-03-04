@@ -1,57 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/features/auth/presentation/auth_view_bloc/auth_view_bloc.dart';
+import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 
 class AuthBody extends StatelessWidget {
-  const AuthBody({super.key});
+  AuthBody({super.key});
+
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(20.0),
-      child: TextFormsWidget(),
-    );
-  }
-}
-
-class TextFormsWidget extends StatelessWidget {
-  const TextFormsWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const ErrorMessageWidget(),
-        const SizedBox(height: 10),
-        TextFormField(
-          decoration: const InputDecoration(
-            labelText: 'Login',
-            hintText: 'Enter your login',
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const ErrorMessageWidget(),
+          const SizedBox(height: 10),
+          CustomTextField(
+            controller: _loginController,
+            labelText: "Login",
+            hintText: "Enter your login",
           ),
-          onChanged: (value) {
-            context.read<AuthViewBloc>().add(AuthViewLoginEvent(value));
-          },
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          obscureText: true,
-          decoration: const InputDecoration(
-            labelText: 'Password',
-            hintText: 'Enter your password',
+          const SizedBox(height: 20),
+          CustomTextField(
+            controller: _passwordController,
+            obscureText: true,
+            labelText: "Password",
+            hintText: "Enter your password",
           ),
-          onChanged: (value) {
-            context.read<AuthViewBloc>().add(AuthViewPasswordEvent(value));
-          },
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            context.read<AuthViewBloc>().add(AuthViewAuthEvent());
-          },
-          child: const Text('Login'),
-        ),
-      ],
+          const SizedBox(height: 20),
+          CustomLoginButton(
+            loginController: _loginController,
+            passwordController: _passwordController,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -61,21 +45,98 @@ class ErrorMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errorMessage = context.select((AuthViewBloc c) {
-      final state = c.state;
-      return state is AuthViewErrorState ? state.errorMessage : null;
-    });
-    if (errorMessage == null) return const SizedBox.shrink();
+    return BlocBuilder<AuthViewCubit, AuthViewState>(
+      builder: (context, state) {
+        final errorMessage = context.select(
+          (AuthViewCubit cubit) {
+            final state = cubit.state;
+            return state is AuthViewErrorState ? state.errorMessage : null;
+          },
+        );
+        if (errorMessage == null) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Text(
+            errorMessage,
+            style: const TextStyle(
+              fontSize: 17,
+              color: Colors.red,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Text(
-        errorMessage,
-        style: const TextStyle(
-          fontSize: 17,
-          color: Colors.red,
-        ),
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
+    super.key,
+    required this.controller,
+    this.obscureText = false,
+    required this.labelText,
+    required this.hintText,
+  });
+
+  final TextEditingController controller;
+  final bool obscureText;
+  final String labelText;
+  final String hintText;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
       ),
+    );
+  }
+}
+
+class CustomLoginButton extends StatelessWidget {
+  const CustomLoginButton({
+    super.key,
+    required TextEditingController loginController,
+    required TextEditingController passwordController,
+  })  : _loginController = loginController,
+        _passwordController = passwordController;
+
+  final TextEditingController _loginController;
+  final TextEditingController _passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthViewCubit, AuthViewState>(
+      builder: (context, state) {
+        final AuthViewState state =
+            context.select((AuthViewCubit cubit) => cubit.state);
+
+        final bool canStartAuth = state is AuthViewFormFillInProgressState ||
+            state is AuthViewErrorState;
+
+        final void Function()? onPressed = canStartAuth
+            ? () => context.read<AuthViewCubit>().onAuth(
+                  login: _loginController.text,
+                  password: _passwordController.text,
+                )
+            : null;
+
+        final Widget child = state is AuthViewAuthInProgressState
+            ? const SizedBox(
+                width: 15,
+                height: 15,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Text('Login');
+
+        return ElevatedButton(
+          onPressed: onPressed,
+          child: child,
+        );
+      },
     );
   }
 }

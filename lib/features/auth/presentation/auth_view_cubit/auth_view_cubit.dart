@@ -1,65 +1,31 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/utils/exceptions.dart';
 
-part 'auth_view_event.dart';
 part 'auth_view_state.dart';
 
-class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
+class AuthViewCubit extends Cubit<AuthViewState> {
   final AuthBloc _authBloc;
   late final StreamSubscription<AuthState> _authBlocSubscription;
 
-  String? login;
-  String? password;
-
-  AuthViewBloc({
+  AuthViewCubit({
     required AuthViewState initialState,
     required AuthBloc authBloc,
   })  : _authBloc = authBloc,
         super(initialState) {
     _onState(authBloc.state);
     _authBlocSubscription = authBloc.stream.listen(_onState);
-    on<AuthViewEvent>(_eventHandlerSwitcher);
   }
 
-  _eventHandlerSwitcher(
-      AuthViewEvent event, Emitter<AuthViewState> emit) async {
-    if (event is AuthViewLoginEvent) {
-      await _onAuthViewLogin(event, emit);
-    } else if (event is AuthViewPasswordEvent) {
-      await _onAuthViewPassword(event, emit);
-    } else if (event is AuthViewAuthEvent) {
-      await _onAuthViewAuth(event, emit);
-    }
-  }
-
-  _onAuthViewLogin(AuthViewLoginEvent event, Emitter<AuthViewState> emit) {
-    if (event.login.isNotEmpty) {
-      login = event.login;
-    }
-  }
-
-  _onAuthViewPassword(
-      AuthViewPasswordEvent event, Emitter<AuthViewState> emit) {
-    if (event.password.isNotEmpty) {
-      password = event.password;
-    }
-  }
-
-  _onAuthViewAuth(AuthViewAuthEvent event, Emitter<AuthViewState> emit) {
-    if (login == null || password == null) {
-      final state = AuthViewErrorState('Заполните логин и пароль');
+  onAuth({required String login, required String password}) {
+    if (!_isValid(login, password)) {
+      final state = AuthViewErrorState('Заполните логин и/или пароль');
       emit(state);
       return;
     }
-    if (!_isValid(login!, password!)) {
-      final state = AuthViewErrorState('Заполните логин и пароль');
-      emit(state);
-      return;
-    }
-    _authBloc.add(AuthLoginEvent(login: login!, password: password!));
+    _authBloc.add(AuthLoginEvent(login: login, password: password));
   }
 
   void _onState(AuthState state) {
@@ -72,9 +38,9 @@ class AuthViewBloc extends Bloc<AuthViewEvent, AuthViewState> {
       final message = _mapErrorToMessage(state.error);
       emit(AuthViewErrorState(message));
     } else if (state is AuthInProgressState) {
-      emit(AuthViewInProgressState());
+      emit(AuthViewAuthInProgressState());
     } else if (state is AuthStatusCheckInProgressState) {
-      emit(AuthViewInProgressState());
+      emit(AuthViewAuthInProgressState());
     }
   }
 

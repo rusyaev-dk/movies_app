@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(),
-        body: HomeBody(),
+        body: const HomeBody(),
       ),
     );
   }

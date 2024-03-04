@@ -1,4 +1,4 @@
-part of 'auth_view_bloc.dart';
+part of 'auth_view_cubit.dart';
 
 class AuthViewState {}
 
@@ -29,11 +29,11 @@ class AuthViewErrorState extends AuthViewState {
   int get hashCode => errorMessage.hashCode;
 }
 
-class AuthViewInProgressState extends AuthViewState {
+class AuthViewAuthInProgressState extends AuthViewState {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthViewInProgressState && runtimeType == other.runtimeType;
+      other is AuthViewAuthInProgressState && runtimeType == other.runtimeType;
 
   @override
   int get hashCode => 0;

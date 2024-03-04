@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
 
-part 'screen_loader_event.dart';
 
 enum ScreenLoaderState { unknown, authorized, unAuthorized }
 
-class ScreenLoaderBloc extends Bloc<ScreenLoaderEvent, ScreenLoaderState> {
+class ScreenLoaderCubit extends Cubit<ScreenLoaderState> {
   final AuthBloc _authBloc;
   late final StreamSubscription<AuthState> _authBlocSubscription;
 
-  ScreenLoaderBloc({
+  ScreenLoaderCubit({
     required ScreenLoaderState initialState,
     required AuthBloc authBloc,
   })  : _authBloc = authBloc,
@@ -23,7 +22,6 @@ class ScreenLoaderBloc extends Bloc<ScreenLoaderEvent, ScreenLoaderState> {
         _authBloc.add(AuthCheckStatusEvent());
       },
     );
-    
   }
 
   void _onState(AuthState state) {

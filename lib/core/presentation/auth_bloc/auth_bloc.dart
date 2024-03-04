@@ -21,7 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _tmdbSessionDataRepository = tmdbSessionDataRepository,
         super(AuthUnauthorizedState()) {
     on<AuthEvent>(_eventHandlerSwitcher, transformer: sequential());
-    add(AuthLogoutEvent()); // убрать в финалке!!!
+    // add(AuthLogoutEvent()); // убрать в финалке!!!
     add(AuthCheckStatusEvent());
   }
 

@@ -5,9 +5,8 @@ import 'package:movies_app/core/domain/repositories/tmdb_session_data_repository
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/tmdb_account_repository.dart';
 import 'package:movies_app/core/domain/repositories/tmdb_auth_repository.dart';
-import 'package:movies_app/core/presentation/blocs/screen_loader_bloc/screen_loader_bloc.dart';
 import 'package:movies_app/core/routing/app_router.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
