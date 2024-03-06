@@ -23,15 +23,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchMultiEvent>(
       _onSearchMulti,
       transformer: debounceDroppable(
-        const Duration(milliseconds: 300),
+        const Duration(milliseconds: 400),
       ),
     );
   }
 
-  _onSearchMulti(SearchMultiEvent event, Emitter<SearchState> emit) async {
+  Future<void> _onSearchMulti(
+      SearchMultiEvent event, Emitter<SearchState> emit) async {
     try {
-      if (event.query.isEmpty) return emit(SearchState(searchModels: const []));
-      if (event.query.length < 3) return;
+      if (event.query.isEmpty) {
+        emit(SearchState(searchModels: const []));
+        return;
+      }
       final searchModels = await _tmdbMediaRepository.onGetSearchMultiMedia(
         query: event.query,
         locale: event.locale,

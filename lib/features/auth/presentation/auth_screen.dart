@@ -27,11 +27,33 @@ class AuthScreen extends StatelessWidget {
       ),
       child: BlocListener<AuthViewCubit, AuthViewState>(
         listener: _onAuthViewCubitStateChange,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text("LOGIN SCREEN"),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/welcome_image.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
-          body: AuthBody(),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.8),
+                  Colors.black.withOpacity(0.75),
+                  Colors.black.withOpacity(0.35),
+                  Colors.black.withOpacity(0.75),
+                  Colors.black.withOpacity(0.9),
+                ],
+              ),
+            ),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              // resizeToAvoidBottomInset: false,
+              body: AuthBody(),
+            ),
+          ),
         ),
       ),
     );

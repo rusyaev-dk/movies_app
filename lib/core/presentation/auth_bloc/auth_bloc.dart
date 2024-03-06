@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     add(AuthCheckStatusEvent());
   }
 
-  _eventHandlerSwitcher(AuthEvent event, Emitter<AuthState> emit) async {
+  Future<void> _eventHandlerSwitcher(AuthEvent event, Emitter<AuthState> emit) async {
     if (event is AuthCheckStatusEvent) {
       await _onAuthCheckStatus(event, emit);
     } else if (event is AuthLoginEvent) {
@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _onAuthCheckStatus(
+  Future<void> _onAuthCheckStatus(
       AuthCheckStatusEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthStatusCheckInProgressState());
@@ -48,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _onAuthLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onAuthLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthInProgressState());
       final sessionId = await _tmdbAuthRepository.onAuth(
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _onAuthLogout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onAuthLogout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
     try {
       await _tmdbSessionDataRepository.onDeleteSessionId();
       await _tmdbSessionDataRepository.onDeleteAccountId();

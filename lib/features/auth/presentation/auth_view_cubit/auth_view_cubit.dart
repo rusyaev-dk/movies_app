@@ -20,7 +20,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
   }
 
   onAuth({required String login, required String password}) {
-    if (!_isValid(login, password)) {
+    if (!_inputDataValidation(login, password)) {
       final state = AuthViewErrorState('Заполните логин и/или пароль');
       emit(state);
       return;
@@ -61,8 +61,8 @@ class AuthViewCubit extends Cubit<AuthViewState> {
     }
   }
 
-  bool _isValid(String login, String password) =>
-      login.isNotEmpty && password.isNotEmpty;
+  bool _inputDataValidation(String login, String password) =>
+      login.trim().isNotEmpty && password.trim().isNotEmpty;
 
   @override
   Future<void> close() {

@@ -7,6 +7,7 @@ import 'package:movies_app/core/domain/repositories/tmdb_account_repository.dart
 import 'package:movies_app/core/domain/repositories/tmdb_auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
 import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
@@ -45,6 +46,9 @@ class MoviesApp extends StatelessWidget {
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           routerConfig: AppRouter.router,
+          theme: createLightTheme(),
+          darkTheme: createDarkTheme(),
+          themeMode: ThemeMode.dark, // поставить ThemeMode.system
         ),
       ),
     );

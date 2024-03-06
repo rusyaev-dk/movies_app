@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/presentation/components/textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 
 class AuthBody extends StatelessWidget {
@@ -10,31 +11,45 @@ class AuthBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const ErrorMessageWidget(),
-          const SizedBox(height: 10),
-          CustomTextField(
-            controller: _loginController,
-            labelText: "Login",
-            hintText: "Enter your login",
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 10),
+          child: Column(
+            children: [
+              const Text(
+                "Welcome to Movies App!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 54, fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 90),
+              const ErrorMessageWidget(),
+              const SizedBox(height: 10),
+              CustomTextField(
+                controller: _loginController,
+                prefixIcon: Icons.login,
+                hintText: "Enter your login",
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                controller: _passwordController,
+                obscureText: true,
+                prefixIcon: Icons.password,
+                hintText: "Enter your password",
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: CustomLoginButton(
+                  loginController: _loginController,
+                  passwordController: _passwordController,
+                ),
+              ),
+              const Text("asdfasdfasdfasdf"),
+            ],
           ),
-          const SizedBox(height: 20),
-          CustomTextField(
-            controller: _passwordController,
-            obscureText: true,
-            labelText: "Password",
-            hintText: "Enter your password",
-          ),
-          const SizedBox(height: 20),
-          CustomLoginButton(
-            loginController: _loginController,
-            passwordController: _passwordController,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -54,44 +69,14 @@ class ErrorMessageWidget extends StatelessWidget {
           },
         );
         if (errorMessage == null) return const SizedBox.shrink();
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Text(
-            errorMessage,
-            style: const TextStyle(
-              fontSize: 17,
-              color: Colors.red,
-            ),
+        return Text(
+          errorMessage,
+          style: TextStyle(
+            fontSize: 17,
+            color: Theme.of(context).colorScheme.error,
           ),
         );
       },
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required this.controller,
-    this.obscureText = false,
-    required this.labelText,
-    required this.hintText,
-  });
-
-  final TextEditingController controller;
-  final bool obscureText;
-  final String labelText;
-  final String hintText;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText,
-      ),
     );
   }
 }
@@ -125,14 +110,25 @@ class CustomLoginButton extends StatelessWidget {
             : null;
 
         final Widget child = state is AuthViewAuthInProgressState
-            ? const SizedBox(
+            ? SizedBox(
                 width: 15,
                 height: 15,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               )
             : const Text('Login');
 
         return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+            fixedSize: const Size(90, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(16), // Установка радиуса закругления
+            ),
+          ),
           onPressed: onPressed,
           child: child,
         );
