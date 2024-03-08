@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/features/home/presentation/tmdb_media_bloc/tmdb_media_bloc.dart';
 import 'package:movies_app/features/home/presentation/components/scrollable_list_template.dart';
 
@@ -20,22 +19,13 @@ class HomeBody extends StatelessWidget {
                 onPressed: () {
                   context
                       .read<TMDBMediaBloc>()
-                      .add(TMDBMediaPopularMoviesEvent());
+                      .add(TMDBMediaAllMediaEvent());
                 },
                 child: const Text(
-                  "Popular",
+                  "Load content",
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  context
-                      .read<TMDBMediaBloc>()
-                      .add(TMDBMediaTrendingMoviesEvent());
-                },
-                child: const Text(
-                  "Trending",
-                ),
-              ),
+              
             ],
           ),
           BlocBuilder<TMDBMediaBloc, TMDBMediaState>(
@@ -45,15 +35,15 @@ class HomeBody extends StatelessWidget {
               if (popularMovies.isEmpty) {
                 return const CircularProgressIndicator();
               }
-              return CustomScrollList<MovieModel>(
-                text: "Popular:",
+              return CustomMediaScrollList(
+                title: "Popular movies for you",
                 models: popularMovies,
-                cardWidth: 150,
-                listHeight: 250,
+                cardHeight: 270,
+                cardWidth: 180,
               );
             },
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           BlocBuilder<TMDBMediaBloc, TMDBMediaState>(
             builder: (context, state) {
               final trendingMovies = context
@@ -61,10 +51,11 @@ class HomeBody extends StatelessWidget {
               if (trendingMovies.isEmpty) {
                 return const CircularProgressIndicator();
               }
-              return CustomScrollList<MovieModel>(
-                text: "Trending:",
+              return CustomMediaScrollList(
+                title: "Trending movies",
                 models: trendingMovies,
-                listHeight: 180,
+                cardHeight: 210,
+                cardWidth: 140,
               );
             },
           ),

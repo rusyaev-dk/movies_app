@@ -16,7 +16,10 @@ ThemeData createDarkTheme() {
       secondary: AppColors.darkestGrey,
       background: AppColors.black,
       onBackground: AppColors.white,
-      error: AppColors.white
+      surface: AppColors.grey,
+      error: AppColors.white,
+      tertiary: AppColors.green,
+      onTertiary: AppColors.white
     ),
     dialogTheme: DialogTheme(
       backgroundColor: AppColors.black,

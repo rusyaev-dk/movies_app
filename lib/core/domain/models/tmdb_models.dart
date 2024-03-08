@@ -56,7 +56,7 @@ class MovieModel extends TMDBModel {
     this.budget,
     this.revenue,
     this.runtime,
-  }): super._();
+  }) : super._();
 
   @override
   factory MovieModel.fromJSON(Map<String, dynamic> json) {
@@ -126,7 +126,7 @@ class TVSeriesModel extends TMDBModel {
     this.type,
     this.numberOfEpisodes,
     this.numberOfSeasons,
-  }): super._();
+  }) : super._();
 
   @override
   factory TVSeriesModel.fromJSON(Map<String, dynamic> json) {
@@ -171,7 +171,7 @@ class PersonModel extends TMDBModel {
     required this.popularity,
     required this.gender,
     required this.profilePath,
-  }): super._();
+  }) : super._();
 
   @override
   factory PersonModel.fromJSON(Map<String, dynamic> json) {

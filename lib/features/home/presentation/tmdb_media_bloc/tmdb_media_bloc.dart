@@ -11,11 +11,20 @@ class TMDBMediaBloc extends Bloc<TMDBMediaEvent, TMDBMediaState> {
   TMDBMediaBloc({required TMDBMediaRepository tmdbRepository})
       : _tmdbRepository = tmdbRepository,
         super(TMDBMediaState()) {
+    on<TMDBMediaAllMediaEvent>(_onAllMedia);
     on<TMDBMediaPopularMoviesEvent>(_onPopularMovies);
     on<TMDBMediaTrendingMoviesEvent>(_onTrendingMovies);
   }
 
-  _onPopularMovies(
+  Future<void> _onAllMedia(
+      TMDBMediaAllMediaEvent event, Emitter<TMDBMediaState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    add(TMDBMediaPopularMoviesEvent());
+    add(TMDBMediaTrendingMoviesEvent());
+    emit(state.copyWith(isLoading: false));
+  }
+
+  Future<void> _onPopularMovies(
       TMDBMediaPopularMoviesEvent event, Emitter<TMDBMediaState> emit) async {
     final popularMovies = await _tmdbRepository.onGetPopularMovies(
       locale: event.locale,
@@ -24,7 +33,7 @@ class TMDBMediaBloc extends Bloc<TMDBMediaEvent, TMDBMediaState> {
     emit(state.copyWith(popularMovies: popularMovies));
   }
 
-  _onTrendingMovies(
+  Future<void> _onTrendingMovies(
       TMDBMediaTrendingMoviesEvent event, Emitter<TMDBMediaState> emit) async {
     final trendingMovies = await _tmdbRepository.onGetTrendingMovies(
       locale: event.locale,

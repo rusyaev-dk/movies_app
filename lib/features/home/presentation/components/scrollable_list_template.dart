@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/features/home/presentation/components/list_title.dart';
 import 'package:movies_app/features/home/presentation/components/listview_implementations.dart';
 
-
-class CustomScrollList<T> extends StatelessWidget {
-  const CustomScrollList({
+class CustomMediaScrollList extends StatelessWidget {
+  const CustomMediaScrollList({
     super.key,
     required this.models,
-    required this.text,
+    required this.title,
     this.cardWidth = 100,
-    this.listHeight = 200,
+    this.cardHeight = 150,
   });
 
-  final List<T> models;
-  final String text;
+  final List<TMDBModel> models;
+  final String title;
   final double cardWidth;
-  final double listHeight;
+  final double cardHeight;
 
   @override
   Widget build(BuildContext context) {
     Widget listView = const Placeholder(); // ВРЕМЕННО
-    if (T == MovieModel) {
-      listView = MoviesListView(
-        movies: models as List<MovieModel>,
-        cardWidth: cardWidth,
-      );
-    } else {
-      listView = TVSeriesListView(
-        tvSeries: models as List<TVSeriesModel>,
-        cardWidth: cardWidth,
-      );
-    }
-    return SizedBox(
-      height: listHeight,
-      width: double.infinity,
+
+    listView = MediaListView(
+      models: models,
+      cardWidth: cardWidth,
+    );
+
+    return Expanded(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Text(text, style: const TextStyle(color: Colors.black),),
-              const Text("All", style: TextStyle(color: Colors.black),)
-            ],
+          ListTitle(
+            title: title,
           ),
-          Expanded(child: listView),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: cardHeight,
+            width: double.infinity,
+            child: listView,
+          ),
         ],
       ),
     );
