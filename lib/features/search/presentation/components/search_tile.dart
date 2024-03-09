@@ -1,80 +1,168 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/data/clients/tmdb_image_path_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/utils/app_constants.dart';
+import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/service_functions.dart';
 
-class SearchTile extends StatelessWidget {
-  const SearchTile({super.key, required this.model});
+class SearchList extends StatelessWidget {
+  const SearchList({super.key, required this.models});
 
-  final TMDBModel model;
+  final List<TMDBModel> models;
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Placeholder(); // ВРЕМЕННО
-    if (model is MovieModel) {
-      MovieModel movie = model as MovieModel;
-      content = ListTile(
-        leading: movie.posterPath != null
-            ? Image.network(
-                TMDBImageFormatter.formatImageUrl(path: movie.posterPath!),
-                fit: BoxFit.cover,
-              )
-            : Image.asset(
-                AppConstants.unknownFilmImagePath,
-                fit: BoxFit.cover,
-              ),
-        title: Text(movie.title!),
-        subtitle: Text("${movie.originalTitle}, ${movie.releaseDate}"),
-        trailing: Container(
-          height: 10,
-          width: 10,
-          color: Colors.red,
-        ),
-      );
-    } else if (model is TVSeriesModel) {
-      TVSeriesModel tvSeries = model as TVSeriesModel;
-      content = ListTile(
-        leading: tvSeries.posterPath != null
-            ? Image.network(
-                TMDBImageFormatter.formatImageUrl(path: tvSeries.posterPath!),
-                fit: BoxFit.cover,
-              )
-            : Image.asset(
-                "assets/images/unknown_film.png",
-                fit: BoxFit.cover,
-              ),
-        title: Text(tvSeries.name!),
-        subtitle: Text(
-            "${tvSeries.originalName}, ${tvSeries.firstAirDate} - ${tvSeries.lastAirDate}"),
-        trailing: Container(
-          height: 10,
-          width: 10,
-          color: Colors.red,
-        ),
-      );
-    } else if (model is PersonModel) {
-      PersonModel person = model as PersonModel;
+    return ListView.separated(
+      separatorBuilder: (context, i) => const SizedBox(height: 20),
+      itemBuilder: (context, i) {
+        final model = models[i];
+        switch (model) {
+          case MovieModel():
+            return SearchListTile(
+              imagePath: model.posterPath,
+              title: model.title ?? "None",
+              subtitle: "${model.originalTitle}, ${model.releaseDate}",
+              voteAverage: model.voteAverage ?? 0,
+              genreIds: model.genreIds ?? [],
+            );
+          case TVSeriesModel():
+            return SearchListTile(
+              imagePath: model.posterPath,
+              title: model.name ?? "None",
+              subtitle:
+                  "${model.originalName}, ${model.firstAirDate} - ${model.lastAirDate}",
+              voteAverage: model.voteAverage ?? 0,
+              genreIds: model.genreIds ?? [],
+            );
+          case PersonModel():
+            return SearchListTile(
+              imagePath: model.profilePath,
+              title: model.name ?? "Unknonwn",
+              subtitle: "${model.originalName} id: ${model.id}",
+            );
+          default:
+            return null; // переделать
+        }
+      },
+      itemCount: models.length,
+    );
+  }
+}
 
-      content = ListTile(
-        leading: person.profilePath != null
-            ? Image.network(
-                TMDBImageFormatter.formatImageUrl(path: person.profilePath!),
-                fit: BoxFit.cover,
-              )
-            : Image.asset(
-                "assets/images/unknown_film.png",
-                fit: BoxFit.cover,
-              ),
-        title: Text(person.name!),
-        subtitle: Text("${person.originalName}"),
-        trailing: Container(
-          height: 10,
-          width: 10,
-          color: Colors.red,
+class SearchListTile extends StatelessWidget {
+  const SearchListTile({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.imagePath,
+    this.genreIds,
+    this.voteAverage,
+  });
+
+  final String title;
+  final String subtitle;
+  final String? imagePath;
+  final List<dynamic>? genreIds;
+  final double? voteAverage;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? imageWidget = formatImageWidget(imagePath: imagePath);
+
+    Widget? voteWidget;
+    if (voteAverage != null) {
+      final double roundedVoteAverage =
+          formatVoteAverage(voteAverage: voteAverage!);
+
+      final Color voteColor = getVoteColor(
+        context: context,
+        voteAverage: roundedVoteAverage,
+        isRounded: true,
+      );
+
+      voteWidget = Expanded(
+        flex: 1,
+        child: Center(
+          child: Text(
+            "$roundedVoteAverage",
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle
+                .copyWith(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis,
+                  color: voteColor,
+                ),
+          ),
         ),
       );
     }
 
-    return content;
+    Widget? genresTextWidget;
+    if (genreIds != null && genreIds!.isNotEmpty) {
+      final String genresString = genreIdsToString(genreIds: genreIds!);
+      genresTextWidget = Text(
+        genresString,
+        maxLines: 3,
+        style: Theme.of(context)
+            .extension<ThemeTextStyles>()!
+            .subtitleTextStyle
+            .copyWith(
+              overflow: TextOverflow.ellipsis,
+              color: Theme.of(context).colorScheme.surface,
+            ),
+      );
+    }
+
+    return SizedBox(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 120,
+            width: 80,
+            child: imageWidget,
+          ),
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .headingTextStyle
+                        .copyWith(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          overflow: TextOverflow.ellipsis,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
+                  Text(
+                    subtitle,
+                    maxLines: 3,
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .subtitleTextStyle
+                        .copyWith(
+                          overflow: TextOverflow.ellipsis,
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                  ),
+                  if (genresTextWidget != null) genresTextWidget,
+                ],
+              ),
+            ),
+          ),
+          if (voteWidget != null) voteWidget,
+        ],
+      ),
+    );
   }
 }

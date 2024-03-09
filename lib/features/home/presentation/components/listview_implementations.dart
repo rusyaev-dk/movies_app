@@ -41,7 +41,7 @@ class MediaListView extends StatelessWidget {
             key: ValueKey(model.id),
             width: cardWidth,
             voteAverage: model.voteAverage,
-            imageUrl: model.posterPath,
+            imagePath: model.posterPath,
             cardText: model.title ?? "None",
           );
         } else if (model is TVSeriesModel) {
@@ -49,14 +49,14 @@ class MediaListView extends StatelessWidget {
             key: ValueKey(model.id),
             width: cardWidth,
             voteAverage: model.voteAverage,
-            imageUrl: model.posterPath,
+            imagePath: model.posterPath,
             cardText: model.name ?? "None",
           );
         } else if (model is PersonModel) {
           return MediaCard(
             key: ValueKey(model.id),
             width: cardWidth,
-            imageUrl: model.profilePath,
+            imagePath: model.profilePath,
             cardText: model.name ?? "None",
           );
         } else {

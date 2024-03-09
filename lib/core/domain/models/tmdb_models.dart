@@ -35,6 +35,7 @@ class MovieModel extends TMDBModel {
   final dynamic voteAverage;
   final dynamic voteCount;
 
+  final List<dynamic>? genreIds;
   final String? releaseDate;
   final dynamic budget;
   final dynamic revenue;
@@ -56,6 +57,7 @@ class MovieModel extends TMDBModel {
     this.budget,
     this.revenue,
     this.runtime,
+    this.genreIds,
   }) : super._();
 
   @override
@@ -76,6 +78,7 @@ class MovieModel extends TMDBModel {
       budget: json["budget"],
       revenue: json["revenue"],
       runtime: json["runtime"],
+      genreIds: json["genre_ids"],
     );
   }
 }
@@ -94,6 +97,7 @@ class TVSeriesModel extends TMDBModel {
   final dynamic voteAverage;
   final dynamic voteCount;
 
+  final List<dynamic>? genreIds;
   final List<String>? languages;
   final String? lastAirDate;
   final int? numberOfEpisodes;
@@ -126,6 +130,7 @@ class TVSeriesModel extends TMDBModel {
     this.type,
     this.numberOfEpisodes,
     this.numberOfSeasons,
+    this.genreIds,
   }) : super._();
 
   @override
@@ -152,6 +157,7 @@ class TVSeriesModel extends TMDBModel {
       type: json["type"],
       voteAverage: json["vote_average"],
       voteCount: json["vote_count"],
+      genreIds: json["genre_ids"],
     );
   }
 }

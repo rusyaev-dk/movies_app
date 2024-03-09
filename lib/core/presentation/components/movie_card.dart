@@ -1,44 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/data/clients/tmdb_image_path_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/app_constants.dart';
+import 'package:movies_app/core/utils/service_functions.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({
     super.key,
     required this.width,
     this.voteAverage,
-    this.imageUrl,
+    this.imagePath,
     this.cardText,
   });
 
-  final String? imageUrl;
+  final String? imagePath;
   final String? cardText;
   final double? voteAverage;
   final double width;
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider<Object> image = formatImageProvider(imagePath: imagePath);
+
     Widget? stack;
     if (voteAverage != null) {
       final double roundedVoteAverage =
-          double.parse(voteAverage!.toStringAsFixed(1));
+          formatVoteAverage(voteAverage: voteAverage!);
 
-      final Color voteContainerColor;
-
-      switch (roundedVoteAverage) {
-        case (< 4):
-          voteContainerColor = Theme.of(context).colorScheme.error;
-          break;
-        case (< 7):
-          voteContainerColor = Theme.of(context).colorScheme.surface;
-          break;
-        case (>= 7):
-          voteContainerColor = Theme.of(context).colorScheme.tertiary;
-          break;
-        default:
-          voteContainerColor = Theme.of(context).colorScheme.surface;
-      }
+      final Color voteContainerColor = getVoteColor(
+        context: context,
+        voteAverage: roundedVoteAverage,
+        isRounded: true,
+      );
 
       stack = Stack(
         children: [
@@ -70,11 +61,7 @@ class MediaCard extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: imageUrl != null
-                    ? NetworkImage(
-                        TMDBImageFormatter.formatImageUrl(path: imageUrl!),
-                      ) as ImageProvider<Object>
-                    : const AssetImage(AppConstants.unknownFilmImagePath),
+                image: image,
               ),
             ),
             child: stack,
@@ -84,7 +71,9 @@ class MediaCard extends StatelessWidget {
         if (cardText != null)
           Text(
             cardText!,
-            style: Theme.of(context).extension<ThemeTextStyles>()!.subtitleTextStyle,
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .subtitleTextStyle,
           ),
       ],
     );
