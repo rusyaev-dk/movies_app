@@ -60,6 +60,20 @@ class TMDBMediaRepository {
     return popularTVSeries;
   }
 
+  Future<List<TVSeriesModel>> onGetTrendingTVSeries({
+    required String locale,
+    required int page,
+  }) async {
+    final response = await _mediaApiClient.getTrendingTVSeries(
+      locale: locale,
+      page: page,
+    );
+    List<TVSeriesModel> trendingTVSeries =
+        await _createModelsList<TVSeriesModel>(
+            TVSeriesModel.fromJSON, response);
+    return trendingTVSeries;
+  }
+
   Future<List<TMDBModel>> onGetSearchMultiMedia({
     required String query,
     required String locale,

@@ -1,54 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/data/clients/tmdb_image_path_formatter.dart';
+import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/app_constants.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({
     super.key,
-    this.imageUrl,
-    required this.voteAverage,
     required this.width,
+    this.voteAverage,
+    this.imageUrl,
+    this.cardText,
   });
 
   final String? imageUrl;
-  final double voteAverage;
+  final String? cardText;
+  final double? voteAverage;
   final double width;
 
   @override
   Widget build(BuildContext context) {
-    final double roundedVoteAverage =
-        double.parse(voteAverage.toStringAsFixed(1));
+    Widget? stack;
+    if (voteAverage != null) {
+      final double roundedVoteAverage =
+          double.parse(voteAverage!.toStringAsFixed(1));
 
-    final Color voteContainerColor;
+      final Color voteContainerColor;
 
-    switch (roundedVoteAverage) {
-      case (< 4):
-        voteContainerColor = Theme.of(context).colorScheme.error;
-        break;
-      case (< 7):
-        voteContainerColor = Theme.of(context).colorScheme.surface;
-        break;
-      case (>= 7):
-        voteContainerColor = Theme.of(context).colorScheme.tertiary;
-        break;
-      default:
-        voteContainerColor = Theme.of(context).colorScheme.surface;
-    }
+      switch (roundedVoteAverage) {
+        case (< 4):
+          voteContainerColor = Theme.of(context).colorScheme.error;
+          break;
+        case (< 7):
+          voteContainerColor = Theme.of(context).colorScheme.surface;
+          break;
+        case (>= 7):
+          voteContainerColor = Theme.of(context).colorScheme.tertiary;
+          break;
+        default:
+          voteContainerColor = Theme.of(context).colorScheme.surface;
+      }
 
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: imageUrl != null
-              ? NetworkImage(
-                  TMDBImageFormatter.formatImageUrl(path: imageUrl!),
-                ) as ImageProvider<Object>
-              : const AssetImage(
-                  "assets/images/unknown_film.png",
-                ),
-        ),
-      ),
-      child: Stack(
+      stack = Stack(
         children: [
           Container(
             margin: const EdgeInsets.all(3),
@@ -66,7 +58,35 @@ class MediaCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Container(
+            width: width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: imageUrl != null
+                    ? NetworkImage(
+                        TMDBImageFormatter.formatImageUrl(path: imageUrl!),
+                      ) as ImageProvider<Object>
+                    : const AssetImage(AppConstants.unknownFilmImagePath),
+              ),
+            ),
+            child: stack,
+          ),
+        ),
+        if (cardText != null) const SizedBox(height: 10),
+        if (cardText != null)
+          Text(
+            cardText!,
+            style: Theme.of(context).extension<ThemeTextStyles>()!.subtitleTextStyle,
+          ),
+      ],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/data/clients/tmdb_image_path_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/utils/app_constants.dart';
 
 class SearchTile extends StatelessWidget {
   const SearchTile({super.key, required this.model});
@@ -19,7 +20,7 @@ class SearchTile extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : Image.asset(
-                "assets/images/unknown_film.png",
+                AppConstants.unknownFilmImagePath,
                 fit: BoxFit.cover,
               ),
         title: Text(movie.title!),

@@ -14,6 +14,21 @@ class MediaListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (models.isEmpty) {
+      return ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, i) {
+            return Container(
+              width: cardWidth,
+              color: Colors.white,
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(width: 10);
+          },
+          itemCount: 5);
+    }
+
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       separatorBuilder: (context, index) {
@@ -27,6 +42,7 @@ class MediaListView extends StatelessWidget {
             width: cardWidth,
             voteAverage: model.voteAverage,
             imageUrl: model.posterPath,
+            cardText: model.title ?? "None",
           );
         } else if (model is TVSeriesModel) {
           return MediaCard(
@@ -34,6 +50,14 @@ class MediaListView extends StatelessWidget {
             width: cardWidth,
             voteAverage: model.voteAverage,
             imageUrl: model.posterPath,
+            cardText: model.name ?? "None",
+          );
+        } else if (model is PersonModel) {
+          return MediaCard(
+            key: ValueKey(model.id),
+            width: cardWidth,
+            imageUrl: model.profilePath,
+            cardText: model.name ?? "None",
           );
         } else {
           return MediaCard(

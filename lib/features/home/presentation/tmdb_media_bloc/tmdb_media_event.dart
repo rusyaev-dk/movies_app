@@ -31,3 +31,23 @@ class TMDBMediaTrendingMoviesEvent extends TMDBMediaEvent {
     this.page = 1,
   });
 }
+
+class TMDBMediaPopularTVSeriesEvent extends TMDBMediaEvent {
+  final String locale;
+  final int page;
+
+  TMDBMediaPopularTVSeriesEvent({
+    this.locale = "en-US",
+    this.page = 1,
+  });
+}
+
+class TMDBMediaTrendingTVSeriesEvent extends TMDBMediaEvent {
+  final String locale;
+  final int page;
+
+  TMDBMediaTrendingTVSeriesEvent({
+    this.locale = "en-US",
+    this.page = 1,
+  });
+}

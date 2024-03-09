@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => TMDBMediaBloc(
         tmdbRepository: RepositoryProvider.of<TMDBMediaRepository>(context),
-      ),
+      )..add(TMDBMediaAllMediaEvent()),
       child: Scaffold(
         appBar: AppBar(),
         body: const HomeBody(),

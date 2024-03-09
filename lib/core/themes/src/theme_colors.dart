@@ -2,7 +2,7 @@ part of '../theme.dart';
 
 class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color filterButtonFillColor;
-
+  // ПОДПРАВИТЬ 
   const ThemeColors({
     required this.filterButtonFillColor,
   });

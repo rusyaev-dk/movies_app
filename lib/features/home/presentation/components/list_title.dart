@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class ListTitle extends StatelessWidget {
   const ListTitle({
@@ -10,24 +11,43 @@ class ListTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> shimmerChildren = [
+      Container(
+        height: 20,
+        width: 100,
+        color: Colors.white,
+      ),
+      const Spacer(),
+      Container(
+        height: 20,
+        width: 40,
+        color: Colors.white,
+      ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: Row(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .displayLarge!
-                .copyWith(fontSize: 20),
-          ),
-          const Spacer(),
-          Text(
-            "All",
-            style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                fontSize: 20, color: Theme.of(context).colorScheme.primary),
-          )
-        ],
+        children: title.isEmpty
+            ? shimmerChildren
+            : [
+                Text(
+                  title,
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .headingTextStyle,
+                ),
+                const Spacer(),
+                Text(
+                  "All",
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .headingTextStyle
+                      .copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ],
       ),
     );
   }
