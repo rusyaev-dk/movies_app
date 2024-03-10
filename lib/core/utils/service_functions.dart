@@ -51,13 +51,13 @@ Color getVoteColor({
       voteColor = Theme.of(context).colorScheme.error;
       break;
     case (< 7):
-      voteColor = Theme.of(context).colorScheme.surface;
+      voteColor = Theme.of(context).colorScheme.secondary;
       break;
     case (>= 7):
       voteColor = Theme.of(context).colorScheme.tertiary;
       break;
     default:
-      voteColor = Theme.of(context).colorScheme.surface;
+      voteColor = Theme.of(context).colorScheme.secondary;
   }
   return voteColor;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/presentation/components/textfield.dart';
+import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 
 class AuthBody extends StatelessWidget {

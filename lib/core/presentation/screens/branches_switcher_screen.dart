@@ -16,7 +16,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
         unselectedFontSize: 12.0,
         showUnselectedLabels: true,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.surface,
+        unselectedItemColor: Theme.of(context).colorScheme.secondary,
         items: generateNavigationBarItems(context),
         currentIndex: navigationShell.currentIndex,
         onTap: (index) => navigationShell.goBranch(
@@ -33,7 +33,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.home_outlined,
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           activeIcon: Icon(
             Icons.home,
@@ -44,7 +44,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.search,
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           activeIcon: Icon(
             Icons.search,
@@ -55,7 +55,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.bookmark_border,
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           activeIcon: Icon(
             Icons.bookmark,
@@ -66,7 +66,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.person_outlined,
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           activeIcon: Icon(
             Icons.person,

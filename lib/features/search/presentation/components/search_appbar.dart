@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/features/search/presentation/components/search_textfield.dart';
 import 'package:movies_app/features/search/presentation/search_bloc/search_bloc.dart';
 
 class CustomSearchAppBar extends StatelessWidget
@@ -8,35 +9,26 @@ class CustomSearchAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Container(
-        margin: const EdgeInsets.only(top: 50, bottom: 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextFormField(
-          style: const TextStyle(fontSize: 16, color: Colors.black),
-          decoration: const InputDecoration(
-            hintText: 'Search',
-            hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
-            prefixIcon: Icon(Icons.search, color: Colors.grey),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: 16, vertical: 16), // добавляем вертикальный отступ
-          ),
-          onChanged: (value) {
-            context.read<SearchBloc>().add(SearchMultiEvent(value));
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        child: SearchTextField(
+          onChanged: (query) {
+            context.read<SearchBloc>().add(SearchMultiEvent(query));
           },
+          suffixIconOnTap: () {
+            context.read<SearchBloc>().add(SearchOpenFiltersEvent());
+          },
+          hintText: "Movies, series, persons",
+          prefixIcon: Icons.search,
+          suffixIcon: Icons.tune,
         ),
       ),
-      backgroundColor: Colors.black, // прозрачный фон AppBar
-      elevation: 0, // убираем тень
     );
   }
 
   @override
   Size get preferredSize {
-    return const Size(double.infinity, 70);
+    return const Size(double.infinity, 75);
   }
 }

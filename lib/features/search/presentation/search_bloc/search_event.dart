@@ -13,3 +13,7 @@ class SearchMultiEvent extends SearchEvent {
     this.page = 1,
   });
 }
+
+class SearchOpenFiltersEvent extends SearchEvent {
+
+}

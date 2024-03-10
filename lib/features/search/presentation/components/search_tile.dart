@@ -108,7 +108,7 @@ class SearchListTile extends StatelessWidget {
             .subtitleTextStyle
             .copyWith(
               overflow: TextOverflow.ellipsis,
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.secondary,
             ),
       );
     }
@@ -152,7 +152,7 @@ class SearchListTile extends StatelessWidget {
                         .subtitleTextStyle
                         .copyWith(
                           overflow: TextOverflow.ellipsis,
-                          color: Theme.of(context).colorScheme.surface,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
                   if (genresTextWidget != null) genresTextWidget,
