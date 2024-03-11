@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movies_app/core/data/clients/app_http_client.dart';
-import 'package:movies_app/core/data/clients/tmdb_config.dart';
+import 'package:movies_app/core/data/clients/http_client.dart';
+import 'package:movies_app/core/data/api/api_config.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 
-
-class TMDBAccountApiClient {
+class AccountApiClient {
   static final _httpClient = AppHttpClient();
   static final _apiKey = dotenv.get('API_KEY');
 
@@ -16,7 +15,7 @@ class TMDBAccountApiClient {
     };
 
     return await _httpClient.get(
-      path: TMDBConfig.accountPath,
+      path: ApiConfig.accountPath,
       uriParameters: uriParameters,
     );
   }
@@ -35,9 +34,9 @@ class TMDBAccountApiClient {
       'session_id': sessionId,
       'api_key': _apiKey,
     };
-    
+
     // Map<String, dynamic> bodyParameters = {
-      
+
     // };
 
     return await _httpClient.post(

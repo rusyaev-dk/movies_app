@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_media_repository.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_session_data_repository.dart';
+import 'package:movies_app/core/domain/repositories/media_repository.dart';
+import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_account_repository.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_auth_repository.dart';
+import 'package:movies_app/core/domain/repositories/account_repository.dart';
+import 'package:movies_app/core/domain/repositories/auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
 import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/themes/theme.dart';
@@ -17,29 +17,28 @@ class MoviesApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => TMDBAuthRepository(),
+          create: (context) => AuthRepository(),
         ),
         RepositoryProvider(
-          create: (context) => TMDBAccountRepository(),
+          create: (context) => AccountRepository(),
         ),
         RepositoryProvider(
-          create: (context) => TMDBMediaRepository(),
+          create: (context) => MediaRepository(),
         ),
         RepositoryProvider(
           create: (context) =>
-              TMDBSessionDataRepository(secureStorage: SecureStorage()),
+              SessionDataRepository(secureStorage: SecureStorage()),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => AuthBloc(
-              tmdbAuthRepository:
-                  RepositoryProvider.of<TMDBAuthRepository>(context),
-              tmdbAccountRepository:
-                  RepositoryProvider.of<TMDBAccountRepository>(context),
-              tmdbSessionDataRepository:
-                  RepositoryProvider.of<TMDBSessionDataRepository>(context),
+              authRepository: RepositoryProvider.of<AuthRepository>(context),
+              accountRepository:
+                  RepositoryProvider.of<AccountRepository>(context),
+              sessionDataRepository:
+                  RepositoryProvider.of<SessionDataRepository>(context),
             ),
           ),
         ],

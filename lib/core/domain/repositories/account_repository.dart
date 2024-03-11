@@ -1,8 +1,8 @@
-import 'package:movies_app/core/data/clients/tmdb_account_api_client.dart';
+import 'package:movies_app/core/data/api/clients/account_api_client.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 
-class TMDBAccountRepository {
-  static final TMDBAccountApiClient _accountApiClient = TMDBAccountApiClient();
+class AccountRepository {
+  static final AccountApiClient _accountApiClient = AccountApiClient();
 
   Future<int> onGetAccountId({required String sessionId}) async {
     final response = await _accountApiClient.getAccountId(sessionId: sessionId);

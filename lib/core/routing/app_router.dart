@@ -3,9 +3,9 @@ import 'package:movies_app/core/presentation/screens/error_screens.dart';
 import 'package:movies_app/core/presentation/screens/screen_loader.dart';
 import 'package:movies_app/core/presentation/screens/branches_switcher_screen.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/features/auth/presentation/auth_screen.dart';
-import 'package:movies_app/features/home/presentation/home_screen.dart';
-import 'package:movies_app/features/search/presentation/search_screen.dart';
+import 'package:movies_app/features/auth/presentation/screens/auth_screen.dart';
+import 'package:movies_app/features/home/presentation/screens/home_screen.dart';
+import 'package:movies_app/features/search/presentation/screens/search_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(

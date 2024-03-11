@@ -1,41 +1,39 @@
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 
-abstract class TMDBSessionDataKeys {
+abstract class SessionDataKeys {
   static const sessionId = "session_id";
   static const accountId = "account_id";
 }
 
-class TMDBSessionDataRepository {
+class SessionDataRepository {
   late final SecureStorage _secureStorage;
 
-  TMDBSessionDataRepository({required SecureStorage secureStorage})
+  SessionDataRepository({required SecureStorage secureStorage})
       : _secureStorage = secureStorage;
 
   Future<String?> onGetSessionId() async {
-    final String? sessionId =
-        await _secureStorage.get<String>(TMDBSessionDataKeys.sessionId);
-    return sessionId;
+    return await _secureStorage.get<String>(SessionDataKeys.sessionId);
   }
 
   Future<int?> onGetAccountId() async {
     final String? accoutId =
-        await _secureStorage.get<String>(TMDBSessionDataKeys.accountId);
+        await _secureStorage.get<String>(SessionDataKeys.accountId);
     return accoutId != null ? int.tryParse(accoutId) : null;
   }
 
   Future<void> onSetSessionId({required String sessionId}) async {
-    return _secureStorage.set<String>(TMDBSessionDataKeys.sessionId, sessionId);
+    await _secureStorage.set<String>(SessionDataKeys.sessionId, sessionId);
   }
 
   Future<void> onSetAccountId({required int accountId}) async {
-    return _secureStorage.set<int>(TMDBSessionDataKeys.accountId, accountId);
+    await _secureStorage.set<int>(SessionDataKeys.accountId, accountId);
   }
 
   Future<void> onDeleteSessionId() async {
-    return _secureStorage.delete(TMDBSessionDataKeys.sessionId);
+    await _secureStorage.delete(SessionDataKeys.sessionId);
   }
 
   Future<void> onDeleteAccountId() async {
-    return _secureStorage.delete(TMDBSessionDataKeys.accountId);
+    await _secureStorage.delete(SessionDataKeys.accountId);
   }
 }

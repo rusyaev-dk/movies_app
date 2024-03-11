@@ -2,7 +2,7 @@ part of 'auth_bloc.dart';
 
 class AuthEvent {}
 
-class AuthLogoutEvent extends AuthEvent {}
+class AuthCheckStatusEvent extends AuthEvent {}
 
 class AuthLoginEvent extends AuthEvent {
   final String login;
@@ -14,4 +14,4 @@ class AuthLoginEvent extends AuthEvent {
   });
 }
 
-class AuthCheckStatusEvent extends AuthEvent {}
+class AuthLogoutEvent extends AuthEvent {}

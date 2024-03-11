@@ -1,9 +1,9 @@
-import 'package:movies_app/core/data/clients/tmdb_media_api_client.dart';
+import 'package:movies_app/core/data/api/clients/media_api_client.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/utils/exceptions.dart';
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 
-class TMDBMediaRepository {
-  final TMDBMediaApiClient _mediaApiClient = TMDBMediaApiClient();
+class MediaRepository {
+  final MediaApiClient _mediaApiClient = MediaApiClient();
 
   Future<List<T>> _createModelsList<T>(
       T Function(Map<String, dynamic>) fromJson, dynamic response) async {

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movies_app/core/data/clients/app_http_client.dart';
-import 'package:movies_app/core/data/clients/tmdb_config.dart';
+import 'package:movies_app/core/data/clients/http_client.dart';
+import 'package:movies_app/core/data/api/api_config.dart';
 
-class TMDBAuthApiClient {
+class AuthApiClient {
   static final _httpClient = AppHttpClient();
   static final _apiKey = dotenv.get('API_KEY');
 
@@ -12,7 +12,7 @@ class TMDBAuthApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.newTokenPath,
+      path: ApiConfig.newTokenPath,
       uriParameters: parameters,
     );
   }
@@ -30,7 +30,7 @@ class TMDBAuthApiClient {
     };
 
     return await _httpClient.post(
-      path: TMDBConfig.validateWithLoginPath,
+      path: ApiConfig.validateWithLoginPath,
       uriParameters: uriParameters,
     );
   }
@@ -44,7 +44,7 @@ class TMDBAuthApiClient {
     };
 
     return await _httpClient.post(
-      path: TMDBConfig.newSessionPath,
+      path: ApiConfig.newSessionPath,
       uriParameters: uriParameters,
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/data/clients/tmdb_image_path_formatter.dart';
 import 'package:movies_app/core/utils/app_constants.dart';
 
 bool sameTypes<S, V>() {
@@ -7,26 +6,6 @@ bool sameTypes<S, V>() {
   return func is void Function<X extends V>();
 }
 
-Widget formatImageWidget({required String? imagePath}) {
-  return imagePath != null
-      ? Image.network(
-          TMDBImageFormatter.formatImageUrl(path: imagePath),
-          fit: BoxFit.cover,
-        )
-      : Image.asset(
-          AppConstants.unknownFilmImagePath,
-          fit: BoxFit.cover,
-        );
-}
-
-ImageProvider<Object> formatImageProvider({required String? imagePath}) {
-  Object image = imagePath != null
-      ? NetworkImage(
-          TMDBImageFormatter.formatImageUrl(path: imagePath),
-        )
-      : const AssetImage(AppConstants.unknownFilmImagePath);
-  return image as ImageProvider<Object>;
-}
 
 double formatVoteAverage({required double voteAverage}) {
   return double.parse(voteAverage.toStringAsFixed(1));

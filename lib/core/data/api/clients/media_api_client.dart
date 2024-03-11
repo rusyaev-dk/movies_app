@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movies_app/core/data/clients/app_http_client.dart';
-import 'package:movies_app/core/data/clients/tmdb_config.dart';
+import 'package:movies_app/core/data/clients/http_client.dart';
+import 'package:movies_app/core/data/api/api_config.dart';
 
-class TMDBMediaApiClient {
+class MediaApiClient {
   static final _httpClient = AppHttpClient();
   static final _apiKey = dotenv.get('API_KEY');
 
@@ -17,7 +17,7 @@ class TMDBMediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.popularMoviesPath,
+      path: ApiConfig.popularMoviesPath,
       uriParameters: uriParameters,
     );
   }
@@ -32,7 +32,7 @@ class TMDBMediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.trendingMoviesPath,
+      path: ApiConfig.trendingMoviesPath,
       uriParameters: uriParameters,
     );
   }
@@ -47,7 +47,7 @@ class TMDBMediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.popularTVSeriesPath,
+      path: ApiConfig.popularTVSeriesPath,
       uriParameters: uriParameters,
     );
   }
@@ -62,7 +62,7 @@ class TMDBMediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.trendingTVSeriesPath,
+      path: ApiConfig.trendingTVSeriesPath,
       uriParameters: uriParameters,
     );
   }
@@ -81,7 +81,7 @@ class TMDBMediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: TMDBConfig.searchMultiMediaPath,
+      path: ApiConfig.searchMultiMediaPath,
       uriParameters: uriParameters,
     );
   }

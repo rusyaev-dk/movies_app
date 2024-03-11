@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_media_repository.dart';
+import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/utils/exceptions.dart';
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 part 'search_event.dart';
@@ -15,10 +15,10 @@ EventTransformer<E> debounceDroppable<E>(Duration duration) {
 }
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  late final TMDBMediaRepository _tmdbMediaRepository;
+  late final MediaRepository _mediaRepository;
 
-  SearchBloc({required TMDBMediaRepository tmdbMediaRepository})
-      : _tmdbMediaRepository = tmdbMediaRepository,
+  SearchBloc({required MediaRepository mediaRepository})
+      : _mediaRepository = mediaRepository,
         super(SearchState()) {
     on<SearchMultiEvent>(
       _onSearchMulti,
@@ -35,7 +35,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(SearchState(searchModels: const []));
         return;
       }
-      final searchModels = await _tmdbMediaRepository.onGetSearchMultiMedia(
+      final searchModels = await _mediaRepository.onGetSearchMultiMedia(
         query: event.query,
         locale: event.locale,
         page: event.page,

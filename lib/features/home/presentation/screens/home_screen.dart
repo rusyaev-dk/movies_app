@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_media_repository.dart';
-import 'package:movies_app/features/home/presentation/tmdb_media_bloc/tmdb_media_bloc.dart';
+import 'package:movies_app/core/domain/repositories/media_repository.dart';
+import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:movies_app/features/home/presentation/components/home_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,9 +10,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TMDBMediaBloc(
-        tmdbRepository: RepositoryProvider.of<TMDBMediaRepository>(context),
-      ), // ..add(TMDBMediaAllMediaEvent()) добавить
+      create: (context) => HomeBloc(
+        mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+      )..add(
+          HomeLoadAllMediaEvent()), // ..add(TMDBMediaAllMediaEvent()) добавить
       child: Scaffold(
         appBar: AppBar(),
         body: const HomeBody(),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/features/home/presentation/tmdb_media_bloc/tmdb_media_bloc.dart';
+import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:movies_app/features/home/presentation/components/scrollable_list_template.dart';
-
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -13,8 +12,19 @@ class HomeBody extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(left: 10),
-        child: BlocBuilder<TMDBMediaBloc, TMDBMediaState>(
+        child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
+            if (state.exception != null) {
+              return Center(
+                child: Text(
+                  state.exception!.getInfo(),
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                ),
+              );
+            }
+
             if (state.isLoading) {
               return ListView(
                 children: const [

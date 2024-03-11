@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/data/api/api_image_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 
@@ -18,7 +19,7 @@ class MediaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ImageProvider<Object> image = formatImageProvider(imagePath: imagePath);
+    ImageProvider<Object> image = ApiImageFormatter.formatImageProvider(imagePath: imagePath);
 
     Widget? stack;
     if (voteAverage != null) {

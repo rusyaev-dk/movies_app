@@ -30,27 +30,27 @@ class SecureStorage implements DataBaseInterface {
   }
 
   @override
-  Future<void> set<T>(String key, T value) {
+  Future<void> set<T>(String key, T value) async {
     if (sameTypes<T, bool>()) {
       throw Exception('Wrong type for saving to database');
     }
 
     if (sameTypes<T, int>()) {
-      return _secureStorage.write(
+      return await _secureStorage.write(
         key: key,
         value: (value as int).toString(),
       );
     }
 
     if (sameTypes<T, double>()) {
-      return _secureStorage.write(
+      return await _secureStorage.write(
         key: key,
         value: (value as double).toString(),
       );
     }
 
     if (sameTypes<T, String>()) {
-      return _secureStorage.write(key: key, value: value as String);
+      return await _secureStorage.write(key: key, value: value as String);
     }
 
     if (sameTypes<T, List<String>>()) {
@@ -67,7 +67,7 @@ class SecureStorage implements DataBaseInterface {
   @override
   Future<void> delete<T>(String key) async {
     try {
-      _secureStorage.delete(key: key);
+      await _secureStorage.delete(key: key);
     } catch (err, stackTrace) {
       // + реализовать logging...
       print("$err, ${stackTrace.toString()}");

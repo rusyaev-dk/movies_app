@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:movies_app/core/data/clients/tmdb_config.dart';
-import 'package:movies_app/core/utils/exceptions.dart';
+import 'package:movies_app/core/data/api/api_config.dart';
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 
 class AppHttpClient {
   static final _dio = Dio();
@@ -11,7 +11,7 @@ class AppHttpClient {
     required String path,
     Map<String, dynamic>? parameters,
   }) {
-    final uri = Uri.parse('${TMDBConfig.baseUrl}$path');
+    final uri = Uri.parse('${ApiConfig.baseUrl}$path');
     if (parameters != null) {
       return uri.replace(queryParameters: parameters);
     } else {
@@ -56,7 +56,7 @@ class AppHttpClient {
       final response = await _dio.postUri(
         uri,
       );
-      
+
       return response;
     } on DioException catch (err) {
       if (err.error is SocketException) {

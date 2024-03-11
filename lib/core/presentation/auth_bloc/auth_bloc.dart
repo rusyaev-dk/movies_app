@@ -1,31 +1,35 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_session_data_repository.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_account_repository.dart';
-import 'package:movies_app/core/domain/repositories/tmdb_auth_repository.dart';
+import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/core/domain/repositories/account_repository.dart';
+import 'package:movies_app/core/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  late final TMDBAccountRepository _tmdbAccountRepository;
-  late final TMDBAuthRepository _tmdbAuthRepository;
-  late final TMDBSessionDataRepository _tmdbSessionDataRepository;
+  late final AccountRepository _accountRepository;
+  late final AuthRepository _authRepository;
+  late final SessionDataRepository _sessionDataRepository;
 
   AuthBloc({
-    required TMDBAccountRepository tmdbAccountRepository,
-    required TMDBAuthRepository tmdbAuthRepository,
-    required TMDBSessionDataRepository tmdbSessionDataRepository,
-  })  : _tmdbAccountRepository = tmdbAccountRepository,
-        _tmdbAuthRepository = tmdbAuthRepository,
-        _tmdbSessionDataRepository = tmdbSessionDataRepository,
+    required AccountRepository accountRepository,
+    required AuthRepository authRepository,
+    required SessionDataRepository sessionDataRepository,
+  })  : _accountRepository = accountRepository,
+        _authRepository = authRepository,
+        _sessionDataRepository = sessionDataRepository,
         super(AuthUnauthorizedState()) {
-    on<AuthEvent>(_eventHandlerSwitcher, transformer: sequential());
+    on<AuthEvent>(
+      _eventHandlerSwitcher,
+      transformer: sequential(),
+    );
     // add(AuthLogoutEvent()); // убрать в финалке!!!
     add(AuthCheckStatusEvent());
   }
 
-  Future<void> _eventHandlerSwitcher(AuthEvent event, Emitter<AuthState> emit) async {
+  Future<void> _eventHandlerSwitcher(
+      AuthEvent event, Emitter<AuthState> emit) async {
     if (event is AuthCheckStatusEvent) {
       await _onAuthCheckStatus(event, emit);
     } else if (event is AuthLoginEvent) {
@@ -39,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthCheckStatusEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthStatusCheckInProgressState());
-      final sessionId = await _tmdbSessionDataRepository.onGetSessionId();
+      final sessionId = await _sessionDataRepository.onGetSessionId();
       final newState =
           sessionId != null ? AuthAuthorizedState() : AuthUnauthorizedState();
       emit(newState);
@@ -48,27 +52,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onAuthLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onAuthLogin(
+      AuthLoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthInProgressState());
-      final sessionId = await _tmdbAuthRepository.onAuth(
+      final sessionId = await _authRepository.onAuth(
         login: event.login,
         password: event.password,
       );
       final accountId =
-          await _tmdbAccountRepository.onGetAccountId(sessionId: sessionId);
-      await _tmdbSessionDataRepository.onSetAccountId(accountId: accountId);
-      await _tmdbSessionDataRepository.onSetSessionId(sessionId: sessionId);
+          await _accountRepository.onGetAccountId(sessionId: sessionId);
+      await _sessionDataRepository.onSetAccountId(accountId: accountId);
+      await _sessionDataRepository.onSetSessionId(sessionId: sessionId);
       emit(AuthAuthorizedState());
     } catch (err) {
       emit(AuthFailureState(err));
     }
   }
 
-  Future<void> _onAuthLogout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onAuthLogout(
+      AuthLogoutEvent event, Emitter<AuthState> emit) async {
     try {
-      await _tmdbSessionDataRepository.onDeleteSessionId();
-      await _tmdbSessionDataRepository.onDeleteAccountId();
+      await _sessionDataRepository.onDeleteSessionId();
+      await _sessionDataRepository.onDeleteAccountId();
     } catch (err) {
       emit(AuthFailureState(err));
     }
