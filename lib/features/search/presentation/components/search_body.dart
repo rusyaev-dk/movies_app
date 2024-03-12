@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/features/search/presentation/components/search_tile.dart';
+import 'package:movies_app/features/search/presentation/components/search_list.dart';
 import 'package:movies_app/features/search/presentation/search_bloc/search_bloc.dart';
 
 class SearchBody extends StatelessWidget {

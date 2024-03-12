@@ -5,12 +5,16 @@ class ApiClientException implements Exception {
 
   ApiClientException(this.type);
 
-  String getInfo() {
+  String getExceptionInfo() {
     switch (type) {
       case (ApiClientExceptionType.network):
-        return "Network error :(";
+        return "Something is wrong with the Internet. Check your connection and try to update";
+      case (ApiClientExceptionType.jsonKey):
+        return "Oops... Something went wrong. Please try again.";
+      case (ApiClientExceptionType.other):
+        return "Oops... Unknown error. Please try again.";
       default:
-        return "none";
+        return "Error: $type";
     }
   }
 }

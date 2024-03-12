@@ -31,7 +31,7 @@ class HomeState {
       popularTVSeries: popularTVSeries ?? this.popularTVSeries,
       trendingTVSeries: trendingTVSeries ?? this.trendingTVSeries,
       isLoading: isLoading,
-      exception: exception ?? this.exception,
+      exception: exception,
     );
   }
 }

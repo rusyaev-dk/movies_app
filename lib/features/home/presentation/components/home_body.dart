@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/presentation/components/exception_widget.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:movies_app/features/home/presentation/components/scrollable_list_template.dart';
+import 'package:movies_app/features/home/presentation/components/home_media_scroll_list.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -15,41 +19,44 @@ class HomeBody extends StatelessWidget {
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state.exception != null) {
-              return Center(
-                child: Text(
-                  state.exception!.getInfo(),
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                ),
+              if (state.exception!.type ==
+                  ApiClientExceptionType.sessionExpired) {
+                context.go(AppRoutes.auth);
+              }
+              return ExceptionWidget(
+                exceptionText: state.exception!.getExceptionInfo(),
+                buttonText: "Update",
+                icon: Icons.wifi_off,
+                onPressed: () =>
+                    context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
               );
             }
 
             if (state.isLoading) {
               return ListView(
                 children: const [
-                  CustomMediaScrollList(
+                  HomeMediaScrollList(
                     title: "",
                     models: [],
                     cardHeight: 270,
                     cardWidth: 180,
                   ),
                   SizedBox(height: 20),
-                  CustomMediaScrollList(
+                  HomeMediaScrollList(
                     title: "",
                     models: [],
                     cardHeight: 210,
                     cardWidth: 140,
                   ),
                   SizedBox(height: 20),
-                  CustomMediaScrollList(
+                  HomeMediaScrollList(
                     title: "",
                     models: [],
                     cardHeight: 210,
                     cardWidth: 140,
                   ),
                   SizedBox(height: 20),
-                  CustomMediaScrollList(
+                  HomeMediaScrollList(
                     title: "",
                     models: [],
                     cardHeight: 210,
@@ -66,28 +73,28 @@ class HomeBody extends StatelessWidget {
 
             return ListView(
               children: [
-                CustomMediaScrollList(
+                HomeMediaScrollList(
                   title: "Popular movies for you",
                   models: popularMovies,
                   cardHeight: 270,
                   cardWidth: 180,
                 ),
                 const SizedBox(height: 20),
-                CustomMediaScrollList(
+                HomeMediaScrollList(
                   title: "Trending movies",
                   models: trendingMovies,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                CustomMediaScrollList(
+                HomeMediaScrollList(
                   title: "Popular TV series:",
                   models: popularTVSeries,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                CustomMediaScrollList(
+                HomeMediaScrollList(
                   title: "Trending TV series:",
                   models: trendingTVSeries,
                   cardHeight: 210,

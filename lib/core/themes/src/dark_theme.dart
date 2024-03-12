@@ -13,6 +13,7 @@ ThemeData createDarkTheme() {
     ],
     colorScheme: const ColorScheme.dark(
         primary: AppColors.orange,
+        primaryContainer: AppColors.orangeVariant,
         secondary: AppColors.grey,
         background: AppColors.black,
         onBackground: AppColors.white,
