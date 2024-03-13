@@ -38,11 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onAllMedia(
       HomeLoadAllMediaEvent event, Emitter<HomeState> emit) async {
     try {
- 
-      
-      emit(state.copyWith(
-        isLoading: true,
-      ));
+      emit(state.copyWith(isLoading: true));
 
       await Future.delayed(const Duration(milliseconds: 800));
 

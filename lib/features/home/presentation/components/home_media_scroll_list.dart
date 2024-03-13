@@ -7,8 +7,8 @@ import 'package:shimmer/shimmer.dart';
 class HomeMediaScrollList extends StatelessWidget {
   const HomeMediaScrollList({
     super.key,
-    required this.models,
-    required this.title,
+    this.models = const [],
+    this.title = "",
     this.cardWidth = 100,
     this.cardHeight = 150,
   });

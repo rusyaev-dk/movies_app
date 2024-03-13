@@ -7,13 +7,11 @@ class SearchMultiEvent extends SearchEvent {
   final String locale;
   final int page;
 
-  SearchMultiEvent(
-    this.query, {
+  SearchMultiEvent({
+    required this.query,
     this.locale = "en-US",
     this.page = 1,
   });
 }
 
-class SearchOpenFiltersEvent extends SearchEvent {
-
-}
+class SearchOpenFiltersEvent extends SearchEvent {}

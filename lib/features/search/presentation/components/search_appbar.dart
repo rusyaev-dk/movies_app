@@ -14,7 +14,7 @@ class CustomSearchAppBar extends StatelessWidget
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: SearchTextField(
           onChanged: (query) {
-            context.read<SearchBloc>().add(SearchMultiEvent(query));
+            context.read<SearchBloc>().add(SearchMultiEvent(query: query));
           },
           suffixIconOnTap: () {
             context.read<SearchBloc>().add(SearchOpenFiltersEvent());

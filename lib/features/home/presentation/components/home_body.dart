@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/presentation/components/exception_widget.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:movies_app/features/home/presentation/components/home_media_scroll_list.dart';
 
@@ -23,80 +22,47 @@ class HomeBody extends StatelessWidget {
                   ApiClientExceptionType.sessionExpired) {
                 context.go(AppRoutes.auth);
               }
+
               return ExceptionWidget(
-                exceptionText: state.exception!.getExceptionInfo(),
+                exception: state.exception!,
                 buttonText: "Update",
                 icon: Icons.wifi_off,
-                onPressed: () =>
-                    context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
+                onPressed: () {
+                  context.read<HomeBloc>().add(HomeLoadAllMediaEvent());
+                },
               );
             }
 
             if (state.isLoading) {
-              return ListView(
-                children: const [
-                  HomeMediaScrollList(
-                    title: "",
-                    models: [],
-                    cardHeight: 270,
-                    cardWidth: 180,
-                  ),
-                  SizedBox(height: 20),
-                  HomeMediaScrollList(
-                    title: "",
-                    models: [],
-                    cardHeight: 210,
-                    cardWidth: 140,
-                  ),
-                  SizedBox(height: 20),
-                  HomeMediaScrollList(
-                    title: "",
-                    models: [],
-                    cardHeight: 210,
-                    cardWidth: 140,
-                  ),
-                  SizedBox(height: 20),
-                  HomeMediaScrollList(
-                    title: "",
-                    models: [],
-                    cardHeight: 210,
-                    cardWidth: 140,
-                  ),
-                ],
-              );
+              return const HomeLoadingBody();
             }
-
-            final List<MovieModel> popularMovies = state.popularMovies;
-            final List<MovieModel> trendingMovies = state.trendingMovies;
-            final List<TVSeriesModel> popularTVSeries = state.popularTVSeries;
-            final List<TVSeriesModel> trendingTVSeries = state.trendingTVSeries;
 
             return ListView(
               children: [
                 HomeMediaScrollList(
                   title: "Popular movies for you",
-                  models: popularMovies,
+                  models: state.popularMovies,
                   cardHeight: 270,
                   cardWidth: 180,
                 ),
                 const SizedBox(height: 20),
                 HomeMediaScrollList(
                   title: "Trending movies",
-                  models: trendingMovies,
+                  models: state.trendingMovies,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
                 HomeMediaScrollList(
-                  title: "Popular TV series:",
-                  models: popularTVSeries,
+                  title: "Popular TV series",
+                  models: state.popularTVSeries,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
                 HomeMediaScrollList(
-                  title: "Trending TV series:",
-                  models: trendingTVSeries,
+                  title: "Trending TV series",
+                  models: state.trendingTVSeries,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
@@ -105,6 +71,35 @@ class HomeBody extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class HomeLoadingBody extends StatelessWidget {
+  const HomeLoadingBody({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      children: const [
+        HomeMediaScrollList(
+          cardHeight: 270,
+          cardWidth: 180,
+        ),
+        SizedBox(height: 20),
+        HomeMediaScrollList(
+          cardHeight: 210,
+          cardWidth: 140,
+        ),
+        SizedBox(height: 20),
+        HomeMediaScrollList(
+          cardHeight: 210,
+          cardWidth: 140,
+        ),
+      ],
     );
   }
 }

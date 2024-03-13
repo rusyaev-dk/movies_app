@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/presentation/components/buttons.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
@@ -6,12 +7,12 @@ class ExceptionWidget extends StatelessWidget {
   const ExceptionWidget({
     super.key,
     this.onPressed,
-    required this.exceptionText,
-    required this.icon,
-    required this.buttonText,
+    required this.exception,
+    this.icon = Icons.error_outline_outlined,
+    this.buttonText = "Update",
   });
 
-  final String exceptionText;
+  final ApiClientException exception;
   final IconData icon;
   final String buttonText;
   final void Function()? onPressed;
@@ -38,7 +39,7 @@ class ExceptionWidget extends StatelessWidget {
             exceptionIcon,
             const SizedBox(height: 20),
             Text(
-              exceptionText,
+              exception.getInfo(),
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .extension<ThemeTextStyles>()!

@@ -32,21 +32,22 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       SearchMultiEvent event, Emitter<SearchState> emit) async {
     try {
       if (event.query.isEmpty) {
-        emit(SearchState(searchModels: const []));
+        emit(state.copyWith(searchModels: const []));
         return;
       }
+      emit(state.copyWith(isLoading: true, query: event.query));
+      
       final searchModels = await _mediaRepository.onGetSearchMultiMedia(
         query: event.query,
         locale: event.locale,
         page: event.page,
       );
-      emit(SearchState(searchModels: searchModels));
-    } on ApiClientException catch (err) {
-      print("ошибка: ${err.type}");
-      emit(SearchState());
+      
+      emit(state.copyWith(searchModels: searchModels));
+    } on ApiClientException catch (exception) {
+      emit(state.copyWith(exception: exception, query: event.query));
     } catch (err) {
-      print("произошла ошипка: $err");
-      emit(SearchState());
+      emit(state.copyWith());
     }
   }
 }

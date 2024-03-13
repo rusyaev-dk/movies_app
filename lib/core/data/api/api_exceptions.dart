@@ -5,7 +5,7 @@ class ApiClientException implements Exception {
 
   ApiClientException(this.type);
 
-  String getExceptionInfo() {
+  String getInfo() {
     switch (type) {
       case (ApiClientExceptionType.network):
         return "Something is wrong with the Internet. Check your connection and try to update";
