@@ -52,6 +52,8 @@ class HomeLoadTrendingTVSeriesEvent extends HomeEvent {
   });
 }
 
+class HomeNetworkErrorEvent extends HomeEvent {}
+
 // class TMDBMediaMovieDetailsEvent extends TMDBMediaEvent {
 //   final String locale;
 //   final int movieId;

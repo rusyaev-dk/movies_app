@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/exception_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
@@ -17,9 +18,14 @@ class HomeBody extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10),
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            if (state.exception != null) {
+            
+            if (state is HomeFailureState) {
               if (state.exception!.type ==
                   ApiClientExceptionType.sessionExpired) {
+                // context.read<AuthBloc>().add(AuthLogoutEvent());
+
+
+                // реализовать окно с переадресацией на Auth screen
                 context.go(AppRoutes.auth);
               }
 
@@ -33,41 +39,45 @@ class HomeBody extends StatelessWidget {
               );
             }
 
-            if (state.isLoading) {
+            if (state is HomeLoadingState) {
               return const HomeLoadingBody();
             }
 
-            return ListView(
-              children: [
-                HomeMediaScrollList(
-                  title: "Popular movies for you",
-                  models: state.popularMovies,
-                  cardHeight: 270,
-                  cardWidth: 180,
-                ),
-                const SizedBox(height: 20),
-                HomeMediaScrollList(
-                  title: "Trending movies",
-                  models: state.trendingMovies,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-                const SizedBox(height: 20),
-                HomeMediaScrollList(
-                  title: "Popular TV series",
-                  models: state.popularTVSeries,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-                const SizedBox(height: 20),
-                HomeMediaScrollList(
-                  title: "Trending TV series",
-                  models: state.trendingTVSeries,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-              ],
-            );
+            if (state is HomeLoadedState) {
+              return ListView(
+                children: [
+                  HomeMediaScrollList(
+                    title: "Popular movies for you",
+                    models: state.popularMovies,
+                    cardHeight: 270,
+                    cardWidth: 180,
+                  ),
+                  const SizedBox(height: 20),
+                  HomeMediaScrollList(
+                    title: "Trending movies",
+                    models: state.trendingMovies,
+                    cardHeight: 210,
+                    cardWidth: 140,
+                  ),
+                  const SizedBox(height: 20),
+                  HomeMediaScrollList(
+                    title: "Popular TV series",
+                    models: state.popularTVSeries,
+                    cardHeight: 210,
+                    cardWidth: 140,
+                  ),
+                  const SizedBox(height: 20),
+                  HomeMediaScrollList(
+                    title: "Trending TV series",
+                    models: state.trendingTVSeries,
+                    cardHeight: 210,
+                    cardWidth: 140,
+                  ),
+                ],
+              );
+            }
+            
+            return const HomeLoadingBody();
           },
         ),
       ),

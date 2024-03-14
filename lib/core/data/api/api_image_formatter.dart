@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
 import 'package:movies_app/core/utils/app_constants.dart';
 

@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
@@ -6,8 +7,9 @@ import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
-import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
@@ -32,6 +34,11 @@ class MoviesApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => NetworkCubit(
+              connectivity: Connectivity(),
+            ),
+          ),
           BlocProvider(
             create: (context) => AuthBloc(
               authRepository: RepositoryProvider.of<AuthRepository>(context),

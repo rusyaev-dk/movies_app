@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 
 part 'auth_view_state.dart';

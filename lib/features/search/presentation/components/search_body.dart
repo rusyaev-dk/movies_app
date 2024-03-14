@@ -18,36 +18,50 @@ class SearchBody extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
-            if (state.exception != null) {
-              if (state.exception!.type ==
-                  ApiClientExceptionType.sessionExpired) {
-                context.go(AppRoutes.auth);
+            if (state is SearchFailureState) {
+              switch (state.exception!.type) {
+                case ApiClientExceptionType.network:
+                  return ExceptionWidget(
+                    exception: state.exception!,
+                    buttonText: "Update",
+                    icon: Icons.wifi_off,
+              
+                  );
+                case ApiClientExceptionType.sessionExpired:
+                  return ExceptionWidget(
+                    exception: state.exception!,
+                    buttonText: "Login",
+                    icon: Icons.login,
+                    onPressed: () => context.go(AppRoutes.auth),
+                  );
+                default:
+                  return ExceptionWidget(
+                    exception: state.exception!,
+                    buttonText: "Update",
+                    icon: Icons.error_outline_outlined,
+                  );
               }
+            }
 
-              return ExceptionWidget(
-                exception: state.exception!,
-                buttonText: "Update",
-                icon: Icons.wifi_off,
-                onPressed: () {
-                  context
-                      .read<SearchBloc>()
-                      .add(SearchMultiEvent(query: state.query!));
-                },
+            if (state is SearchLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             }
 
-            if (state.searchModels.isEmpty) {
-              return Center(
-                  child: Text(
+            if (state is SearchLoadedState) {
+              return SearchList(models: state.searchModels);
+            }
+
+            return Center(
+              child: Text(
                 "Let's find something!",
                 style: Theme.of(context)
                     .extension<ThemeTextStyles>()!
                     .headingTextStyle
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
-              ));
-            }
-
-            return SearchList(models: state.searchModels);
+              ),
+            );
           },
         ),
       ),

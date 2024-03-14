@@ -1,29 +1,23 @@
 part of 'search_bloc.dart';
 
-class SearchState {
+class SearchState {}
+
+class SearchLoadingState extends SearchState {
   final String? query;
+
+  SearchLoadingState({required this.query});
+}
+
+class SearchLoadedState extends SearchState {
   final List<TMDBModel> searchModels;
-  final bool isLoading;
+
+  SearchLoadedState({required this.searchModels});
+}
+
+class SearchFailureState extends SearchState {
   final ApiClientException? exception;
 
-  SearchState({
-    this.query,
-    this.searchModels = const [],
-    this.isLoading = false,
-    this.exception,
+  SearchFailureState({
+    required this.exception,
   });
-
-  SearchState copyWith({
-    String? query,
-    List<TMDBModel>? searchModels,
-    bool? isLoading = false,
-    ApiClientException? exception,
-  }) {
-    return SearchState(
-      query: query,
-      searchModels: searchModels ?? this.searchModels,
-      isLoading: isLoading ?? this.isLoading,
-      exception: exception,
-    );
-  }
 }

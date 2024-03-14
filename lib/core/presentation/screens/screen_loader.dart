@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/presentation/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/presentation/cubits/screen_loader_cubit.dart';
+import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/cubits/screen_loader_cubit/screen_loader_cubit.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 
 class ScreenLoader extends StatelessWidget {
