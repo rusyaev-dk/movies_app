@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/data/api/api_image_formatter.dart';
+import 'package:movies_app/core/presentation/api_image_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 

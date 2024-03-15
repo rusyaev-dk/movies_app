@@ -80,7 +80,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
       emit(SearchLoadedState(searchModels: searchModels));
     } on ApiClientException catch (exception) {
-      emit(SearchFailureState(exception: exception));
+      emit(SearchFailureState(exception: exception, query: event.query));
     } catch (err) {
       print("ERROR !!!!");
     }

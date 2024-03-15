@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
 import 'package:movies_app/core/utils/app_constants.dart';
 
@@ -9,15 +8,24 @@ class ApiImageFormatter {
   }
 
   static Widget formatImageWidget({required String? imagePath}) {
+    Image assetImage = Image.asset(
+      AppConstants.unknownFilmImagePath,
+      fit: BoxFit.cover,
+    );
     return imagePath != null
         ? Image.network(
-            ApiImageFormatter.formatImageUrl(path: imagePath),
+            formatImageUrl(path: imagePath),
             fit: BoxFit.cover,
+            errorBuilder: (
+              BuildContext context,
+              Object error,
+              StackTrace? stackTrace,
+            ) {
+              print('\n\n\n Ошибка при загрузке изображения: $error');
+              return assetImage;
+            },
           )
-        : Image.asset(
-            AppConstants.unknownFilmImagePath,
-            fit: BoxFit.cover,
-          );
+        : assetImage;
   }
 
   static ImageProvider<Object> formatImageProvider(

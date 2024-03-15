@@ -18,25 +18,32 @@ class HomeBody extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10),
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            
             if (state is HomeFailureState) {
-              if (state.exception!.type ==
-                  ApiClientExceptionType.sessionExpired) {
-                // context.read<AuthBloc>().add(AuthLogoutEvent());
-
-
-                // реализовать окно с переадресацией на Auth screen
-                context.go(AppRoutes.auth);
+              switch (state.exception!.type) {
+                case (ApiClientExceptionType.sessionExpired):
+                  return ExceptionWidget(
+                      exception: state.exception!,
+                      buttonText: "Login",
+                      icon: Icons.exit_to_app_outlined,
+                      onPressed: () {
+                        context.read<AuthBloc>().add(AuthLogoutEvent());
+                        context.go(AppRoutes.screenLoader);
+                      });
+                case (ApiClientExceptionType.network):
+                  return ExceptionWidget(
+                    exception: state.exception!,
+                    buttonText: "Update",
+                    icon: Icons.wifi_off,
+                    onPressed: () =>
+                        context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
+                  );
+                default:
+                  return ExceptionWidget(
+                    exception: state.exception!,
+                    onPressed: () =>
+                        context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
+                  );
               }
-
-              return ExceptionWidget(
-                exception: state.exception!,
-                buttonText: "Update",
-                icon: Icons.wifi_off,
-                onPressed: () {
-                  context.read<HomeBloc>().add(HomeLoadAllMediaEvent());
-                },
-              );
             }
 
             if (state is HomeLoadingState) {
@@ -76,7 +83,7 @@ class HomeBody extends StatelessWidget {
                 ],
               );
             }
-            
+
             return const HomeLoadingBody();
           },
         ),

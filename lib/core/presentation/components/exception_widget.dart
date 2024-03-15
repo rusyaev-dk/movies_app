@@ -8,8 +8,8 @@ class ExceptionWidget extends StatelessWidget {
     super.key,
     this.onPressed,
     required this.exception,
-    required this.icon,
-    required this.buttonText,
+    this.icon = Icons.error_outline,
+    this.buttonText = "Update",
   });
 
   final ApiClientException exception;

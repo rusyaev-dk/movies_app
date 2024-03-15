@@ -16,8 +16,10 @@ class SearchLoadedState extends SearchState {
 
 class SearchFailureState extends SearchState {
   final ApiClientException? exception;
+  final String? query;
 
   SearchFailureState({
     required this.exception,
+    this.query,
   });
 }

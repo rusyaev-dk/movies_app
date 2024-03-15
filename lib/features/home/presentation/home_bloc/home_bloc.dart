@@ -73,7 +73,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeLoadingState());
       await Future.delayed(const Duration(milliseconds: 800));
 
-      throw ApiClientException(ApiClientExceptionType.sessionExpired);
 
       final popularMovies = await _mediaRepository.onGetPopularMovies(
         locale: event.locale,

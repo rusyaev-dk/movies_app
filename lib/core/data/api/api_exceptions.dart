@@ -9,10 +9,12 @@ class ApiClientException implements Exception {
     switch (type) {
       case (ApiClientExceptionType.network):
         return "Something is wrong with the Internet. Check your connection and try to update";
+      case (ApiClientExceptionType.sessionExpired):
+        return "Your account session has expired";
       case (ApiClientExceptionType.jsonKey):
-        return "Oops... Something went wrong. Please try again.";
+        return "Oops... Something went wrong. Please try again";
       case (ApiClientExceptionType.other):
-        return "Oops... Unknown error. Please try again.";
+        return "Oops... Unknown error. Please try again";
       default:
         return "Error: $type";
     }
