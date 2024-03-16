@@ -5,6 +5,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 
 part 'home_event.dart';
@@ -14,6 +15,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final NetworkCubit _networkCubit;
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
+
+  static const List<MediaType> _searchTypes = [
+    MediaType.popularMovies,
+    MediaType.trendingMovies,
+    MediaType.popularTVSeries,
+    MediaType.trendingTVSeries,
+  ];
 
   HomeBloc({
     required NetworkCubit networkCubit,
@@ -30,122 +38,76 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
 
     on<HomeNetworkErrorEvent>(_onNetworkError);
-    
-    on<HomeLoadAllMediaEvent>(
-      _onAllMedia,
-      transformer: sequential(),
-    );
-    // on<HomeLoadPopularMoviesEvent>(
-    //   _onPopularMovies,
-    //   transformer: sequential(),
-    // );
-    // on<HomeLoadTrendingMoviesEvent>(
-    //   _onTrendingMovies,
-    //   transformer: sequential(),
-    // );
-    // on<HomeLoadPopularTVSeriesEvent>(
-    //   _onPopularTVSeries,
-    //   transformer: sequential(),
-    // );
-    // on<HomeLoadTrendingTVSeriesEvent>(
-    //   _onTrendingTVSeries,
-    //   transformer: sequential(),
-    // );
+    on<HomeLoadMediaEvent>(_onLoadMedia, transformer: sequential());
   }
 
   void _onNetworkStateChanged(NetworkState state) {
     if (state.type == NetworkStateType.offline) {
       add(HomeNetworkErrorEvent());
     } else if (state.type == NetworkStateType.connected) {
-      add(HomeLoadAllMediaEvent());
+      add(HomeLoadMediaEvent());
     }
   }
 
-  void _onNetworkError(HomeNetworkErrorEvent event, Emitter<HomeState> emit) {
+  void _onNetworkError(
+    HomeNetworkErrorEvent event,
+    Emitter<HomeState> emit,
+  ) {
     emit(HomeFailureState(
-        exception: ApiClientException(ApiClientExceptionType.network)));
+        failure: (1, StackTrace.current, ApiClientExceptionType.network, "")));
   }
 
-  Future<void> _onAllMedia(
-      HomeLoadAllMediaEvent event, Emitter<HomeState> emit) async {
-    try {
+  Future<void> _onLoadMedia(
+    HomeLoadMediaEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeLoadingState());
 
-      emit(HomeLoadingState());
-      await Future.delayed(const Duration(milliseconds: 800));
+    Map<String, List<dynamic>> modelsMap = {};
 
+    for (MediaType type in _searchTypes) {
+      MediaRepositoryPattern mediaRepoPattern;
+      if (type == MediaType.popularMovies || type == MediaType.trendingMovies) {
+        mediaRepoPattern = await _mediaRepository.onGetMediaModels<MovieModel>(
+          type: type,
+          locale: event.locale,
+          page: event.page,
+        );
+      } else {
+        mediaRepoPattern =
+            await _mediaRepository.onGetMediaModels<TVSeriesModel>(
+          type: type,
+          locale: event.locale,
+          page: event.page,
+        );
+      }
 
-      final popularMovies = await _mediaRepository.onGetPopularMovies(
-        locale: event.locale,
-        page: event.page,
-      );
+      switch (mediaRepoPattern) {
+        case (final RepositoryFailure failure, null):
+          return emit(HomeFailureState(failure: failure));
+        case (null, final List<TMDBModel> models):
+          if (models.isEmpty) {
+            return emit(HomeFailureState(failure: (
+              1,
+              StackTrace.current,
+              ApiClientExceptionType.unknown,
+              ""
+            )));
+          }
+          modelsMap[type.asString()] = models;
+          break;
+      }
 
-      await Future.delayed(const Duration(milliseconds: 100));
-
-      final trendingMovies = await _mediaRepository.onGetTrendingMovies(
-        locale: event.locale,
-        page: event.page,
-      );
-
-      await Future.delayed(const Duration(seconds: 4));
-
-      // final popularTVSeries = await _tmdbRepository.onGetPopularTVSeries(
-      //   locale: event.locale,
-      //   page: event.page,
-      // );
-
-      // await Future.delayed(const Duration(milliseconds: 100));
-
-      // final trendingTVSeries = await _tmdbRepository.onGetTrendingTVSeries(
-      //   locale: event.locale,
-      //   page: event.page,
-      // );
-
-      emit(HomeLoadedState(
-        popularMovies: popularMovies,
-        trendingMovies: trendingMovies,
-        // popularTVSeries: popularTVSeries,
-        // trendingTVSeries: trendingTVSeries,
-      ));
-    } on ApiClientException catch (exception) {
-      emit(HomeFailureState(exception: exception));
+      await Future.delayed(const Duration(milliseconds: 400));
     }
+
+    emit(HomeLoadedState(
+      popularMovies: modelsMap["popularMovies"] as List<MovieModel>,
+      trendingMovies: modelsMap["trendingMovies"] as List<MovieModel>,
+      popularTVSeries: modelsMap["popularTVSeries"] as List<TVSeriesModel>,
+      trendingTVSeries: modelsMap["trendingTVSeries"] as List<TVSeriesModel>,
+    ));
   }
-
-  // Future<void> _onPopularMovies(
-  //     HomeLoadPopularMoviesEvent event, Emitter<HomeState> emit) async {
-  //   final popularMovies = await _mediaRepository.onGetPopularMovies(
-  //     locale: event.locale,
-  //     page: event.page,
-  //   );
-  //   emit(state.copyWith(popularMovies: popularMovies));
-  // }
-
-  // Future<void> _onTrendingMovies(
-  //     HomeLoadTrendingMoviesEvent event, Emitter<HomeState> emit) async {
-  //   final trendingMovies = await _mediaRepository.onGetTrendingMovies(
-  //     locale: event.locale,
-  //     page: event.page,
-  //   );
-  //   emit(state.copyWith(trendingMovies: trendingMovies));
-  // }
-
-  // Future<void> _onPopularTVSeries(
-  //     HomeLoadPopularTVSeriesEvent event, Emitter<HomeState> emit) async {
-  //   final popularTVSeries = await _mediaRepository.onGetPopularTVSeries(
-  //     locale: event.locale,
-  //     page: event.page,
-  //   );
-  //   emit(state.copyWith(popularTVSeries: popularTVSeries));
-  // }
-
-  // Future<void> _onTrendingTVSeries(
-  //     HomeLoadTrendingTVSeriesEvent event, Emitter<HomeState> emit) async {
-  //   final trendingTVSeries = await _mediaRepository.onGetTrendingTVSeries(
-  //     locale: event.locale,
-  //     page: event.page,
-  //   );
-  //   emit(state.copyWith(trendingTVSeries: trendingTVSeries));
-  // }
 
   @override
   Future<void> close() {

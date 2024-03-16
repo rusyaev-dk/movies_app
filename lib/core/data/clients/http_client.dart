@@ -31,19 +31,27 @@ class AppHttpClient {
           contentType: Headers.jsonContentType,
         ),
       );
-      _validateResponse(response);
+      _validateResponse(response: response);
       return response;
-    } on DioException catch (err) {
+    } on DioException catch (err, stackStrace) {
       if (err.error is SocketException) {
-        throw ApiClientException(ApiClientExceptionType.network);
+        Error.throwWithStackTrace(
+          ApiNetworkException(err, message: err.message),
+          stackStrace,
+        );
       } else {
-        throw ApiClientException(ApiClientExceptionType.other);
+        Error.throwWithStackTrace(
+          ApiUnknownException(err, message: err.message),
+          stackStrace,
+        );
       }
     } on ApiClientException {
       rethrow;
-    } catch (err) {
-      print('Произошла ошибка: $err');
-      throw ApiClientException(ApiClientExceptionType.other);
+    } catch (err, stackStrace) {
+      Error.throwWithStackTrace(
+        ApiUnknownException(err),
+        stackStrace,
+      );
     }
   }
 
@@ -58,31 +66,39 @@ class AppHttpClient {
       );
 
       return response;
-    } on DioException catch (err) {
+    } on DioException catch (err, stackStrace) {
       if (err.error is SocketException) {
-        throw ApiClientException(ApiClientExceptionType.network);
+        Error.throwWithStackTrace(
+          ApiNetworkException(err, message: err.message),
+          stackStrace,
+        );
       } else {
-        _validateResponse(err.response!);
-        throw ApiClientException(ApiClientExceptionType.other);
+        _validateResponse(response: err.response!);
+        Error.throwWithStackTrace(
+          ApiUnknownException(err),
+          stackStrace,
+        );
       }
     } on ApiClientException {
       rethrow;
-    } catch (err) {
-      print('Произошла ошибка: $err');
-      throw ApiClientException(ApiClientExceptionType.other);
+    } catch (err, stackStrace) {
+      Error.throwWithStackTrace(
+        ApiUnknownException(err),
+        stackStrace,
+      );
     }
   }
 
-  void _validateResponse(Response response) {
+  void _validateResponse({required Response response}) {
     if (response.statusCode == 401) {
       final dynamic status = response.data['status_code'];
       final code = status is int ? status : 0;
       if (code == 30) {
-        throw ApiClientException(ApiClientExceptionType.auth);
+        throw ApiAuthException(1, message: response.statusMessage);
       } else if (code == 3) {
-        throw ApiClientException(ApiClientExceptionType.sessionExpired);
+        throw ApiSessionExpiredException(1, message: response.statusMessage);
       } else {
-        throw ApiClientException(ApiClientExceptionType.other);
+        throw ApiUnknownException(1, message: "Unknown Exception");
       }
     }
   }

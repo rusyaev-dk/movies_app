@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 
 enum ScreenLoaderState { unknown, authorized, unAuthorized }

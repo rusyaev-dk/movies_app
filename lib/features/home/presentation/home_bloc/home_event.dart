@@ -2,11 +2,11 @@ part of 'home_bloc.dart';
 
 class HomeEvent {}
 
-class HomeLoadAllMediaEvent extends HomeEvent {
+class HomeLoadMediaEvent extends HomeEvent {
   final String locale;
   final int page;
 
-  HomeLoadAllMediaEvent({
+  HomeLoadMediaEvent({
     this.locale = "en-US",
     this.page = 1,
   });

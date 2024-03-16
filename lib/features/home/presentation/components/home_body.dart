@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/presentation/components/exception_widget.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:movies_app/features/home/presentation/components/home_media_scroll_list.dart';
@@ -19,10 +19,10 @@ class HomeBody extends StatelessWidget {
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state is HomeFailureState) {
-              switch (state.exception!.type) {
+              switch (state.failure) {
                 case (ApiClientExceptionType.sessionExpired):
-                  return ExceptionWidget(
-                      exception: state.exception!,
+                  return FailureWidget(
+                      failure: state.failure,
                       buttonText: "Login",
                       icon: Icons.exit_to_app_outlined,
                       onPressed: () {
@@ -30,18 +30,18 @@ class HomeBody extends StatelessWidget {
                         context.go(AppRoutes.screenLoader);
                       });
                 case (ApiClientExceptionType.network):
-                  return ExceptionWidget(
-                    exception: state.exception!,
+                  return FailureWidget(
+                    failure: state.failure,
                     buttonText: "Update",
                     icon: Icons.wifi_off,
                     onPressed: () =>
-                        context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
+                        context.read<HomeBloc>().add(HomeLoadMediaEvent()),
                   );
                 default:
-                  return ExceptionWidget(
-                    exception: state.exception!,
+                  return FailureWidget(
+                    failure: state.failure,
                     onPressed: () =>
-                        context.read<HomeBloc>().add(HomeLoadAllMediaEvent()),
+                        context.read<HomeBloc>().add(HomeLoadMediaEvent()),
                   );
               }
             }

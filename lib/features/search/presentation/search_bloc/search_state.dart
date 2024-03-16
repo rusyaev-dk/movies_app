@@ -15,11 +15,11 @@ class SearchLoadedState extends SearchState {
 }
 
 class SearchFailureState extends SearchState {
-  final ApiClientException? exception;
+  final RepositoryFailure failure;
   final String? query;
 
   SearchFailureState({
-    required this.exception,
+    required this.failure,
     this.query,
   });
 }

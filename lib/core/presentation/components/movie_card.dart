@@ -70,11 +70,16 @@ class MediaCard extends StatelessWidget {
         ),
         if (cardText != null) const SizedBox(height: 10),
         if (cardText != null)
-          Text(
-            cardText!,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle,
+          SizedBox(
+            width: width,
+            child: Text(
+              cardText!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context)
+                  .extension<ThemeTextStyles>()!
+                  .subtitleTextStyle,
+            ),
           ),
       ],
     );

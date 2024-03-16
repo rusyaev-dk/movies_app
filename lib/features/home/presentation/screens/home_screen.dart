@@ -14,8 +14,7 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeBloc(
         networkCubit: RepositoryProvider.of<NetworkCubit>(context),
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
-      )..add(
-          HomeLoadAllMediaEvent()), // ..add(HomeLoadAllMediaEvent()) добавить
+      )..add(HomeLoadMediaEvent()), // ..add(HomeLoadAllMediaEvent()) добавить
       child: Scaffold(
         appBar: AppBar(),
         body: const HomeBody(),

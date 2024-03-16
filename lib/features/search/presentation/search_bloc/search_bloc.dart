@@ -5,6 +5,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -55,35 +56,44 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   void _onNetworkConnected(
-      SearchNetworkConnectedEvent event, Emitter<SearchState> emit) {
+    SearchNetworkConnectedEvent event,
+    Emitter<SearchState> emit,
+  ) {
     emit(SearchState());
   }
 
   void _onNetworkError(
-      SearchNetworkErrorEvent event, Emitter<SearchState> emit) {
+    SearchNetworkErrorEvent event,
+    Emitter<SearchState> emit,
+  ) {
     emit(SearchFailureState(
-        exception: ApiClientException(ApiClientExceptionType.network)));
+        failure: (1, StackTrace.current, ApiClientExceptionType.network, "")));
   }
 
   Future<void> _onSearchMulti(
-      SearchMultiEvent event, Emitter<SearchState> emit) async {
-    try {
-      if (event.query.isEmpty) return;
+    SearchMultiEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    if (event.query.isEmpty) return emit(SearchState());
 
-      emit(SearchLoadingState(query: event.query));
+    emit(SearchLoadingState(query: event.query));
 
-      final searchModels = await _mediaRepository.onGetSearchMultiMedia(
-        query: event.query,
-        locale: event.locale,
-        page: event.page,
-      );
+    final mediaRepoPattern = await _mediaRepository.onGetSearchMultiMedia(
+      query: event.query,
+      locale: event.locale,
+      page: event.page,
+    );
 
-      emit(SearchLoadedState(searchModels: searchModels));
-    } on ApiClientException catch (exception) {
-      emit(SearchFailureState(exception: exception, query: event.query));
-    } catch (err) {
-      print("ERROR !!!!");
+    List<TMDBModel>? searchModels;
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(SearchFailureState(failure: failure, query: event.query));
+      case (_, final List<TMDBModel> patternSearchModels):
+        searchModels = patternSearchModels;
+        break;
     }
+
+    emit(SearchLoadedState(searchModels: searchModels!));
   }
 
   @override

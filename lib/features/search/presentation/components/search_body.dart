@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/presentation/components/exception_widget.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/features/search/presentation/components/search_additional.dart';
 import 'package:movies_app/features/search/presentation/components/search_list.dart';
 import 'package:movies_app/features/search/presentation/search_bloc/search_bloc.dart';
 
@@ -20,10 +20,10 @@ class SearchBody extends StatelessWidget {
         child: BlocBuilder<SearchBloc, SearchState>(
           builder: (context, state) {
             if (state is SearchFailureState) {
-              switch (state.exception!.type) {
+              switch (state.failure) {
                 case (ApiClientExceptionType.sessionExpired):
-                  return ExceptionWidget(
-                      exception: state.exception!,
+                  return FailureWidget(
+                      failure: state.failure,
                       buttonText: "Login",
                       icon: Icons.exit_to_app_outlined,
                       onPressed: () {
@@ -31,8 +31,8 @@ class SearchBody extends StatelessWidget {
                         context.go(AppRoutes.screenLoader);
                       });
                 case (ApiClientExceptionType.network):
-                  return ExceptionWidget(
-                    exception: state.exception!,
+                  return FailureWidget(
+                    failure: state.failure,
                     buttonText: "Update",
                     icon: Icons.wifi_off,
                     onPressed: state.query != null
@@ -42,8 +42,8 @@ class SearchBody extends StatelessWidget {
                         : null,
                   );
                 default:
-                  return ExceptionWidget(
-                    exception: state.exception!,
+                  return FailureWidget(
+                    failure: state.failure,
                   );
               }
             }
@@ -55,30 +55,11 @@ class SearchBody extends StatelessWidget {
             }
 
             if (state is SearchLoadedState) {
+              if (state.searchModels.isEmpty) return const NothingFoundWidget();
               return SearchList(models: state.searchModels);
             }
 
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.movie_creation_outlined,
-                    size: 160,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Let's find something!",
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle
-                        .copyWith(
-                            color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
-              ),
-            );
+            return const LetsFindSomethingWidget();
           },
         ),
       ),

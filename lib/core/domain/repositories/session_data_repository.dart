@@ -1,4 +1,15 @@
 import 'package:movies_app/core/data/storage/secure_storage.dart';
+import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+
+typedef SessionDataRepositoryPattern = (RepositoryFailure?, int?, String?);
+
+extension SessionDataRepositoryPatternX on SessionDataRepositoryPattern {
+  RepositoryFailure? get failure => $1;
+
+  int? get accountId => $2;
+
+  String? get sessionId => $3;
+}
 
 abstract class SessionDataKeys {
   static const sessionId = "session_id";
@@ -11,14 +22,17 @@ class SessionDataRepository {
   SessionDataRepository({required SecureStorage secureStorage})
       : _secureStorage = secureStorage;
 
-  Future<String?> onGetSessionId() async {
-    return await _secureStorage.get<String>(SessionDataKeys.sessionId);
+  Future<SessionDataRepositoryPattern> onGetSessionId() async {
+    String? sessionId =
+        await _secureStorage.get<String>(SessionDataKeys.sessionId);
+    return (null, null, sessionId);
   }
 
-  Future<int?> onGetAccountId() async {
+  Future<SessionDataRepositoryPattern> onGetAccountId() async {
     final String? accoutId =
         await _secureStorage.get<String>(SessionDataKeys.accountId);
-    return accoutId != null ? int.tryParse(accoutId) : null;
+    int? parsedId = accoutId != null ? int.tryParse(accoutId) : null;
+    return (null, parsedId, null);
   }
 
   Future<void> onSetSessionId({required String sessionId}) async {

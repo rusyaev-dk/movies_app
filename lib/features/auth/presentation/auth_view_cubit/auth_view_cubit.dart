@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:movies_app/core/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 
 part 'auth_view_state.dart';
@@ -45,7 +46,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
   }
 
   String _mapErrorToMessage(Object error) {
-    if (error is! ApiClientException) {
+    if (error is! RepositoryFailure) {
       return 'Неизвестная ошибка, поторите попытку...';
     }
     switch (error.type) {
@@ -56,7 +57,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
       case ApiClientExceptionType.sessionExpired:
       case ApiClientExceptionType.jsonKey:
         return ""; // ПОДПРАВИТЬ
-      case ApiClientExceptionType.other:
+      case ApiClientExceptionType.unknown:
         return 'Произошла ошибка. Попробуйте ещё раз...';
     }
   }
