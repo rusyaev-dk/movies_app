@@ -3,11 +3,22 @@ import 'package:movies_app/core/presentation/api_image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SearchList extends StatelessWidget {
   const SearchList({super.key, required this.models});
 
   final List<TMDBModel> models;
+
+  static Widget shimmerLoading() {
+    return ListView.separated(
+      separatorBuilder: (context, i) => const SizedBox(height: 20),
+      itemBuilder: (context, i) {
+        return SearchListTile.shimmerLoading(context);
+      },
+      itemCount: 10,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +74,62 @@ class SearchListTile extends StatelessWidget {
   final String? imagePath;
   final List<dynamic>? genreIds;
   final double? voteAverage;
+
+  static Widget shimmerLoading(BuildContext context) {
+    return Shimmer(
+      direction: ShimmerDirection.ltr,
+      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      child: SizedBox(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 120,
+              width: 80,
+              color: Colors.white,
+            ),
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: double.infinity,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 16,
+                      width: double.infinity,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 16,
+                      width: double.infinity,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 20,
+                width: 30,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,23 +1,3 @@
-// class ApiClientException implements Exception {
-//   final ApiClientExceptionType type;
-
-//   ApiClientException(this.type);
-
-//   String getInfo() {
-//     switch (type) {
-//       case (ApiClientExceptionType.network):
-//         return "";
-//       case (ApiClientExceptionType.sessionExpired):
-//         return ;
-//       case (ApiClientExceptionType.jsonKey):
-//         return "Oops... Something went wrong. Please try again";
-//       case (ApiClientExceptionType.other):
-//         return "Oops... Unknown error. Please try again";
-//       default:
-//         return "Error: $type";
-//     }
-//   }
-// }
 
 enum ApiClientExceptionType { network, auth, sessionExpired, unknown, jsonKey }
 

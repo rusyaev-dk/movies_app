@@ -101,21 +101,15 @@ class HomeLoadingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        HomeMediaScrollList(
-          cardHeight: 270,
-          cardWidth: 180,
-        ),
-        SizedBox(height: 20),
-        HomeMediaScrollList(
-          cardHeight: 210,
-          cardWidth: 140,
-        ),
-        SizedBox(height: 20),
-        HomeMediaScrollList(
-          cardHeight: 210,
-          cardWidth: 140,
-        ),
+      children: [
+        HomeMediaScrollList.shimmerLoading(context,
+            cardHeight: 270, cardWidth: 180),
+        const SizedBox(height: 20),
+        HomeMediaScrollList.shimmerLoading(context,
+            cardHeight: 210, cardWidth: 140),
+        const SizedBox(height: 20),
+        HomeMediaScrollList.shimmerLoading(context,
+            cardHeight: 210, cardWidth: 140),
       ],
     );
   }

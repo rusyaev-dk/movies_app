@@ -29,15 +29,6 @@ class LetsFindSomethingWidget extends StatelessWidget {
   }
 }
 
-class SearchListLoadingWidget extends StatelessWidget {
-  const SearchListLoadingWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
 class NothingFoundWidget extends StatelessWidget {
   const NothingFoundWidget({super.key});
 

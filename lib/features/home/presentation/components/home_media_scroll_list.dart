@@ -18,6 +18,29 @@ class HomeMediaScrollList extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
 
+  static Widget shimmerLoading(
+    BuildContext context, {
+    required double cardHeight,
+    required double cardWidth,
+  }) {
+    return Shimmer(
+      direction: ShimmerDirection.ltr,
+      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTitle.shimmerLoading(),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: cardHeight,
+            width: double.infinity,
+            child: MediaListView.shimmerLoading(cardWidth: cardWidth),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget listView = const Placeholder(); // ВРЕМЕННО
@@ -26,28 +49,6 @@ class HomeMediaScrollList extends StatelessWidget {
       models: models,
       cardWidth: cardWidth,
     );
-
-    if (title.isEmpty) {
-      return Shimmer(
-        direction: ShimmerDirection.ltr,
-        gradient:
-            Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTitle(
-              title: title,
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: cardHeight,
-              width: double.infinity,
-              child: listView,
-            ),
-          ],
-        ),
-      );
-    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -74,45 +75,50 @@ class ListTitle extends StatelessWidget {
 
   final String title;
 
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> shimmerChildren = [
-      Container(
-        height: 20,
-        width: 100,
-        color: Colors.white,
-      ),
-      const Spacer(),
-      Container(
-        height: 20,
-        width: 40,
-        color: Colors.white,
-      ),
-    ];
-
+  static Widget shimmerLoading() {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: Row(
-        children: title.isEmpty
-            ? shimmerChildren
-            : [
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle,
+        children: [
+          Container(
+            height: 20,
+            width: 100,
+            color: Colors.white,
+          ),
+          const Spacer(),
+          Container(
+            height: 20,
+            width: 40,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle,
+          ),
+          const Spacer(),
+          Text(
+            "All",
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle
+                .copyWith(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                const Spacer(),
-                Text(
-                  "All",
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle
-                      .copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-              ],
+          ),
+        ],
       ),
     );
   }
@@ -128,23 +134,23 @@ class MediaListView extends StatelessWidget {
   final List<TMDBModel> models;
   final double cardWidth;
 
+  static Widget shimmerLoading({required double cardWidth}) {
+    return ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, i) {
+          return Container(
+            width: cardWidth,
+            color: Colors.white,
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(width: 10);
+        },
+        itemCount: 5);
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (models.isEmpty) {
-      return ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, i) {
-            return Container(
-              width: cardWidth,
-              color: Colors.white,
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(width: 10);
-          },
-          itemCount: 5);
-    }
-
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       separatorBuilder: (context, index) {

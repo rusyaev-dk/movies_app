@@ -84,6 +84,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       page: event.page,
     );
 
+    await Future.delayed(const Duration(milliseconds: 2000));
+
     List<TMDBModel>? searchModels;
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):

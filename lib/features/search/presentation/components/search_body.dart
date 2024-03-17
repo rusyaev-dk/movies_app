@@ -49,9 +49,7 @@ class SearchBody extends StatelessWidget {
             }
 
             if (state is SearchLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return SearchList.shimmerLoading();
             }
 
             if (state is SearchLoadedState) {
