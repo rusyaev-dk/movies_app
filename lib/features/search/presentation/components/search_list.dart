@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/api_image_formatter.dart';
+import 'package:movies_app/core/presentation/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
@@ -134,7 +134,7 @@ class SearchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? imageWidget =
-        ApiImageFormatter.formatImageWidget(imagePath: imagePath);
+        ApiImageFormatter.formatImageWidget(context, imagePath: imagePath);
     Widget? voteWidget;
 
     if (voteAverage != null) {

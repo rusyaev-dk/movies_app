@@ -6,7 +6,6 @@ bool sameTypes<S, V>() {
   return func is void Function<X extends V>();
 }
 
-
 double formatVoteAverage({required double voteAverage}) {
   return double.parse(voteAverage.toStringAsFixed(1));
 }

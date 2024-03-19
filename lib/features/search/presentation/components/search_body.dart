@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
@@ -14,53 +15,54 @@ class SearchBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            if (state is SearchFailureState) {
-              switch (state.failure) {
-                case (ApiClientExceptionType.sessionExpired):
-                  return FailureWidget(
-                      failure: state.failure,
-                      buttonText: "Login",
-                      icon: Icons.exit_to_app_outlined,
-                      onPressed: () {
-                        context.read<AuthBloc>().add(AuthLogoutEvent());
-                        context.go(AppRoutes.screenLoader);
-                      });
-                case (ApiClientExceptionType.network):
-                  return FailureWidget(
-                    failure: state.failure,
-                    buttonText: "Update",
-                    icon: Icons.wifi_off,
-                    onPressed: state.query != null
-                        ? () => context
-                            .read<SearchBloc>()
-                            .add(SearchMultiEvent(query: state.query!))
-                        : null,
-                  );
-                default:
-                  return FailureWidget(
-                    failure: state.failure,
-                  );
-              }
-            }
-
-            if (state is SearchLoadingState) {
-              return SearchList.shimmerLoading();
-            }
-
-            if (state is SearchLoadedState) {
-              if (state.searchModels.isEmpty) return const NothingFoundWidget();
-              return SearchList(models: state.searchModels);
-            }
-
-            return const LetsFindSomethingWidget();
-          },
-        ),
-      ),
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        if (state is SearchFailureState) {
+          switch (state.failure.type) {
+            case (ApiClientExceptionType.sessionExpired):
+              return FailureWidget(
+                  failure: state.failure,
+                  buttonText: "Login",
+                  icon: Icons.exit_to_app_outlined,
+                  onPressed: () {
+                    context.read<AuthBloc>().add(AuthLogoutEvent());
+                    context.go(AppRoutes.screenLoader);
+                  });
+            case (ApiClientExceptionType.network):
+              return FailureWidget(
+                failure: state.failure,
+                buttonText: "Update",
+                icon: Icons.wifi_off,
+                onPressed: state.query != null
+                    ? () => context
+                        .read<SearchBloc>()
+                        .add(SearchMultiEvent(query: state.query!))
+                    : null,
+              );
+            default:
+              return FailureWidget(
+                failure: state.failure,
+              );
+          }
+        }
+        
+        if (state is SearchLoadingState) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SearchList.shimmerLoading(),
+          );
+        }
+        
+        if (state is SearchLoadedState) {
+          if (state.searchModels.isEmpty) return const NothingFoundWidget();
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SearchList(models: state.searchModels),
+          );
+        }
+        
+        return const LetsFindSomethingWidget();
+      },
     );
   }
 }

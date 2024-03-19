@@ -16,11 +16,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
 
-  static const List<MediaType> _searchTypes = [
-    MediaType.popularMovies,
-    MediaType.trendingMovies,
-    MediaType.popularTVSeries,
-    MediaType.trendingTVSeries,
+  static const List<ApiQueryType> _searchTypes = [
+    ApiQueryType.popularMovies,
+    ApiQueryType.trendingMovies,
+    ApiQueryType.popularTVSeries,
+    ApiQueryType.trendingTVSeries,
   ];
 
   HomeBloc({
@@ -62,12 +62,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(HomeLoadingState());
-
     Map<String, List<dynamic>> modelsMap = {};
 
-    for (MediaType type in _searchTypes) {
+    for (ApiQueryType type in _searchTypes) {
       MediaRepositoryPattern mediaRepoPattern;
-      if (type == MediaType.popularMovies || type == MediaType.trendingMovies) {
+      if (type == ApiQueryType.popularMovies ||
+          type == ApiQueryType.trendingMovies) {
         mediaRepoPattern = await _mediaRepository.onGetMediaModels<MovieModel>(
           type: type,
           locale: event.locale,

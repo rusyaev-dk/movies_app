@@ -7,7 +7,7 @@ class ApiImageFormatter {
     return "${ApiConfig.imageUrl}/w$size$path";
   }
 
-  static Widget formatImageWidget({required String? imagePath}) {
+  static Widget formatImageWidget(BuildContext context, {required String? imagePath}) {
     Image assetImage = Image.asset(
       AppConstants.unknownFilmImagePath,
       fit: BoxFit.cover,
@@ -21,7 +21,7 @@ class ApiImageFormatter {
               Object error,
               StackTrace? stackTrace,
             ) {
-              print('\n\n\n Ошибка при загрузке изображения: $error');
+              // logging...
               return assetImage;
             },
           )

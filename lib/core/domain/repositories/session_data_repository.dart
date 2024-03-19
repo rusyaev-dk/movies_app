@@ -1,3 +1,4 @@
+import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
@@ -24,14 +25,28 @@ class SessionDataRepository {
 
   Future<SessionDataRepositoryPattern> onGetSessionId() async {
     String? sessionId =
-        await _secureStorage.get<String>(SessionDataKeys.sessionId);
+        await _secureStorage.get<String?>(SessionDataKeys.sessionId);
+    if (sessionId == null) {
+      return (
+        (1, StackTrace.current, ApiClientExceptionType.auth, ""),
+        null,
+        null
+      );
+    }
     return (null, null, sessionId);
   }
 
   Future<SessionDataRepositoryPattern> onGetAccountId() async {
     final String? accoutId =
-        await _secureStorage.get<String>(SessionDataKeys.accountId);
+        await _secureStorage.get<String?>(SessionDataKeys.accountId);
     int? parsedId = accoutId != null ? int.tryParse(accoutId) : null;
+    if (accoutId == null) {
+       return (
+        (1, StackTrace.current, ApiClientExceptionType.auth, ""),
+        null,
+        null
+      );
+    }
     return (null, parsedId, null);
   }
 

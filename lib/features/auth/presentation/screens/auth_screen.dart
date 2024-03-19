@@ -9,10 +9,7 @@ import 'package:movies_app/features/auth/presentation/components/auth_body.dart'
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
-  void _onAuthViewCubitStateChange(
-    BuildContext context,
-    AuthViewState state,
-  ) {
+  void _onAuthViewCubitStateChange(BuildContext context, AuthViewState state) {
     if (state is AuthViewSuccessState) {
       context.go(AppRoutes.screenLoader);
     }

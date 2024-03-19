@@ -5,6 +5,7 @@ import 'package:movies_app/core/presentation/screens/branches_switcher_screen.da
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:movies_app/features/home/presentation/screens/home_screen.dart';
+import 'package:movies_app/core/presentation/screens/media_details_switcher_screen.dart';
 import 'package:movies_app/features/search/presentation/screens/search_screen.dart';
 
 class AppRouter {
@@ -26,9 +27,21 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.home,
-                builder: (context, state) => const HomeScreen(),
-              ),
+                  path: AppRoutes.home,
+                  builder: (context, state) => const HomeScreen(),
+                  routes: [
+                    GoRoute(
+                      path: "mediaDetails",
+                      builder: ((context, state) {
+                        final args = state.extra as List;
+                        return MediaDetailsSwitcherScreen(
+                          mediaType: args[0],
+                          appBarTitle: args[1],
+                          mediaId: args[2],
+                        );
+                      }),
+                    ),
+                  ]),
             ],
           ),
           StatefulShellBranch(

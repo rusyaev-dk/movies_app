@@ -96,5 +96,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     await _sessionDataRepository.onDeleteSessionId();
     await _sessionDataRepository.onDeleteAccountId();
+    emit(AuthUnauthorizedState());
   }
 }

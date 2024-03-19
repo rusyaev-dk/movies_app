@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/movie_card.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -58,7 +60,7 @@ class HomeMediaScrollList extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: cardHeight,
+          height: cardHeight + 30,
           width: double.infinity,
           child: listView,
         ),
@@ -159,12 +161,16 @@ class MediaListView extends StatelessWidget {
       itemBuilder: (context, i) {
         final model = models[i];
         if (model is MovieModel) {
-          return MediaCard(
-            key: ValueKey(model.id),
-            width: cardWidth,
-            voteAverage: model.voteAverage,
-            imagePath: model.posterPath,
-            cardText: model.title ?? "None",
+          return GestureDetector(
+            onTap: () => context
+                .go(AppRoutes.mediaDetails, extra: [TMDBMediaType.movie, model.title, model.id]),
+            child: MediaCard(
+              key: ValueKey(model.id),
+              width: cardWidth,
+              voteAverage: model.voteAverage,
+              imagePath: model.posterPath,
+              cardText: model.title ?? "None",
+            ),
           );
         } else if (model is TVSeriesModel) {
           return MediaCard(

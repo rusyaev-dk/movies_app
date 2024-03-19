@@ -1,4 +1,3 @@
-
 enum TMDBMediaType { movie, tv, person }
 
 extension TMDBMediaTypeAsString on TMDBMediaType {

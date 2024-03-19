@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -37,20 +36,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       },
     );
 
+    on<SearchNetworkConnectedEvent>(_onNetworkConnected);
     on<SearchMultiEvent>(
       _onSearchMulti,
       transformer: debounceDroppable(
         const Duration(milliseconds: 400),
       ),
     );
-    on<SearchNetworkErrorEvent>(_onNetworkError);
-    on<SearchNetworkConnectedEvent>(_onNetworkConnected);
   }
 
   void _onNetworkStateChanged(NetworkState state) {
-    if (state.type == NetworkStateType.offline) {
-      add(SearchNetworkErrorEvent());
-    } else if (state.type == NetworkStateType.connected) {
+    if (state.type == NetworkStateType.connected) {
       add(SearchNetworkConnectedEvent());
     }
   }
@@ -60,14 +56,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) {
     emit(SearchState());
-  }
-
-  void _onNetworkError(
-    SearchNetworkErrorEvent event,
-    Emitter<SearchState> emit,
-  ) {
-    emit(SearchFailureState(
-        failure: (1, StackTrace.current, ApiClientExceptionType.network, "")));
   }
 
   Future<void> _onSearchMulti(

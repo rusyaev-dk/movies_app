@@ -12,16 +12,20 @@ class CustomSearchAppBar extends StatelessWidget
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        child: SearchTextField(
-          onChanged: (query) {
-            context.read<SearchBloc>().add(SearchMultiEvent(query: query));
-          },
-          suffixIconOnTap: () {
-            context.read<SearchBloc>().add(SearchOpenFiltersEvent());
-          },
-          hintText: "Movies, series, persons",
-          prefixIcon: Icons.search,
-          suffixIcon: Icons.tune,
+        child: SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: SearchTextField(
+            onChanged: (query) {
+              context.read<SearchBloc>().add(SearchMultiEvent(query: query));
+            },
+            suffixIconOnTap: () {
+              context.read<SearchBloc>().add(SearchOpenFiltersEvent());
+            },
+            hintText: "Movies, series, persons",
+            prefixIcon: Icons.search,
+            suffixIcon: Icons.tune,
+          ),
         ),
       ),
     );
