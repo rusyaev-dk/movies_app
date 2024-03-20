@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/core/presentation/components/dark_poster_gradient.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
-import 'package:movies_app/core/presentation/image_formatter.dart';
+import 'package:movies_app/core/presentation/components/media_horizontal_scroll_list.dart';
+import 'package:movies_app/core/presentation/components/media_overview_text.dart';
+import 'package:movies_app/core/presentation/components/movie_details_head.dart';
+import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/presentation/media_details_bloc/media_details_bloc.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 class MovieDetailsScreen extends StatelessWidget {
@@ -69,7 +71,10 @@ class MovieDetailsScreen extends StatelessWidget {
           }
 
           if (state is MediaDetailsLoadedState) {
-            return MovieDetailsBody(movie: state.mediaModel as MovieModel);
+            return MovieDetailsBody(
+              movie: state.mediaModel as MovieModel,
+              movieCredits: state.mediaCredits ?? [],
+            );
           }
 
           return const Center(
@@ -85,9 +90,11 @@ class MovieDetailsBody extends StatelessWidget {
   const MovieDetailsBody({
     super.key,
     required this.movie,
+    required this.movieCredits,
   });
 
   final MovieModel movie;
+  final List<PersonModel> movieCredits;
 
   @override
   Widget build(BuildContext context) {
@@ -105,44 +112,29 @@ class MovieDetailsBody extends StatelessWidget {
               width: double.infinity,
               child: imageWidget,
             ),
-            Container(
-              height: 600,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.4),
-                    Colors.black.withOpacity(0.4),
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.4),
-                    Colors.black.withOpacity(0.5),
-                    Colors.black.withOpacity(0.6),
-                    Colors.black.withOpacity(0.7),
-                  ],
-                ),
-              ),
-            ),
+            const DarkPosterGradient(),
           ],
         ),
+        const SizedBox(height: 10),
+        MovieDetailsHead(movie: movie),
+        const SizedBox(height: 15),
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              Container(
-                color: Colors.black,
-                child: Text(
-                  movie.title ?? "Unknown movie",
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle,
-                ),
-              ),
-            ],
-          ),
+          child: MediaOverviewText(overview: movie.overview),
         ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: MediaHorizontalScrollList(
+            models: movieCredits,
+          ),
+        )
       ],
     );
   }

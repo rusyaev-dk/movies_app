@@ -7,7 +7,7 @@ import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:movies_app/features/home/presentation/components/home_media_scroll_list.dart';
+import 'package:movies_app/core/presentation/components/media_horizontal_scroll_list.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -43,41 +43,41 @@ class HomeBody extends StatelessWidget {
               );
           }
         }
-        
+
         if (state is HomeLoadingState) {
           return const Padding(
             padding: EdgeInsets.only(left: 10),
             child: HomeLoadingBody(),
           );
         }
-        
+
         if (state is HomeLoadedState) {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
             child: ListView(
               children: [
-                HomeMediaScrollList(
+                MediaHorizontalScrollList(
                   title: "Popular movies for you",
                   models: state.popularMovies,
                   cardHeight: 270,
                   cardWidth: 180,
                 ),
                 const SizedBox(height: 20),
-                HomeMediaScrollList(
+                MediaHorizontalScrollList(
                   title: "Trending movies",
                   models: state.trendingMovies,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                HomeMediaScrollList(
+                MediaHorizontalScrollList(
                   title: "Popular TV series",
                   models: state.popularTVSeries,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                HomeMediaScrollList(
+                MediaHorizontalScrollList(
                   title: "Trending TV series",
                   models: state.trendingTVSeries,
                   cardHeight: 210,
@@ -87,7 +87,7 @@ class HomeBody extends StatelessWidget {
             ),
           );
         }
-        
+
         return const HomeLoadingBody();
       },
     );
@@ -104,13 +104,13 @@ class HomeLoadingBody extends StatelessWidget {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        HomeMediaScrollList.shimmerLoading(context,
+        MediaHorizontalScrollList.shimmerLoading(context,
             cardHeight: 270, cardWidth: 180),
         const SizedBox(height: 20),
-        HomeMediaScrollList.shimmerLoading(context,
+        MediaHorizontalScrollList.shimmerLoading(context,
             cardHeight: 210, cardWidth: 140),
         const SizedBox(height: 20),
-        HomeMediaScrollList.shimmerLoading(context,
+        MediaHorizontalScrollList.shimmerLoading(context,
             cardHeight: 210, cardWidth: 140),
       ],
     );

@@ -1,4 +1,3 @@
-
 abstract class ApiConfig {
   static const String baseUrl = 'https://api.themoviedb.org/3';
   static const String imageUrl = 'https://image.tmdb.org/t/p';
@@ -15,7 +14,7 @@ abstract class ApiConfig {
   static const String popularTVSeriesPath = "/tv/popular";
   static const String trendingTVSeriesPath = "/trending/tv/day";
   static const String searchMultiMediaPath = "/search/multi";
-  static const String movieDetailsPath = "/movie/";
-  static const String tvSeriesDetailsPath = "/tv/"; 
-  static const String personDetailsPath = "/person/"; 
+  static const String moviePath = "/movie";
+  static const String tvSeriesPath = "/tv";
+  static const String personPath = "/person";
 }

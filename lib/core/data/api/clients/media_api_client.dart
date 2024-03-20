@@ -91,12 +91,11 @@ class MediaApiClient {
     required String locale,
   }) async {
     Map<String, dynamic> uriParameters = {
-      'movie_id': movieId.toString(),
       'language': locale,
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: ApiConfig.movieDetailsPath + movieId.toString(),
+      path: "${ApiConfig.moviePath}/$movieId",
       uriParameters: uriParameters,
     );
   }
@@ -106,12 +105,11 @@ class MediaApiClient {
     required String locale,
   }) async {
     Map<String, dynamic> uriParameters = {
-      'movie_id': tvSeriesId.toString(),
       'language': locale,
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: ApiConfig.tvSeriesDetailsPath + tvSeriesId.toString(),
+      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId",
       uriParameters: uriParameters,
     );
   }
@@ -121,13 +119,41 @@ class MediaApiClient {
     required String locale,
   }) async {
     Map<String, dynamic> uriParameters = {
-      'movie_id': personId.toString(),
       'language': locale,
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: ApiConfig.personDetailsPath + personId.toString(),
+      path: "${ApiConfig.personPath}/$personId",
       uriParameters: uriParameters,
     );
   }
+
+  Future<Response> getMovieCredits({
+    required int movieId,
+    required String locale,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.moviePath}/$movieId/credits",
+      uriParameters: uriParameters,
+    );
+  }
+
+ Future<Response> getTVSeriesCredits({
+    required int tvSeriesId,
+    required String locale,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/credits",
+      uriParameters: uriParameters,
+    );
+  }
+
 }

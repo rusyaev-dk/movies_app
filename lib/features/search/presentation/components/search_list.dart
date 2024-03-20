@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/image_formatter.dart';
+import 'package:movies_app/core/presentation/components/media_genres_text.dart';
+import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/presentation/formatters/media_genres_formatter.dart';
+import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SearchList extends StatelessWidget {
@@ -135,52 +137,38 @@ class SearchListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? imageWidget =
         ApiImageFormatter.formatImageWidget(context, imagePath: imagePath);
-    Widget? voteWidget;
 
-    if (voteAverage != null) {
-      final double roundedVoteAverage =
-          formatVoteAverage(voteAverage: voteAverage!);
+    final double roundedVoteAverage =
+        ApiMediaVoteFormatter.formatVoteAverage(voteAverage: voteAverage);
 
-      final Color voteColor = getVoteColor(
-        context: context,
-        voteAverage: roundedVoteAverage,
-        isRounded: true,
-      );
+    final Color voteColor = ApiMediaVoteFormatter.getVoteColor(
+      context: context,
+      voteAverage: roundedVoteAverage,
+      isRounded: true,
+    );
 
-      voteWidget = Expanded(
-        flex: 1,
-        child: Center(
-          child: Text(
-            "$roundedVoteAverage",
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle
-                .copyWith(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                  overflow: TextOverflow.ellipsis,
-                  color: voteColor,
-                ),
-          ),
+    Widget voteWidget = Expanded(
+      flex: 1,
+      child: Center(
+        child: Text(
+          "$roundedVoteAverage",
+          style: Theme.of(context)
+              .extension<ThemeTextStyles>()!
+              .headingTextStyle
+              .copyWith(
+                fontWeight: FontWeight.normal,
+                fontSize: 18,
+                overflow: TextOverflow.ellipsis,
+                color: voteColor,
+              ),
         ),
-      );
-    }
+      ),
+    );
 
-    Widget? genresTextWidget;
-    if (genreIds != null && genreIds!.isNotEmpty) {
-      final String genresString = genreIdsToString(genreIds: genreIds!);
-      genresTextWidget = Text(
-        genresString,
-        maxLines: 3,
-        style: Theme.of(context)
-            .extension<ThemeTextStyles>()!
-            .subtitleTextStyle
-            .copyWith(
-              overflow: TextOverflow.ellipsis,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-      );
-    }
+    Widget genresTextWidget = MediaGenresText(
+      mediaGenres:
+          ApiMediaGenresFormatter.genreIdsToList(genreIds: genreIds ?? []),
+    );
 
     return SizedBox(
       child: Row(
@@ -224,12 +212,12 @@ class SearchListTile extends StatelessWidget {
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
-                  if (genresTextWidget != null) genresTextWidget,
+                  genresTextWidget,
                 ],
               ),
             ),
           ),
-          if (voteWidget != null) voteWidget,
+          voteWidget,
         ],
       ),
     );

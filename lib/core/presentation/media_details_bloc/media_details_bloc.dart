@@ -55,6 +55,7 @@ class MediaDetailsBloc extends Bloc<MediaDetailsEvent, MediaDetailsState> {
     emit(MediaDetailsLoadingState());
 
     MediaRepositoryPattern mediaRepoPattern;
+    bool isPerson = false; 
     if (event.mediaType == TMDBMediaType.movie) {
       mediaRepoPattern = await _mediaRepository.onGetMediaDetails<MovieModel>(
         mediaType: event.mediaType,
@@ -74,14 +75,34 @@ class MediaDetailsBloc extends Bloc<MediaDetailsEvent, MediaDetailsState> {
         mediaId: event.mediaId,
         locale: event.locale,
       );
+      isPerson = true;
     }
 
+    TMDBModel? mediaModel;
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(
             MediaDetailsFailureState(failure: failure, mediaId: event.mediaId));
       case (null, final TMDBModel model):
-        return emit(MediaDetailsLoadedState(mediaModel: model));
+        if (isPerson) return emit(MediaDetailsLoadedState(mediaModel: model));
+        mediaModel = model;
+    }
+
+    mediaRepoPattern = await _mediaRepository.onGetMediaCredits(
+      mediaType: event.mediaType,
+      mediaId: event.mediaId,
+      locale: event.locale,
+    );
+
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(
+            MediaDetailsFailureState(failure: failure, mediaId: event.mediaId));
+      case (null, final List<PersonModel> mediaCredits):
+        return emit(MediaDetailsLoadedState(
+          mediaModel: mediaModel!,
+          mediaCredits: mediaCredits,
+        ));
     }
   }
 

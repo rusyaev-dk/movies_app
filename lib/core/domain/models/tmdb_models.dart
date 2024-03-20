@@ -35,7 +35,9 @@ class MovieModel extends TMDBModel {
   final dynamic voteAverage;
   final dynamic voteCount;
 
+  final List<MediaGenre>? genres;
   final List<dynamic>? genreIds;
+  final List<ProductionCountry>? productionCountries;
   final String? releaseDate;
   final dynamic budget;
   final dynamic revenue;
@@ -58,10 +60,22 @@ class MovieModel extends TMDBModel {
     this.revenue,
     this.runtime,
     this.genreIds,
+    this.genres,
+    this.productionCountries,
   }) : super._();
 
   @override
   factory MovieModel.fromJSON(Map<String, dynamic> json) {
+    List<MediaGenre> genres = json["genres"] == null
+        ? []
+        : MediaGenre.fromJsonGenresList(json["genres"] as List<dynamic>);
+
+    List<ProductionCountry> productionCountries =
+        json["production_countries"] == null
+            ? []
+            : ProductionCountry.fromJsonProdCountriesList(
+                json["production_countries"] as List<dynamic>);
+
     return MovieModel(
       adult: json["adult"],
       id: json["id"],
@@ -79,6 +93,8 @@ class MovieModel extends TMDBModel {
       revenue: json["revenue"],
       runtime: json["runtime"],
       genreIds: json["genre_ids"],
+      genres: genres,
+      productionCountries: productionCountries,
     );
   }
 }
@@ -169,14 +185,16 @@ class PersonModel extends TMDBModel {
   final dynamic popularity;
   final int? gender;
   final String? profilePath;
+  final String? character;
 
   PersonModel({
-    required this.id,
-    required this.name,
-    required this.originalName,
-    required this.popularity,
-    required this.gender,
-    required this.profilePath,
+    this.id,
+    this.name,
+    this.originalName,
+    this.popularity,
+    this.gender,
+    this.profilePath,
+    this.character,
   }) : super._();
 
   @override
@@ -188,6 +206,58 @@ class PersonModel extends TMDBModel {
       popularity: json["popularity"],
       gender: json["gender"],
       profilePath: json["profile_path"],
+      character: json["character"],
     );
+  }
+}
+
+class MediaGenre {
+  final dynamic id;
+  final String? name;
+
+  MediaGenre({
+    this.id,
+    this.name,
+  });
+
+  factory MediaGenre.fromJSON(Map<String, dynamic> json) {
+    return MediaGenre(
+      id: json["id"],
+      name: json["name"],
+    );
+  }
+
+  static List<MediaGenre> fromJsonGenresList(List<dynamic> genresList) {
+    List<MediaGenre> resultList = [];
+    for (Map<String, dynamic> json in genresList) {
+      resultList.add(MediaGenre.fromJSON(json));
+    }
+    return resultList;
+  }
+}
+
+class ProductionCountry {
+  final String? iso_3166_1;
+  final String? name;
+
+  ProductionCountry({
+    this.iso_3166_1,
+    this.name,
+  });
+
+  factory ProductionCountry.fromJSON(Map<String, dynamic> json) {
+    return ProductionCountry(
+      iso_3166_1: json["iso_3166_1"],
+      name: json["name"],
+    );
+  }
+
+  static List<ProductionCountry> fromJsonProdCountriesList(
+      List<dynamic> countriesList) {
+    List<ProductionCountry> resultList = [];
+    for (Map<String, dynamic> json in countriesList) {
+      resultList.add(ProductionCountry.fromJSON(json));
+    }
+    return resultList;
   }
 }

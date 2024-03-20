@@ -40,9 +40,12 @@ extension MediaRepositoryPatternX<T> on MediaRepositoryPattern<T> {
 class MediaRepository {
   final MediaApiClient _mediaApiClient = MediaApiClient();
 
-  List<T> _createModelsList<T>(
-      TMDBModel Function(Map<String, dynamic>) fromJson, Response response) {
-    List<T> models = (response.data['results'] as List)
+  List<T> _createModelsList<T>({
+    required TMDBModel Function(Map<String, dynamic>) fromJson,
+    required Response response,
+    String? jsonKey = "results",
+  }) {
+    List<T> models = (response.data[jsonKey] as List)
         .map((json) => fromJson(json) as T)
         .toList();
     return models;
@@ -83,7 +86,8 @@ class MediaRepository {
           break;
       }
 
-      List<T> models = _createModelsList(fromJson!, response!);
+      List<T> models =
+          _createModelsList(fromJson: fromJson!, response: response!);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
@@ -178,7 +182,6 @@ class MediaRepository {
     required String locale,
   }) async {
     try {
-     
       final Response? response;
       final TMDBModel Function(Map<String, dynamic>)? fromJson;
       switch (mediaType) {
@@ -201,6 +204,60 @@ class MediaRepository {
 
       final T model = fromJson!(response!.data as Map<String, dynamic>) as T;
       return (null, model);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      RepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<PersonModel>>> onGetMediaCredits({
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required String locale,
+  }) async {
+    try {
+      final Response? response;
+      switch (mediaType) {
+        case TMDBMediaType.movie:
+          response = await _mediaApiClient.getMovieCredits(
+              movieId: mediaId, locale: locale);
+        case TMDBMediaType.tv:
+          response = await _mediaApiClient.getTVSeriesCredits(
+              tvSeriesId: mediaId, locale: locale);
+        default:
+          response = null;
+      }
+
+      final List<PersonModel> persons = _createModelsList(
+        fromJson: PersonModel.fromJSON,
+        response: response!,
+        jsonKey: "cast",
+      );
+      return (null, persons);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {

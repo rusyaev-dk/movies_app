@@ -6,17 +6,17 @@ import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomeMediaScrollList extends StatelessWidget {
-  const HomeMediaScrollList({
+class MediaHorizontalScrollList extends StatelessWidget {
+  const MediaHorizontalScrollList({
     super.key,
     this.models = const [],
-    this.title = "",
+    this.title,
     this.cardWidth = 100,
     this.cardHeight = 150,
   });
 
   final List<TMDBModel> models;
-  final String title;
+  final String? title;
   final double cardWidth;
   final double cardHeight;
 
@@ -55,9 +55,10 @@ class HomeMediaScrollList extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ListTitle(
-          title: title,
-        ),
+        if (title != null)
+          ListTitle(
+            title: title!,
+          ),
         const SizedBox(height: 10),
         SizedBox(
           height: cardHeight + 30,
@@ -162,8 +163,8 @@ class MediaListView extends StatelessWidget {
         final model = models[i];
         if (model is MovieModel) {
           return GestureDetector(
-            onTap: () => context
-                .go(AppRoutes.mediaDetails, extra: [TMDBMediaType.movie, model.title, model.id]),
+            onTap: () => context.go(AppRoutes.mediaDetails,
+                extra: [TMDBMediaType.movie, model.title, model.id]),
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,

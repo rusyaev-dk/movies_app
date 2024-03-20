@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/image_formatter.dart';
+import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
+import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({
@@ -25,9 +25,9 @@ class MediaCard extends StatelessWidget {
     Widget? stack;
     if (voteAverage != null) {
       final double roundedVoteAverage =
-          formatVoteAverage(voteAverage: voteAverage!);
+          ApiMediaVoteFormatter.formatVoteAverage(voteAverage: voteAverage);
 
-      final Color voteContainerColor = getVoteColor(
+      final Color voteContainerColor = ApiMediaVoteFormatter.getVoteColor(
         context: context,
         voteAverage: roundedVoteAverage,
         isRounded: true,

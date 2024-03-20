@@ -6,8 +6,12 @@ class MediaDetailsLoadingState extends MediaDetailsState {}
 
 class MediaDetailsLoadedState extends MediaDetailsState {
   final TMDBModel mediaModel;
+  final List<PersonModel>? mediaCredits;
 
-  MediaDetailsLoadedState({required this.mediaModel});
+  MediaDetailsLoadedState({
+    required this.mediaModel,
+    this.mediaCredits,
+  });
 }
 
 class MediaDetailsFailureState extends MediaDetailsState {
