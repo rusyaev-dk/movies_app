@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/components/movie/movie_details_body.dart';
+import 'package:movies_app/core/presentation/components/tv_series/tv_series_details_body.dart';
 
-class MovieDetailsScreen extends StatelessWidget {
-  const MovieDetailsScreen({
+class TVSeriesDetailsScreen extends StatelessWidget {
+  const TVSeriesDetailsScreen({
     super.key,
     required this.appBarTitle,
   });
@@ -19,7 +19,7 @@ class MovieDetailsScreen extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.star_border))
         ],
       ),
-      body: const MovieDetailsBody(),
+      body: const TVSeriesDetailsBody(),
     );
   }
 }

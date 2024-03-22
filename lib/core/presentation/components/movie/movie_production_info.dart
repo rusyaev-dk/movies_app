@@ -24,28 +24,28 @@ class MovieProductionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String additionalInfoString = "";
+    String productionInfoString = "";
     if (releaseDate != null) {
       DateTime date = DateTime.parse(releaseDate!);
-      additionalInfoString += "${date.year}, ";
+      productionInfoString += "${date.year}, ";
     }
 
     if (productionCountries.isEmpty) {
-      additionalInfoString = "Unknown country";
+      productionInfoString = "Unknown country";
     } else {
       for (int i = 0; i < productionCountries.length; i++) {
         if (productionCountries[i].iso_3166_1 == null ||
             productionCountries[i].iso_3166_1!.isEmpty) continue;
-        additionalInfoString += productionCountries[i].iso_3166_1!;
-        if (i + 1 < productionCountries.length) additionalInfoString += ", ";
+        productionInfoString += productionCountries[i].iso_3166_1!;
+        if (i + 1 < productionCountries.length) productionInfoString += ", ";
       }
     }
 
-    additionalInfoString += ", ${runtime ~/ 60} h ${runtime % 60} min";
-    if (adult) additionalInfoString += ", 18+";
+    productionInfoString += ", ${runtime ~/ 60} h ${runtime % 60} min";
+    if (adult) productionInfoString += ", 18+";
 
     return Text(
-      additionalInfoString,
+      productionInfoString,
       maxLines: maxLines,
       style: Theme.of(context)
           .extension<ThemeTextStyles>()!

@@ -7,7 +7,7 @@ import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:movies_app/core/presentation/components/media_horizontal_scroll_list.dart';
+import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -56,28 +56,28 @@ class HomeBody extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10),
             child: ListView(
               children: [
-                MediaHorizontalScrollList(
+                MediaHorizontalListView(
                   title: "Popular movies for you",
                   models: state.popularMovies,
                   cardHeight: 270,
                   cardWidth: 180,
                 ),
                 const SizedBox(height: 20),
-                MediaHorizontalScrollList(
+                MediaHorizontalListView(
                   title: "Trending movies",
                   models: state.trendingMovies,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                MediaHorizontalScrollList(
+                MediaHorizontalListView(
                   title: "Popular TV series",
                   models: state.popularTVSeries,
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
                 const SizedBox(height: 20),
-                MediaHorizontalScrollList(
+                MediaHorizontalListView(
                   title: "Trending TV series",
                   models: state.trendingTVSeries,
                   cardHeight: 210,
@@ -104,13 +104,13 @@ class HomeLoadingBody extends StatelessWidget {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        MediaHorizontalScrollList.shimmerLoading(context,
+        MediaHorizontalListView.shimmerLoading(context,
             cardHeight: 270, cardWidth: 180),
         const SizedBox(height: 20),
-        MediaHorizontalScrollList.shimmerLoading(context,
+        MediaHorizontalListView.shimmerLoading(context,
             cardHeight: 210, cardWidth: 140),
         const SizedBox(height: 20),
-        MediaHorizontalScrollList.shimmerLoading(context,
+        MediaHorizontalListView.shimmerLoading(context,
             cardHeight: 210, cardWidth: 140),
       ],
     );

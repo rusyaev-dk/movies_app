@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/presentation/components/movie_card.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/presentation/components/media/media_card.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MediaHorizontalScrollList extends StatelessWidget {
-  const MediaHorizontalScrollList({
+class MediaHorizontalListView extends StatelessWidget {
+  const MediaHorizontalListView({
     super.key,
     this.models = const [],
     this.title,
+    this.withAllButton = false,
     this.cardWidth = 100,
     this.cardHeight = 150,
   });
 
   final List<TMDBModel> models;
   final String? title;
+  final bool withAllButton;
   final double cardWidth;
   final double cardHeight;
 
   static Widget shimmerLoading(
     BuildContext context, {
+    bool withTitle = true,
     required double cardHeight,
     required double cardWidth,
   }) {
@@ -31,7 +33,7 @@ class MediaHorizontalScrollList extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTitle.shimmerLoading(),
+          if (withTitle) ListTitle.shimmerLoading(),
           const SizedBox(height: 10),
           SizedBox(
             height: cardHeight,
@@ -57,6 +59,7 @@ class MediaHorizontalScrollList extends StatelessWidget {
       children: [
         if (title != null)
           ListTitle(
+            withAllButton: withAllButton,
             title: title!,
           ),
         const SizedBox(height: 10),
@@ -74,9 +77,11 @@ class ListTitle extends StatelessWidget {
   const ListTitle({
     super.key,
     required this.title,
+    this.withAllButton = true,
   });
 
   final String title;
+  final bool withAllButton;
 
   static Widget shimmerLoading() {
     return Padding(
@@ -111,16 +116,17 @@ class ListTitle extends StatelessWidget {
                 .extension<ThemeTextStyles>()!
                 .headingTextStyle,
           ),
-          const Spacer(),
-          Text(
-            "All",
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle
-                .copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-          ),
+          if (withAllButton) const Spacer(),
+          if (withAllButton)
+            Text(
+              "All",
+              style: Theme.of(context)
+                  .extension<ThemeTextStyles>()!
+                  .headingTextStyle
+                  .copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
         ],
       ),
     );
@@ -163,30 +169,51 @@ class MediaListView extends StatelessWidget {
         final model = models[i];
         if (model is MovieModel) {
           return GestureDetector(
-            onTap: () => context.go(AppRoutes.mediaDetails,
+            onTap: () => context.go("/home/media_details",
                 extra: [TMDBMediaType.movie, model.title, model.id]),
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,
               voteAverage: model.voteAverage,
               imagePath: model.posterPath,
-              cardText: model.title ?? "None",
+              cardText: model.title ?? "Unknown movie",
             ),
           );
         } else if (model is TVSeriesModel) {
-          return MediaCard(
-            key: ValueKey(model.id),
-            width: cardWidth,
-            voteAverage: model.voteAverage,
-            imagePath: model.posterPath,
-            cardText: model.name ?? "None",
+          return GestureDetector(
+            onTap: () => context.go("/home/media_details",
+                extra: [TMDBMediaType.tv, model.name, model.id]),
+            child: MediaCard(
+              key: ValueKey(model.id),
+              width: cardWidth,
+              voteAverage: model.voteAverage,
+              imagePath: model.posterPath,
+              cardText: model.name ?? "Unknown tv series",
+            ),
           );
         } else if (model is PersonModel) {
-          return MediaCard(
-            key: ValueKey(model.id),
-            width: cardWidth,
-            imagePath: model.profilePath,
-            cardText: model.name ?? "None",
+          return GestureDetector(
+            onTap: () {
+              final currentRoute = GoRouter.of(context)
+                  .routeInformationProvider
+                  .value
+                  .uri
+                  .toString();
+
+              if (currentRoute == "/home/media_details") {
+                context.go("/home/media_details/person_details",
+                    extra: [TMDBMediaType.person, model.name, model.id]);
+              } else if (currentRoute == "/search/media_details") {
+                context.go("/search/media_details/person_details",
+                    extra: [TMDBMediaType.person, model.name, model.id]);
+              }
+            },
+            child: MediaCard(
+              key: ValueKey(model.id),
+              width: cardWidth,
+              imagePath: model.profilePath,
+              cardText: model.name ?? "Unknown person",
+            ),
           );
         } else {
           return MediaCard(

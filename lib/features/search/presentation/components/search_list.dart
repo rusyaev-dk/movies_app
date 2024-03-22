@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/components/media_genres_text.dart';
+import 'package:movies_app/core/presentation/components/media/media_genres_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/formatters/media_genres_formatter.dart';
@@ -135,8 +135,8 @@ class SearchListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? imageWidget =
-        ApiImageFormatter.formatImageWidget(context, imagePath: imagePath);
+    Widget imageWidget =
+        ApiImageFormatter.formatImageWidget(context, imagePath: imagePath, width: 80, height: 120);
 
     final double roundedVoteAverage =
         ApiMediaVoteFormatter.formatVoteAverage(voteAverage: voteAverage);
@@ -175,11 +175,7 @@ class SearchListTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 120,
-            width: 80,
-            child: imageWidget,
-          ),
+          imageWidget,
           Expanded(
             flex: 5,
             child: Padding(

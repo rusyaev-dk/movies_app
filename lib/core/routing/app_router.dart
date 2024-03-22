@@ -10,7 +10,7 @@ import 'package:movies_app/features/search/presentation/screens/search_screen.da
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
-    initialLocation: AppRoutes.screenLoader, // изменить
+    initialLocation: AppRoutes.screenLoader,
     routes: [
       GoRoute(
         path: AppRoutes.screenLoader,
@@ -31,25 +31,61 @@ class AppRouter {
                   builder: (context, state) => const HomeScreen(),
                   routes: [
                     GoRoute(
-                      path: "mediaDetails",
-                      builder: ((context, state) {
-                        final args = state.extra as List;
-                        return MediaDetailsSwitcherScreen(
-                          mediaType: args[0],
-                          appBarTitle: args[1],
-                          mediaId: args[2],
-                        );
-                      }),
-                    ),
+                        path: "media_details",
+                        builder: ((context, state) {
+                          final args = state.extra as List;
+                          return MediaDetailsSwitcherScreen(
+                            mediaType: args[0],
+                            appBarTitle: args[1],
+                            mediaId: args[2],
+                          );
+                        }),
+                        routes: [
+                          GoRoute(
+                            path: "person_details",
+                            builder: (context, state) {
+                              final args = state.extra as List;
+                              return MediaDetailsSwitcherScreen(
+                                mediaType: args[0],
+                                appBarTitle: args[1],
+                                mediaId: args[2],
+                              );
+                            },
+                          )
+                        ]),
                   ]),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.search,
-                builder: (context, state) => const SearchScreen(),
-              )
+                  path: AppRoutes.search,
+                  builder: (context, state) => const SearchScreen(),
+                  routes: [
+                    GoRoute(
+                        path: "media_details",
+                        builder: ((context, state) {
+                          final args = state.extra as List;
+                          return MediaDetailsSwitcherScreen(
+                            mediaType: args[0],
+                            appBarTitle: args[1],
+                            mediaId: args[2],
+                          );
+                        }),
+                        routes: [
+                          GoRoute(
+                            path: "person_details",
+                            builder: (context, state) {
+                              final args = state.extra as List;
+                              return MediaDetailsSwitcherScreen(
+                                mediaType: args[0],
+                                appBarTitle: args[1],
+                                mediaId: args[2],
+                              );
+                            },
+                          )
+                        ]),
+                  ])
             ],
           ),
         ],
@@ -57,10 +93,6 @@ class AppRouter {
     ],
     errorBuilder: (context, state) => const RouterErrorScreen(),
   );
-
-  // static void goTo(String route) {
-  //   _router.go(route);
-  // }
 
   static GoRouter get router => _router;
 }

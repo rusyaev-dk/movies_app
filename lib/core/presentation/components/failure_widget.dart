@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/presentation/components/buttons.dart';
+import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
 class FailureWidget extends StatelessWidget {

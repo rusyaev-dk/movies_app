@@ -113,11 +113,15 @@ class TVSeriesModel extends TMDBModel {
   final dynamic voteAverage;
   final dynamic voteCount;
 
+  final List<MediaGenre>? genres;
   final List<dynamic>? genreIds;
-  final List<String>? languages;
+  final List<ProductionCountry>? productionCountries;
+
+  final List<dynamic>? languages;
   final String? lastAirDate;
   final int? numberOfEpisodes;
   final int? numberOfSeasons;
+  final List<dynamic>? episodeRunTime;
   final bool? inProduction;
   final String? homepage;
   final String? status;
@@ -146,11 +150,24 @@ class TVSeriesModel extends TMDBModel {
     this.type,
     this.numberOfEpisodes,
     this.numberOfSeasons,
+    this.episodeRunTime,
     this.genreIds,
+    this.genres,
+    this.productionCountries,
   }) : super._();
 
   @override
   factory TVSeriesModel.fromJSON(Map<String, dynamic> json) {
+    List<MediaGenre> genres = json["genres"] == null
+        ? []
+        : MediaGenre.fromJsonGenresList(json["genres"] as List<dynamic>);
+
+    List<ProductionCountry> productionCountries =
+        json["production_countries"] == null
+            ? []
+            : ProductionCountry.fromJsonProdCountriesList(
+                json["production_countries"] as List<dynamic>);
+
     return TVSeriesModel(
       adult: json["adult"],
       backdropPath: json["backdrop_path"],
@@ -163,6 +180,7 @@ class TVSeriesModel extends TMDBModel {
       name: json["name"],
       numberOfEpisodes: json["number_of_episodes"],
       numberOfSeasons: json["number_of_seasons"],
+      episodeRunTime: json["episode_run_time"],
       originalLanguage: json["original_language"],
       originalName: json["original_name"],
       overview: json["overview"],
@@ -174,39 +192,50 @@ class TVSeriesModel extends TMDBModel {
       voteAverage: json["vote_average"],
       voteCount: json["vote_count"],
       genreIds: json["genre_ids"],
+      genres: genres,
+      productionCountries: productionCountries,
     );
   }
 }
 
 class PersonModel extends TMDBModel {
   final int? id;
+  final int? gender;
   final String? name;
   final String? originalName;
+  final String? birthday;
+  final String? deathday;
+  final String? biography;
   final dynamic popularity;
-  final int? gender;
+  final String? knownForDepartment;
   final String? profilePath;
-  final String? character;
 
   PersonModel({
     this.id,
+    this.gender,
     this.name,
     this.originalName,
+    this.birthday,
+    this.deathday,
+    this.biography,
     this.popularity,
-    this.gender,
+    this.knownForDepartment,
     this.profilePath,
-    this.character,
   }) : super._();
 
   @override
   factory PersonModel.fromJSON(Map<String, dynamic> json) {
     return PersonModel(
       id: json["id"],
+      gender: json["gender"],
       name: json["name"],
       originalName: json["original_name"],
+      birthday: json["birthday"],
+      deathday: json["deathday"],
+      biography: json["biography"],
       popularity: json["popularity"],
-      gender: json["gender"],
+      knownForDepartment: json["known_for_department"],
       profilePath: json["profile_path"],
-      character: json["character"],
     );
   }
 }

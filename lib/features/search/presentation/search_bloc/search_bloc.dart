@@ -74,16 +74,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     await Future.delayed(const Duration(milliseconds: 2000));
 
-    List<TMDBModel>? searchModels;
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(SearchFailureState(failure: failure, query: event.query));
-      case (_, final List<TMDBModel> patternSearchModels):
-        searchModels = patternSearchModels;
-        break;
+      case (null, final List<TMDBModel> searchModels):
+        return emit(SearchLoadedState(searchModels: searchModels));
     }
-
-    emit(SearchLoadedState(searchModels: searchModels!));
   }
 
   @override

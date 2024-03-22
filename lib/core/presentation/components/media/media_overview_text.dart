@@ -10,6 +10,36 @@ class MediaOverviewText extends StatelessWidget {
 
   final String? overview;
 
+  static Widget shimmerLoading() {
+    return Column(
+      children: [
+        Container(
+          height: 14,
+          width: double.infinity,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 14,
+          width: double.infinity,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 14,
+          width: double.infinity,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 14,
+          width: double.infinity,
+          color: Colors.white,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (overview == null) {
