@@ -34,14 +34,3 @@ abstract class AppColors {
   // static const lightDark = Color(0xFF1b1b1b);
 
 }
-
-
- final a = ColorScheme.fromSeed(
-            seedColor: const Color(0xFFEC612A),
-            primary: const Color(0xFFEC612A),
-            onPrimary: const Color(0xFFFFFFFF),
-            secondary: const Color(0xFF262626),
-            onSecondary: const Color(0xFF939393),
-            background: const Color(0xFF000000),
-            surface: const Color(0xFF121212),
-          );

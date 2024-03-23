@@ -23,10 +23,31 @@ class MediaTitleText extends StatelessWidget {
       isRounded: true,
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+    List<Widget> children;
+    if (title.length >= 25) {
+      children = [
+        Text(
+          "$roundedVoteAverage",
+          style: Theme.of(context)
+              .extension<ThemeTextStyles>()!
+              .headingTextStyle
+              .copyWith(color: voteColor, fontSize: 20),
+        ),
+        Expanded(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 4,
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle,
+          ),
+        ),
+      ];
+    } else {
+      children = [
         Text(
           "$roundedVoteAverage",
           style: Theme.of(context)
@@ -44,7 +65,13 @@ class MediaTitleText extends StatelessWidget {
           style:
               Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
         ),
-      ],
+      ];
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: children,
     );
   }
 }

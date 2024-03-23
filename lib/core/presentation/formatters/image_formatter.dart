@@ -1,21 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
 
 class ApiImageFormatter {
-  static const _unknownFilmImagePath = "assets/images/unknown_film.png";
-
-  static String get unknownFilmImagePath => _unknownFilmImagePath;
-
   static String formatImageUrl({required String path, int size = 500}) {
     return "${ApiConfig.imageUrl}/w$size$path";
   }
 
-  static Future<bool> isImageAvailable(String imageUrl) async {
-    final file = await DefaultCacheManager().getSingleFile(imageUrl);
-    return file.existsSync();
-  }
+  static const _unknownMediaLigthPath = "assets/images/unknown_media_light.png";
+  static const _unknownMediaDarkPath = "assets/images/unknown_media_dark.png";
 
   static Widget formatImageWidget(
     BuildContext context, {
@@ -23,11 +16,21 @@ class ApiImageFormatter {
     double height = double.infinity,
     required double width,
   }) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    String unknownMediaPath;
+    if (isDark) {
+      unknownMediaPath = _unknownMediaDarkPath;
+    } else {
+      unknownMediaPath = _unknownMediaLigthPath;
+    }
+
     Widget assetImageWidget = SizedBox(
       width: width,
       height: height,
       child: Image.asset(
-        _unknownFilmImagePath,
+        unknownMediaPath,
         fit: BoxFit.cover,
       ),
     );
@@ -64,12 +67,12 @@ class ApiImageFormatter {
     );
   }
 
-  static ImageProvider<Object> formatImageProvider(
-      {required String? imagePath}) {
-    Object image = imagePath != null
-        ? NetworkImage(formatImageUrl(path: imagePath))
-        : const AssetImage(_unknownFilmImagePath);
+  // static ImageProvider<Object> formatImageProvider(
+  //     {required String? imagePath}) {
+  //   Object image = imagePath != null
+  //       ? NetworkImage(formatImageUrl(path: imagePath))
+  //       : const AssetImage(_unknownFilmImagePath);
 
-    return image as ImageProvider<Object>;
-  }
+  //   return image as ImageProvider<Object>;
+  // }
 }

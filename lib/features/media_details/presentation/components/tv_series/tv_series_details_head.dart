@@ -49,9 +49,12 @@ class TVSeriesDetailsHead extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          MediaTitleText(
-            voteAverage: tvSeries.voteAverage ?? 0,
-            title: tvSeries.name ?? "Unknown title",
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: MediaTitleText(
+              voteAverage: tvSeries.voteAverage ?? 0,
+              title: tvSeries.name ?? "Unknown title",
+            ),
           ),
           const SizedBox(height: 6),
           Padding(
