@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/components/media/media_genres_text.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/formatters/media_genres_formatter.dart';

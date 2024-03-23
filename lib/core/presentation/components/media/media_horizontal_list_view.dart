@@ -203,14 +203,14 @@ class MediaListView extends StatelessWidget {
               if (currentRoute == "/home/movie_details") {
                 context.go("/home/movie_details/person_details",
                     extra: [model.id, model.name]);
-              } else if (currentRoute == "/home/tv_sereies_details") {
-                context.go("/home/tv_sereies_details/person_details",
+              } else if (currentRoute == "/home/tv_series_details") {
+                context.go("/home/tv_series_details/person_details",
                     extra: [model.id, model.name]);
               } else if (currentRoute == "/search/movie_details") {
                 context.go("/search/movie_details/person_details",
                     extra: [model.id, model.name]);
               } else {
-                context.go("/search/tv_sereies_details/person_details",
+                context.go("/search/tv_series_details/person_details",
                     extra: [model.id, model.name]);
               }
             },

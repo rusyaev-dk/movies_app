@@ -4,26 +4,26 @@ import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/presentation/blocs/tv_series_bloc/tv_series_details_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/blocs/movie_details_bloc/movie_details_bloc.dart';
 import 'package:movies_app/core/presentation/components/dark_poster_gradient.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
-import 'package:movies_app/core/presentation/components/media/media_overview_text.dart';
-import 'package:movies_app/core/presentation/components/tv_series/tv_series_details_head.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_overview_text.dart';
+import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_head.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-class TVSeriesDetailsBody extends StatelessWidget {
-  const TVSeriesDetailsBody({super.key});
+class MovieDetailsBody extends StatelessWidget {
+  const MovieDetailsBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TvSeriesDetailsBloc, TVSeriesDetailsState>(
+    return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
       builder: (context, state) {
-        if (state is TVSeriesDetailsFailureState) {
+        if (state is MovieDetailsFailureState) {
           switch (state.failure.type) {
             case (ApiClientExceptionType.sessionExpired):
               return FailureWidget(
@@ -41,9 +41,9 @@ class TVSeriesDetailsBody extends StatelessWidget {
                 icon: Icons.wifi_off,
                 onPressed: () {
                   context
-                      .read<TvSeriesDetailsBloc>()
-                      .add(TVSeriesDetailsLoadDetailsEvent(
-                        tvSeriesId: state.tvSeriesId!,
+                      .read<MovieDetailsBloc>()
+                      .add(MovieDetailsLoadDetailsEvent(
+                        movieId: state.movieId!,
                       ));
                 },
               );
@@ -51,14 +51,14 @@ class TVSeriesDetailsBody extends StatelessWidget {
               return FailureWidget(failure: state.failure);
           }
         }
-        if (state is TVSeriesDetailsLoadingState) {
-          return TVSeriesDetailsContent.shimmerLoading(context);
+        if (state is MovieDetailsLoadingState) {
+          return MovieDetailsContent.shimmerLoading(context);
         }
 
-        if (state is TVSeriesDetailsLoadedState) {
-          return TVSeriesDetailsContent(
-            tvSeries: state.tvSeriesModel,
-            tvSeriesCredits: state.tvSeriesCredits ?? [],
+        if (state is MovieDetailsLoadedState) {
+          return MovieDetailsContent(
+            movie: state.movieModel,
+            movieCredits: state.movieCredits ?? [],
           );
         }
 
@@ -70,15 +70,15 @@ class TVSeriesDetailsBody extends StatelessWidget {
   }
 }
 
-class TVSeriesDetailsContent extends StatelessWidget {
-  const TVSeriesDetailsContent({
+class MovieDetailsContent extends StatelessWidget {
+  const MovieDetailsContent({
     super.key,
-    required this.tvSeries,
-    required this.tvSeriesCredits,
+    required this.movie,
+    required this.movieCredits,
   });
 
-  final TVSeriesModel tvSeries;
-  final List<PersonModel> tvSeriesCredits;
+  final MovieModel movie;
+  final List<PersonModel> movieCredits;
 
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
@@ -94,7 +94,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
             color: Colors.white,
           ),
           const SizedBox(height: 10),
-          TVSeriesDetailsHead.shimmerLoading(),
+          MovieDetailsHead.shimmerLoading(),
           const SizedBox(height: 15),
           Divider(
             height: 1,
@@ -114,7 +114,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
-        imagePath: tvSeries.posterPath, width: 100);
+        imagePath: movie.posterPath, width: 100);
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -131,7 +131,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        TVSeriesDetailsHead(tvSeries: tvSeries),
+        MovieDetailsHead(movie: movie),
         const SizedBox(height: 15),
         Divider(
           height: 1,
@@ -141,7 +141,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaOverviewText(overview: tvSeries.overview),
+          child: MediaOverviewText(overview: movie.overview),
         ),
         const SizedBox(height: 10),
         Padding(
@@ -149,7 +149,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
           child: MediaHorizontalListView(
             title: "Credits",
             withAllButton: false,
-            models: tvSeriesCredits,
+            models: movieCredits,
           ),
         )
       ],

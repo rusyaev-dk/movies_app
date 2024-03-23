@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/presentation/blocs/person_details_bloc/person_details_bloc.dart';
-import 'package:movies_app/core/presentation/components/person/person_details_body.dart';
+import 'package:movies_app/features/media_details/presentation/blocs/person_details_bloc/person_details_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/components/person/person_details_appbar.dart';
+import 'package:movies_app/features/media_details/presentation/components/person/person_details_body.dart';
 
 class PersonDetailsScreen extends StatelessWidget {
   const PersonDetailsScreen({
@@ -20,15 +21,10 @@ class PersonDetailsScreen extends StatelessWidget {
       create: (context) => PersonDetailsBloc(
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
-      child: Scaffold(
+      child: const Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.share))
-          ],
-        ),
-        body: const PersonDetailsBody(),
+        appBar: PersonDetailsAppBar(),
+        body: PersonDetailsBody(),
       ),
     );
   }

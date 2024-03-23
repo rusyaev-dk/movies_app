@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/presentation/components/media/media_genres_text.dart';
-import 'package:movies_app/core/presentation/components/media/media_title_text.dart';
-import 'package:movies_app/core/presentation/components/movie/movie_production_info.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_title_text.dart';
+import 'package:movies_app/features/media_details/presentation/components/tv_series/tv_series_production_info.dart';
 
-class MovieDetailsHead extends StatelessWidget {
-  const MovieDetailsHead({
+class TVSeriesDetailsHead extends StatelessWidget {
+  const TVSeriesDetailsHead({
     super.key,
-    required this.movie,
+    required this.tvSeries,
   });
 
-  final MovieModel movie;
+  final TVSeriesModel tvSeries;
 
   static Widget shimmerLoading() {
     return Column(
@@ -18,6 +18,12 @@ class MovieDetailsHead extends StatelessWidget {
         Container(
           height: 18,
           width: 150,
+          color: Colors.white,
+        ),
+        const SizedBox(height: 12),
+        Container(
+          height: 16,
+          width: 120,
           color: Colors.white,
         ),
         const SizedBox(height: 12),
@@ -44,8 +50,8 @@ class MovieDetailsHead extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           MediaTitleText(
-            voteAverage: movie.voteAverage ?? 0,
-            title: movie.title ?? "Unknown title",
+            voteAverage: tvSeries.voteAverage ?? 0,
+            title: tvSeries.name ?? "Unknown title",
           ),
           const SizedBox(height: 6),
           Padding(
@@ -53,20 +59,22 @@ class MovieDetailsHead extends StatelessWidget {
             child: Column(
               children: [
                 MediaGenresText(
-                  mediaGenres: movie.genres == null
+                  mediaGenres: tvSeries.genres == null
                       ? []
-                      : movie.genres!
+                      : tvSeries.genres!
                           .map((mediaGenre) => mediaGenre.name ?? "")
                           .toList(),
                   centerText: true,
                 ),
                 const SizedBox(height: 6),
-                MovieProductionInfo(
-                  releaseDate: movie.releaseDate ?? "Unknown date",
-                  productionCountries: movie.productionCountries ?? [],
-                  runtime: movie.runtime ?? 0,
-                  adult: movie.adult ?? false,
-                ),
+                TVSeriesProductionInfo(
+                  firstAirDate: tvSeries.firstAirDate ?? "Unknown date",
+                  productionCountries: tvSeries.productionCountries ?? [],
+                  numberOfSeasons: tvSeries.numberOfSeasons ?? 0,
+                  numberOfEpisodes: tvSeries.numberOfEpisodes ?? 0,
+                  episodesRunTime: tvSeries.episodeRunTime ?? [],
+                  adult: tvSeries.adult ?? false,
+                )
               ],
             ),
           )

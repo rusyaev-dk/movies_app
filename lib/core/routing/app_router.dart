@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
-import 'package:movies_app/core/presentation/screens/movie_details_screen.dart';
-import 'package:movies_app/core/presentation/screens/person_details_screen.dart';
+import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
+import 'package:movies_app/features/media_details/presentation/screens/person_details_screen.dart';
 import 'package:movies_app/core/presentation/screens/screen_loader.dart';
 import 'package:movies_app/core/presentation/screens/branches_switcher_screen.dart';
-import 'package:movies_app/core/presentation/screens/tv_series_details_screen.dart';
+import 'package:movies_app/features/media_details/presentation/screens/tv_series_details_screen.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:movies_app/features/home/presentation/screens/home_screen.dart';
@@ -33,7 +33,7 @@ class AppRouter {
                 builder: (context, state) => const HomeScreen(),
                 routes: [
                   GoRoute(
-                      path: "movie_details",
+                      path: AppRoutes.movieDetails,
                       builder: ((context, state) {
                         final args = state.extra as List;
                         return MovieDetailsScreen(
@@ -43,7 +43,7 @@ class AppRouter {
                       }),
                       routes: [
                         GoRoute(
-                          path: "person_details",
+                          path: AppRoutes.personDetails,
                           builder: (context, state) {
                             final args = state.extra as List;
                             return PersonDetailsScreen(
@@ -54,7 +54,7 @@ class AppRouter {
                         )
                       ]),
                   GoRoute(
-                      path: "tv_series_details",
+                      path: AppRoutes.tvSeriesDetails,
                       builder: ((context, state) {
                         final args = state.extra as List;
                         return TVSeriesDetailsScreen(
@@ -64,7 +64,7 @@ class AppRouter {
                       }),
                       routes: [
                         GoRoute(
-                          path: "person_details",
+                          path: AppRoutes.personDetails,
                           builder: (context, state) {
                             final args = state.extra as List;
                             return PersonDetailsScreen(
@@ -83,7 +83,7 @@ class AppRouter {
                 builder: (context, state) => const SearchScreen(),
                 routes: [
                   GoRoute(
-                      path: "movie_details",
+                      path: AppRoutes.movieDetails,
                       builder: ((context, state) {
                         final args = state.extra as List;
                         return MovieDetailsScreen(
@@ -93,7 +93,7 @@ class AppRouter {
                       }),
                       routes: [
                         GoRoute(
-                          path: "person_details",
+                          path: AppRoutes.personDetails,
                           builder: (context, state) {
                             final args = state.extra as List;
                             return PersonDetailsScreen(
@@ -104,7 +104,7 @@ class AppRouter {
                         )
                       ]),
                   GoRoute(
-                      path: "tv_series_details",
+                      path: AppRoutes.tvSeriesDetails,
                       builder: ((context, state) {
                         final args = state.extra as List;
                         return TVSeriesDetailsScreen(
@@ -114,7 +114,7 @@ class AppRouter {
                       }),
                       routes: [
                         GoRoute(
-                          path: "person_details",
+                          path: AppRoutes.personDetails,
                           builder: (context, state) {
                             final args = state.extra as List;
                             return PersonDetailsScreen(
