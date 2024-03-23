@@ -7,7 +7,6 @@ abstract class AppRoutes {
   static const String profile = '/profile';
   static const String favourite = '/favourite';
 
-  // static const String homeMediaDetails = "/home/media_details";
   static const String searchMediaDetails = "/search/media_details";
   static const String personDetails = "person_details";
 }

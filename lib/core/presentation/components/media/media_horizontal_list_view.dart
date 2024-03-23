@@ -169,8 +169,8 @@ class MediaListView extends StatelessWidget {
         final model = models[i];
         if (model is MovieModel) {
           return GestureDetector(
-            onTap: () => context.go("/home/media_details",
-                extra: [TMDBMediaType.movie, model.title, model.id]),
+            onTap: () => context
+                .go("/home/movie_details", extra: [model.id, model.title]),
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,
@@ -181,8 +181,8 @@ class MediaListView extends StatelessWidget {
           );
         } else if (model is TVSeriesModel) {
           return GestureDetector(
-            onTap: () => context.go("/home/media_details",
-                extra: [TMDBMediaType.tv, model.name, model.id]),
+            onTap: () => context
+                .go("/home/tv_series_details", extra: [model.id, model.name]),
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,
@@ -200,12 +200,18 @@ class MediaListView extends StatelessWidget {
                   .uri
                   .toString();
 
-              if (currentRoute == "/home/media_details") {
-                context.go("/home/media_details/person_details",
-                    extra: [TMDBMediaType.person, model.name, model.id]);
-              } else if (currentRoute == "/search/media_details") {
-                context.go("/search/media_details/person_details",
-                    extra: [TMDBMediaType.person, model.name, model.id]);
+              if (currentRoute == "/home/movie_details") {
+                context.go("/home/movie_details/person_details",
+                    extra: [model.id, model.name]);
+              } else if (currentRoute == "/home/tv_sereies_details") {
+                context.go("/home/tv_sereies_details/person_details",
+                    extra: [model.id, model.name]);
+              } else if (currentRoute == "/search/movie_details") {
+                context.go("/search/movie_details/person_details",
+                    extra: [model.id, model.name]);
+              } else {
+                context.go("/search/tv_sereies_details/person_details",
+                    extra: [model.id, model.name]);
               }
             },
             child: MediaCard(
