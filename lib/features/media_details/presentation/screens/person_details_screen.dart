@@ -22,7 +22,7 @@ class PersonDetailsScreen extends StatelessWidget {
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
       child: const Scaffold(
-        extendBodyBehindAppBar: true,
+        // extendBodyBehindAppBar: true,
         appBar: PersonDetailsAppBar(),
         body: PersonDetailsBody(),
       ),

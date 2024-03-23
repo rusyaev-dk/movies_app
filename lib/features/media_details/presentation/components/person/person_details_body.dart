@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -77,22 +78,80 @@ class PersonDetailsContent extends StatelessWidget {
       direction: ShimmerDirection.ltr,
       gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
       child: ListView(
-        padding: const EdgeInsets.all(0),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          Container(
-            height: 600,
-            width: double.infinity,
-            color: Colors.white,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 210,
+                width: 140,
+                color: Colors.white,
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 18,
+                      width: 80,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      height: 15,
+                      width: 50,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      height: 15,
+                      width: 50,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      height: 15,
+                      width: 50,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          const SizedBox(height: 15),
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+          Column(
+            children: [
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 20,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 8),
+            ],
+          )
         ],
       ),
     );
@@ -104,24 +163,35 @@ class PersonDetailsContent extends StatelessWidget {
         imagePath: person.profilePath, width: 100);
 
     return ListView(
-      padding: EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 150,
-              width: 100,
+              height: 210,
+              width: 140,
               child: imageWidget,
             ),
             const SizedBox(width: 20),
-            PersonInfoText(
-              name: person.name,
-              knownForDepartment: person.knownForDepartment,
-              birthday: person.birthday,
-              deathday: person.deathday,
+            Expanded(
+              child: PersonInfoText(
+                name: person.name,
+                knownForDepartment: person.knownForDepartment,
+                birthday: person.birthday,
+                deathday: person.deathday,
+              ),
             ),
           ],
-        )
+        ),
+        const SizedBox(height: 20),
+        Text(
+          person.biography ?? "No additional info",
+          style: Theme.of(context)
+              .extension<ThemeTextStyles>()!
+              .subtitleTextStyle
+              .copyWith(fontSize: 16),
+        ),
       ],
     );
   }

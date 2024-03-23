@@ -25,23 +25,32 @@ class PersonInfoText extends StatelessWidget {
       age = "${calculateAge(birthday!)} years";
     }
     if (deathday != null) {
-      yearsOfLife += "- ${formatDate(deathday!)}";
+      yearsOfLife += " - ${formatDate(deathday!)}";
     }
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           name ?? "Unknown name",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          maxLines: 2,
+          style: Theme.of(context)
+              .extension<ThemeTextStyles>()!
+              .headingTextStyle
+              .copyWith(fontSize: 25),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 15),
         if (knownForDepartment != null)
           Text(
             knownForDepartment!,
             style: Theme.of(context)
                 .extension<ThemeTextStyles>()!
-                .subtitleTextStyle,
+                .subtitleTextStyle
+                .copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 16),
           ),
         if (knownForDepartment != null) const SizedBox(height: 8),
         if (yearsOfLife.isNotEmpty)
@@ -49,7 +58,10 @@ class PersonInfoText extends StatelessWidget {
             yearsOfLife,
             style: Theme.of(context)
                 .extension<ThemeTextStyles>()!
-                .subtitleTextStyle,
+                .subtitleTextStyle
+                .copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 16),
           ),
         if (yearsOfLife.isNotEmpty) const SizedBox(height: 8),
         if (age.isNotEmpty)
@@ -57,7 +69,10 @@ class PersonInfoText extends StatelessWidget {
             age,
             style: Theme.of(context)
                 .extension<ThemeTextStyles>()!
-                .subtitleTextStyle,
+                .subtitleTextStyle
+                .copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 16),
           ),
         // if (age.isNotEmpty) const SizedBox(height: 8),
       ],

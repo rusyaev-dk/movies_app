@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class RouterErrorScreen extends StatelessWidget {
   const RouterErrorScreen({super.key});
@@ -9,13 +11,20 @@ class RouterErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Text("Oops, something went wrong :("),
-          TextButton(
-              onPressed: () {
-                context.go(AppRoutes.home);
-              },
-              child: const Text("Home")),
+          Text(
+            "Oops, something went wrong.",
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle,
+          ),
+          const SizedBox(height: 20),
+          CustomGradientButton(
+            text: "Go home",
+            onPressed: () => context.go(AppRoutes.home),
+          )
         ],
       ),
     );

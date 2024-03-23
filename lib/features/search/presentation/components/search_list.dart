@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -30,27 +32,42 @@ class SearchList extends StatelessWidget {
         final model = models[i];
         switch (model) {
           case MovieModel():
-            return SearchListTile(
-              imagePath: model.posterPath,
-              title: model.title ?? "None",
-              subtitle: "${model.originalTitle}, ${model.releaseDate}",
-              voteAverage: model.voteAverage ?? 0,
-              genreIds: model.genreIds ?? [],
+            return GestureDetector(
+              onTap: () => context.go(
+                  "${AppRoutes.search}/${AppRoutes.movieDetails}",
+                  extra: [model.id, model.title]),
+              child: SearchListTile(
+                imagePath: model.posterPath,
+                title: model.title ?? "None",
+                subtitle: "${model.originalTitle}, ${model.releaseDate}",
+                voteAverage: model.voteAverage ?? 0,
+                genreIds: model.genreIds ?? [],
+              ),
             );
           case TVSeriesModel():
-            return SearchListTile(
-              imagePath: model.posterPath,
-              title: model.name ?? "None",
-              subtitle:
-                  "${model.originalName}, ${model.firstAirDate} - ${model.lastAirDate}",
-              voteAverage: model.voteAverage ?? 0,
-              genreIds: model.genreIds ?? [],
+            return GestureDetector(
+              onTap: () => context.go(
+                  "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}",
+                  extra: [model.id, model.name]),
+              child: SearchListTile(
+                imagePath: model.posterPath,
+                title: model.name ?? "None",
+                subtitle:
+                    "${model.originalName}, ${model.firstAirDate} - ${model.lastAirDate}",
+                voteAverage: model.voteAverage ?? 0,
+                genreIds: model.genreIds ?? [],
+              ),
             );
           case PersonModel():
-            return SearchListTile(
-              imagePath: model.profilePath,
-              title: model.name ?? "Unknonwn",
-              subtitle: "${model.originalName} id: ${model.id}",
+            return GestureDetector(
+              onTap: () => context.go(
+                  "${AppRoutes.search}/${AppRoutes.personDetails}",
+                  extra: [model.id, model.name]),
+              child: SearchListTile(
+                imagePath: model.profilePath,
+                title: model.name ?? "Unknonwn",
+                subtitle: "${model.originalName} id: ${model.id}",
+              ),
             );
           default:
             return null;
@@ -135,8 +152,8 @@ class SearchListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget imageWidget =
-        ApiImageFormatter.formatImageWidget(context, imagePath: imagePath, width: 80, height: 120);
+    Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
+        imagePath: imagePath, width: 80, height: 120);
 
     final double roundedVoteAverage =
         ApiMediaVoteFormatter.formatVoteAverage(voteAverage: voteAverage);

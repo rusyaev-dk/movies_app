@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
 import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
@@ -27,111 +28,76 @@ class AppRouter {
         builder: (context, state, navigationShell) =>
             BranchesSwitcherScreen(navigationShell: navigationShell),
         branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(
-                path: AppRoutes.home,
-                builder: (context, state) => const HomeScreen(),
-                routes: [
-                  GoRoute(
-                      path: AppRoutes.movieDetails,
-                      builder: ((context, state) {
-                        final args = state.extra as List;
-                        return MovieDetailsScreen(
-                          movieId: args[0],
-                          appBarTitle: args[1],
-                        );
-                      }),
-                      routes: [
-                        GoRoute(
-                          path: AppRoutes.personDetails,
-                          builder: (context, state) {
-                            final args = state.extra as List;
-                            return PersonDetailsScreen(
-                              personId: args[0],
-                              appBarTitle: args[1],
-                            );
-                          },
-                        )
-                      ]),
-                  GoRoute(
-                      path: AppRoutes.tvSeriesDetails,
-                      builder: ((context, state) {
-                        final args = state.extra as List;
-                        return TVSeriesDetailsScreen(
-                          tvSeriesId: args[0],
-                          appBarTitle: args[1],
-                        );
-                      }),
-                      routes: [
-                        GoRoute(
-                          path: AppRoutes.personDetails,
-                          builder: (context, state) {
-                            final args = state.extra as List;
-                            return PersonDetailsScreen(
-                              personId: args[0],
-                              appBarTitle: args[1],
-                            );
-                          },
-                        ),
-                      ]),
-                ]),
-          ]),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.search,
-                builder: (context, state) => const SearchScreen(),
-                routes: [
-                  GoRoute(
-                      path: AppRoutes.movieDetails,
-                      builder: ((context, state) {
-                        final args = state.extra as List;
-                        return MovieDetailsScreen(
-                          movieId: args[0],
-                          appBarTitle: args[1],
-                        );
-                      }),
-                      routes: [
-                        GoRoute(
-                          path: AppRoutes.personDetails,
-                          builder: (context, state) {
-                            final args = state.extra as List;
-                            return PersonDetailsScreen(
-                              personId: args[0],
-                              appBarTitle: args[1],
-                            );
-                          },
-                        )
-                      ]),
-                  GoRoute(
-                      path: AppRoutes.tvSeriesDetails,
-                      builder: ((context, state) {
-                        final args = state.extra as List;
-                        return TVSeriesDetailsScreen(
-                          tvSeriesId: args[0],
-                          appBarTitle: args[1],
-                        );
-                      }),
-                      routes: [
-                        GoRoute(
-                          path: AppRoutes.personDetails,
-                          builder: (context, state) {
-                            final args = state.extra as List;
-                            return PersonDetailsScreen(
-                              personId: args[0],
-                              appBarTitle: args[1],
-                            );
-                          },
-                        ),
-                      ]),
-                ],
-              ),
-            ],
+          patternBranchBuilder(
+            parentPath: AppRoutes.home,
+            parentScreen: const HomeScreen(),
+          ),
+          patternBranchBuilder(
+            parentPath: AppRoutes.search,
+            parentScreen: const SearchScreen(),
           ),
         ],
       ),
     ],
   );
+
+  static StatefulShellBranch patternBranchBuilder({
+    required String parentPath,
+    required Widget parentScreen,
+  }) {
+    return StatefulShellBranch(routes: [
+      GoRoute(
+        path: parentPath,
+        builder: (context, state) => parentScreen,
+        routes: [
+          GoRoute(
+            path: AppRoutes.movieDetails,
+            builder: (context, state) {
+              final args = state.extra as List;
+              return MovieDetailsScreen(
+                movieId: args[0],
+                appBarTitle: args[1],
+              );
+            },
+            routes: [
+              GoRoute(
+                path: AppRoutes.personDetails,
+                builder: (context, state) {
+                  final args = state.extra as List;
+                  return PersonDetailsScreen(
+                    personId: args[0],
+                    appBarTitle: args[1],
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: AppRoutes.tvSeriesDetails,
+            builder: (context, state) {
+              final args = state.extra as List;
+              return TVSeriesDetailsScreen(
+                tvSeriesId: args[0],
+                appBarTitle: args[1],
+              );
+            },
+            routes: [
+              GoRoute(
+                path: AppRoutes.personDetails,
+                builder: (context, state) {
+                  final args = state.extra as List;
+                  return PersonDetailsScreen(
+                    personId: args[0],
+                    appBarTitle: args[1],
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    ]);
+  }
 
   static GoRouter get router => _router;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -200,17 +201,24 @@ class MediaListView extends StatelessWidget {
                   .uri
                   .toString();
 
-              if (currentRoute == "/home/movie_details") {
-                context.go("/home/movie_details/person_details",
+              if (currentRoute ==
+                  "${AppRoutes.home}/${AppRoutes.movieDetails}") {
+                context.go(
+                    "${AppRoutes.home}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
-              } else if (currentRoute == "/home/tv_series_details") {
-                context.go("/home/tv_series_details/person_details",
+              } else if (currentRoute ==
+                  "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}") {
+                context.go(
+                    "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
-              } else if (currentRoute == "/search/movie_details") {
-                context.go("/search/movie_details/person_details",
+              } else if (currentRoute ==
+                  "${AppRoutes.search}/${AppRoutes.movieDetails}") {
+                context.go(
+                    "${AppRoutes.search}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               } else {
-                context.go("/search/tv_series_details/person_details",
+                context.go(
+                    "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               }
             },
