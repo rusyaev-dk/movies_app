@@ -8,7 +8,7 @@ class AccountApiClient {
   static final _httpClient = AppHttpClient();
   static final _apiKey = dotenv.get('API_KEY');
 
-  Future<Response?> getAccountId({required String sessionId}) async {
+  Future<Response> getAccountId({required String sessionId}) async {
     Map<String, dynamic> uriParameters = {
       'session_id': sessionId,
       'api_key': _apiKey,
@@ -20,7 +20,7 @@ class AccountApiClient {
     );
   }
 
-  Future<Response?> markAsFavourite({
+  Future<Response> markAsFavourite({
     required int accountId,
     required String sessionId,
     required TMDBMediaType mediaType,
@@ -35,13 +35,23 @@ class AccountApiClient {
       'api_key': _apiKey,
     };
 
-    // Map<String, dynamic> bodyParameters = {
-
-    // };
-
     return await _httpClient.post(
       path: "/accout/$accountId/favorite",
-      // bodyParameters: bodyParameters,
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getAccountDetails({
+    required int accountId,
+    required String sessionId,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.get(
+      path: "${ApiConfig.accountPath}/$accountId",
       uriParameters: uriParameters,
     );
   }

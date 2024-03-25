@@ -59,3 +59,58 @@ class CustomGradientButton extends StatelessWidget {
     );
   }
 }
+
+class CustomSettingsButton extends StatelessWidget {
+  const CustomSettingsButton({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+    this.height = 55,
+  });
+
+  final IconData icon;
+  final String text;
+  final void Function() onPressed;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        height: height,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const SizedBox(width: 20),
+            Text(
+              text,
+              style: Theme.of(context)
+                  .extension<ThemeTextStyles>()!
+                  .subtitleTextStyle
+                  .copyWith(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+            ),
+            const Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
+import 'package:movies_app/features/account/presentation/screens/account_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/person_details_screen.dart';
 import 'package:movies_app/core/presentation/screens/screen_loader.dart';
@@ -10,6 +11,7 @@ import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:movies_app/features/home/presentation/screens/home_screen.dart';
 import 'package:movies_app/features/search/presentation/screens/search_screen.dart';
+import 'package:movies_app/features/watch_list/presentation/screens/watch_list_screen.dart';
 
 class AppRouter {
   static final GoRouter _router = GoRouter(
@@ -36,6 +38,18 @@ class AppRouter {
             parentPath: AppRoutes.search,
             parentScreen: const SearchScreen(),
           ),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.watchList,
+              builder: (context, state) => const WatchListScreen(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: AppRoutes.account,
+              builder: (context, state) => const AccountScreen(),
+            ),
+          ]),
         ],
       ),
     ],

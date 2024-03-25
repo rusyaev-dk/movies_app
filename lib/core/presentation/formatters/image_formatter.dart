@@ -67,6 +67,70 @@ class ApiImageFormatter {
     );
   }
 
+  static Widget formatAvatarImageWidget(
+    BuildContext context, {
+    required String? imagePath,
+    required double diameter,
+  }) {
+    final double borderRadiusValue = diameter / 2.0;
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    String unknownMediaPath;
+    if (isDark) {
+      unknownMediaPath = _unknownMediaDarkPath;
+    } else {
+      unknownMediaPath = _unknownMediaLigthPath;
+    }
+
+    Widget assetImageWidget = Container(
+      width: diameter,
+      height: diameter,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadiusValue),
+      ),
+      child: Image.asset(
+        unknownMediaPath,
+        fit: BoxFit.cover,
+      ),
+    );
+
+    if (imagePath == null) return assetImageWidget;
+
+    return CachedNetworkImage(
+      imageUrl: formatImageUrl(path: imagePath),
+      imageBuilder: (context, imageProvider) {
+        return Container(
+          width: diameter,
+          height: diameter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      },
+      errorListener: (value) {
+        // logging...
+        print("Image Exception: $value");
+      },
+      placeholder: (context, url) {
+        return Container(
+          width: diameter,
+          height: diameter,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadiusValue),
+          ),
+        );
+      },
+      errorWidget: (context, url, error) {
+        return assetImageWidget;
+      },
+    );
+  }
+
   // static ImageProvider<Object> formatImageProvider(
   //     {required String? imagePath}) {
   //   Object image = imagePath != null

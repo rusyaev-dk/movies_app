@@ -290,3 +290,27 @@ class ProductionCountry {
     return resultList;
   }
 }
+
+class AccountModel extends TMDBModel {
+  final int? id;
+  final String? name;
+  final String? username;
+  final String? avatarPath;
+
+  AccountModel({
+    this.id,
+    this.name,
+    this.username,
+    this.avatarPath,
+  }) : super._();
+
+  @override
+  factory AccountModel.fromJSON(Map<String, dynamic> json) {
+    return AccountModel(
+      id: json["id"],
+      name: json["name"],
+      username: json["username"],
+      avatarPath: json["avatar"]["tmdb"]["avatar_path"],
+    );
+  }
+}

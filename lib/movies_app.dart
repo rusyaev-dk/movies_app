@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/connectivity_repository.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
@@ -27,14 +26,11 @@ class MoviesApp extends StatelessWidget {
           create: (context) => AuthRepository(),
         ),
         RepositoryProvider(
-          create: (context) => AccountRepository(),
-        ),
-        RepositoryProvider(
-          create: (context) => MediaRepository(),
-        ),
-        RepositoryProvider(
           create: (context) =>
               SessionDataRepository(secureStorage: SecureStorage()),
+        ),
+        RepositoryProvider(
+          create: (context) => AccountRepository(),
         ),
       ],
       child: MultiBlocProvider(

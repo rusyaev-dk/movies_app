@@ -50,9 +50,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final sessionDataRepoPattern =
         await _sessionDataRepository.onGetSessionId();
     switch (sessionDataRepoPattern) {
-      case (final RepositoryFailure _, null, null):
+      case (final RepositoryFailure _, null,):
         return emit(AuthUnauthorizedState());
-      case (null, null, final String _):
+      case (null, final String _):
         return emit(AuthAuthorizedState());
     }
   }
