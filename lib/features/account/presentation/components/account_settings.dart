@@ -11,15 +11,14 @@ class AccountSettings extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16)),
+          borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
           CustomSettingsButton(
+            borderRadiusDirection: BorderRadiusDirection.onlyTop,
             icon: Icons.colorize_outlined,
             text: "Change theme",
-            onPressed: () {
-              print("Pressed!");
-            },
+            onPressed: () {},
           ),
           Divider(
             height: 1,
@@ -28,6 +27,7 @@ class AccountSettings extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
           CustomSettingsButton(
+            borderRadiusDirection: BorderRadiusDirection.onlyBottom,
             icon: Icons.logout,
             text: "Logout",
             onPressed: () {

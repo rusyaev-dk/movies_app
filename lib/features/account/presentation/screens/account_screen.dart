@@ -16,9 +16,8 @@ class AccountScreen extends StatelessWidget {
             RepositoryProvider.of<SessionDataRepository>(context),
         accountRepository: RepositoryProvider.of<AccountRepository>(context),
       )..add(AccountLoadAccountDetailsEvent()),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: const AccountBody(),
+      child: const Scaffold(
+        body: AccountBody(),
       ),
     );
   }

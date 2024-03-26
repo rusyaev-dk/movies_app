@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -12,6 +11,7 @@ import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_settings.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AccountBody extends StatelessWidget {
   const AccountBody({super.key});
@@ -51,7 +51,7 @@ class AccountBody extends StatelessWidget {
         }
 
         if (state is AccountLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return AccountContent.shimmerLoading(context);
         }
 
         if (state is AccountLoadedState) {
@@ -72,34 +72,103 @@ class AccountContent extends StatelessWidget {
 
   final AccountModel account;
 
+  static Widget shimmerLoading(BuildContext context) {
+    return Shimmer(
+      direction: ShimmerDirection.ltr,
+      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 400,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 18,
+                    width: 10,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
+            child: Container(
+              height: 80,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget avatarWidget = ApiImageFormatter.formatAvatarImageWidget(
       context,
       imagePath: account.avatarPath,
-      diameter: 175,
+      diameter: 200,
     );
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            avatarWidget,
-            const SizedBox(height: 20),
-            Text(
-              account.username ?? "Unknown username",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle,
+    return ListView(
+      padding: const EdgeInsets.all(0),
+      children: [
+        Container(
+          width: double.infinity,
+          height: 400,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                avatarWidget,
+                const SizedBox(height: 20),
+                Text(
+                  account.username ?? "Unknown username",
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .headingTextStyle
+                      .copyWith(fontSize: 24),
+                ),
+              ],
             ),
-            const Spacer(),
-            const AccountSettings(),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 250,),
+        const Padding(
+          padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
+          child: AccountSettings(),
+        ),
+      ],
     );
   }
 }

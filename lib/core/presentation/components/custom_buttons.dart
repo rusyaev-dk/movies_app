@@ -60,6 +60,13 @@ class CustomGradientButton extends StatelessWidget {
   }
 }
 
+enum BorderRadiusDirection {
+  all,
+  onlyTop,
+  onlyBottom,
+  none,
+}
+
 class CustomSettingsButton extends StatelessWidget {
   const CustomSettingsButton({
     super.key,
@@ -67,48 +74,72 @@ class CustomSettingsButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.height = 55,
+    this.borderRadiusDirection = BorderRadiusDirection.onlyTop,
   });
 
   final IconData icon;
   final String text;
   final void Function() onPressed;
   final double height;
+  final BorderRadiusDirection borderRadiusDirection;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        height: height,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            const SizedBox(width: 20),
-            Text(
-              text,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .subtitleTextStyle
-                  .copyWith(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-            ),
-            const Spacer(),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          ],
+    dynamic borderRadius;
+    switch (borderRadiusDirection) {
+      case BorderRadiusDirection.onlyTop:
+        borderRadius = const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          );
+        break;
+      case  BorderRadiusDirection.onlyBottom:
+        borderRadius =  const BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              );
+        break;
+      case BorderRadiusDirection.none:
+        borderRadius = BorderRadius.zero;
+        break;
+      case BorderRadiusDirection.all:
+        borderRadius = BorderRadius.circular(12);
+        break;
+    }
+
+    return Material(
+      borderRadius: borderRadius,
+      color: Theme.of(context).colorScheme.surface,
+      child: InkWell(
+        borderRadius: borderRadius,
+        onTap: onPressed,
+        child: Container(
+          height: height,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              const SizedBox(width: 20),
+              Text(
+                text,
+                style: Theme.of(context)
+                    .extension<ThemeTextStyles>()!
+                    .subtitleTextStyle
+                    .copyWith(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+              ),
+              const Spacer(),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ],
+          ),
         ),
       ),
     );
