@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/utils/data_formatter.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -38,8 +39,9 @@ class SearchList extends StatelessWidget {
                   extra: [model.id, model.title]),
               child: SearchListTile(
                 imagePath: model.posterPath,
-                title: model.title ?? "None",
-                subtitle: "${model.originalTitle}, ${model.releaseDate}",
+                title: model.title ?? "Unknown",
+                originalTitle: model.originalTitle ?? "Unknown",
+                firstAirDate: model.releaseDate,
                 voteAverage: model.voteAverage ?? 0,
                 genreIds: model.genreIds ?? [],
               ),
@@ -51,9 +53,10 @@ class SearchList extends StatelessWidget {
                   extra: [model.id, model.name]),
               child: SearchListTile(
                 imagePath: model.posterPath,
-                title: model.name ?? "None",
-                subtitle:
-                    "${model.originalName}, ${model.firstAirDate} - ${model.lastAirDate}",
+                title: model.name ?? "Unknown",
+                originalTitle: model.originalName ?? "Unknown",
+                firstAirDate: model.firstAirDate,
+                lastAirDate: model.lastAirDate,
                 voteAverage: model.voteAverage ?? 0,
                 genreIds: model.genreIds ?? [],
               ),
@@ -66,7 +69,7 @@ class SearchList extends StatelessWidget {
               child: SearchListTile(
                 imagePath: model.profilePath,
                 title: model.name ?? "Unknonwn",
-                subtitle: "${model.originalName} id: ${model.id}",
+                originalTitle: model.originalName ?? "Unknown",
               ),
             );
           default:
@@ -82,14 +85,19 @@ class SearchListTile extends StatelessWidget {
   const SearchListTile({
     super.key,
     required this.title,
-    required this.subtitle,
+    required this.originalTitle,
+    this.firstAirDate,
+    this.lastAirDate,
     this.imagePath,
     this.genreIds,
     this.voteAverage,
   });
 
   final String title;
-  final String subtitle;
+  final String originalTitle;
+  final String? firstAirDate;
+  final String? lastAirDate;
+
   final String? imagePath;
   final List<dynamic>? genreIds;
   final double? voteAverage;
@@ -154,6 +162,15 @@ class SearchListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
         imagePath: imagePath, width: 80, height: 120);
+
+    String subtitle = originalTitle;
+    if (DataFormatter.isCorrectDateString(firstAirDate) &&
+        DataFormatter.isCorrectDateString(lastAirDate)) {
+      subtitle +=
+          ", ${DataFormatter.getYearFromDate(firstAirDate!)} - ${DataFormatter.getYearFromDate(lastAirDate!)}";
+    } else if (DataFormatter.isCorrectDateString(firstAirDate)) {
+      subtitle += ", ${DataFormatter.getYearFromDate(firstAirDate!)}";
+    }
 
     final double roundedVoteAverage =
         ApiMediaVoteFormatter.formatVoteAverage(voteAverage: voteAverage);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
+import 'package:movies_app/core/utils/data_formatter.dart';
 
 class PersonInfoText extends StatelessWidget {
   const PersonInfoText({
@@ -21,11 +21,11 @@ class PersonInfoText extends StatelessWidget {
     String yearsOfLife = "";
     String age = "";
     if (birthday != null) {
-      yearsOfLife = formatDate(birthday!);
-      age = "${calculateAge(birthday!)} years";
+      yearsOfLife = DataFormatter.formatDate(birthday!);
+      age = "${DataFormatter.calculateAge(birthday!)} years";
     }
     if (deathday != null) {
-      yearsOfLife += " - ${formatDate(deathday!)}";
+      yearsOfLife += " - ${DataFormatter.formatDate(deathday!)}";
     }
 
     return Column(

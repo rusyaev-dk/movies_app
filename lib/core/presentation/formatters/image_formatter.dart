@@ -51,15 +51,15 @@ class ApiImageFormatter {
           ),
         );
       },
-      errorListener: (value) {
-        // logging...
-        print("Image Exception: $value");
-      },
       placeholder: (context, url) {
         return SizedBox(
           height: height,
           width: width,
         );
+      },
+      errorListener: (value) {
+        // logging...
+        print("Image Exception: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;
@@ -112,10 +112,6 @@ class ApiImageFormatter {
           ),
         );
       },
-      errorListener: (value) {
-        // logging...
-        print("Image Exception: $value");
-      },
       placeholder: (context, url) {
         return Container(
           width: diameter,
@@ -125,18 +121,13 @@ class ApiImageFormatter {
           ),
         );
       },
+      errorListener: (value) {
+        // logging...
+        print("Image Exception: $value");
+      },
       errorWidget: (context, url, error) {
         return assetImageWidget;
       },
     );
   }
-
-  // static ImageProvider<Object> formatImageProvider(
-  //     {required String? imagePath}) {
-  //   Object image = imagePath != null
-  //       ? NetworkImage(formatImageUrl(path: imagePath))
-  //       : const AssetImage(_unknownFilmImagePath);
-
-  //   return image as ImageProvider<Object>;
-  // }
 }

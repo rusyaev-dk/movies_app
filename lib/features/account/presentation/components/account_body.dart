@@ -11,6 +11,7 @@ import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_settings.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AccountBody extends StatelessWidget {
@@ -129,46 +130,58 @@ class AccountContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RefreshController refreshController =
+        RefreshController(initialRefresh: false);
+
     Widget avatarWidget = ApiImageFormatter.formatAvatarImageWidget(
       context,
       imagePath: account.avatarPath,
       diameter: 200,
     );
-
-    return ListView(
-      padding: const EdgeInsets.all(0),
-      children: [
-        Container(
-          width: double.infinity,
-          height: 400,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Theme.of(context).colorScheme.surface,
-          ),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                avatarWidget,
-                const SizedBox(height: 20),
-                Text(
-                  account.username ?? "Unknown username",
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle
-                      .copyWith(fontSize: 24),
-                ),
-              ],
+    
+    return SmartRefresher(
+      enablePullDown: true,
+      controller: refreshController,
+      onRefresh: () => context.read<AccountBloc>().add(
+          AccountRefreshAccountDetailsEvent(
+              refreshController: refreshController)),
+      child: ListView(
+        padding: const EdgeInsets.all(0),
+        children: [
+          Container(
+            width: double.infinity,
+            height: 400,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  avatarWidget,
+                  const SizedBox(height: 20),
+                  Text(
+                    account.username ?? "Unknown username",
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .headingTextStyle
+                        .copyWith(fontSize: 24),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 250,),
-        const Padding(
-          padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
-          child: AccountSettings(),
-        ),
-      ],
+          const SizedBox(
+            height: 250,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
+            child: AccountSettings(),
+          ),
+        ],
+      ),
     );
   }
 }

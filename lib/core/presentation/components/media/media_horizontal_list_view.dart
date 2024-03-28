@@ -11,7 +11,7 @@ class MediaHorizontalListView extends StatelessWidget {
     super.key,
     this.models = const [],
     this.title,
-    this.withAllButton = false,
+    this.withAllButton = true,
     this.cardWidth = 100,
     this.cardHeight = 150,
   });

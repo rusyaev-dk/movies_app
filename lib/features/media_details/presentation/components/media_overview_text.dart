@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
+import 'package:movies_app/core/utils/data_formatter.dart';
 
 class MediaOverviewText extends StatelessWidget {
   const MediaOverviewText({
@@ -52,7 +52,7 @@ class MediaOverviewText extends StatelessWidget {
       );
     }
 
-    if (countSentences(overview!) <= 1) {
+    if (DataFormatter.countSentences(overview!) <= 1) {
       return Text(
         overview!,
         style: Theme.of(context)

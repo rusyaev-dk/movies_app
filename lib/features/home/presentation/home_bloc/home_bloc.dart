@@ -7,6 +7,7 @@ import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -39,6 +40,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<HomeNetworkErrorEvent>(_onNetworkError);
     on<HomeLoadMediaEvent>(_onLoadMedia, transformer: sequential());
+    on<HomeRefreshMediaEvent>(_onRefreshMedia);
   }
 
   void _onNetworkStateChanged(NetworkState state) {
@@ -107,6 +109,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       popularTVSeries: modelsMap["popularTVSeries"] as List<TVSeriesModel>,
       trendingTVSeries: modelsMap["trendingTVSeries"] as List<TVSeriesModel>,
     ));
+  }
+
+  Future<void> _onRefreshMedia(HomeRefreshMediaEvent event, Emitter<HomeState> emit) async {
+    add(HomeLoadMediaEvent(locale: event.locale, page: event.page));
+    event.refreshController.refreshCompleted();
   }
 
   @override

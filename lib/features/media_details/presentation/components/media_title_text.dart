@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
@@ -24,7 +25,9 @@ class MediaTitleText extends StatelessWidget {
     );
 
     List<Widget> children;
+    EdgeInsetsGeometry? padding;
     if (title.length >= 25) {
+      padding = const EdgeInsets.symmetric(horizontal: 20);
       children = [
         Text(
           "$roundedVoteAverage",
@@ -66,6 +69,17 @@ class MediaTitleText extends StatelessWidget {
               Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
         ),
       ];
+    }
+
+    if (padding != null) {
+      return Padding(
+        padding: padding,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: children,
+        ),
+      );
     }
 
     return Row(

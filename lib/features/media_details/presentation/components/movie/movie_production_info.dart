@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/data_formatter.dart';
 
 class MovieProductionInfo extends StatelessWidget {
   const MovieProductionInfo({
@@ -25,9 +26,9 @@ class MovieProductionInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String productionInfoString = "";
-    if (releaseDate != null) {
-      DateTime date = DateTime.parse(releaseDate!);
-      productionInfoString += "${date.year}, ";
+    if (DataFormatter.isCorrectDateString(releaseDate)) {
+      productionInfoString +=
+          "${DataFormatter.getYearFromDate(releaseDate!)}, ";
     }
 
     if (productionCountries.isEmpty) {

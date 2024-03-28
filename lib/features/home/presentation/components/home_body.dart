@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -45,62 +47,45 @@ class HomeBody extends StatelessWidget {
         }
 
         if (state is HomeLoadingState) {
-          return const Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: HomeLoadingBody(),
+          return Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: HomeContent.shimmerLoading(context),
           );
         }
 
         if (state is HomeLoadedState) {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: ListView(
-              children: [
-                MediaHorizontalListView(
-                  title: "Popular movies for you",
-                  models: state.popularMovies,
-                  cardHeight: 270,
-                  cardWidth: 180,
-                ),
-                const SizedBox(height: 20),
-                MediaHorizontalListView(
-                  title: "Trending movies",
-                  models: state.trendingMovies,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-                const SizedBox(height: 20),
-                MediaHorizontalListView(
-                  title: "Popular TV series",
-                  models: state.popularTVSeries,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-                const SizedBox(height: 20),
-                MediaHorizontalListView(
-                  title: "Trending TV series",
-                  models: state.trendingTVSeries,
-                  cardHeight: 210,
-                  cardWidth: 140,
-                ),
-              ],
+            child: HomeContent(
+              popularMovies: state.popularMovies,
+              trendingMovies: state.trendingMovies,
+              popularTVSeries: state.popularTVSeries,
+              trendingTVSeries: state.trendingTVSeries,
             ),
           );
         }
 
-        return const HomeLoadingBody();
+        return HomeContent.shimmerLoading(context);
       },
     );
   }
 }
 
-class HomeLoadingBody extends StatelessWidget {
-  const HomeLoadingBody({
+class HomeContent extends StatelessWidget {
+  const HomeContent({
     super.key,
+    required this.popularMovies,
+    required this.trendingMovies,
+    required this.popularTVSeries,
+    required this.trendingTVSeries,
   });
 
-  @override
-  Widget build(BuildContext context) {
+  final List<MovieModel> popularMovies;
+  final List<MovieModel> trendingMovies;
+  final List<TVSeriesModel> popularTVSeries;
+  final List<TVSeriesModel> trendingTVSeries;
+
+  static Widget shimmerLoading(BuildContext context) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
@@ -113,6 +98,51 @@ class HomeLoadingBody extends StatelessWidget {
         MediaHorizontalListView.shimmerLoading(context,
             cardHeight: 210, cardWidth: 140),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    RefreshController refreshController =
+        RefreshController(initialRefresh: false);
+
+    return SmartRefresher(
+      enablePullDown: true,
+      controller: refreshController,
+      onRefresh: () => context
+          .read<HomeBloc>()
+          .add(HomeRefreshMediaEvent(refreshController: refreshController)),
+      child: ListView(
+        children: [
+          MediaHorizontalListView(
+            title: "Popular movies for you",
+            models: popularMovies,
+            cardHeight: 270,
+            cardWidth: 180,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
+            title: "Trending movies",
+            models: trendingMovies,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
+            title: "Popular TV series",
+            models: popularTVSeries,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
+            title: "Trending TV series",
+            models: trendingTVSeries,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+        ],
+      ),
     );
   }
 }
