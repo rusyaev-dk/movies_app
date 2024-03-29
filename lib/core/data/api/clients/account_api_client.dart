@@ -20,7 +20,7 @@ class AccountApiClient {
     );
   }
 
-  Future<Response> markAsFavourite({
+  Future<Response> addFavourite({
     required int accountId,
     required String sessionId,
     required TMDBMediaType mediaType,
@@ -52,6 +52,44 @@ class AccountApiClient {
 
     return await _httpClient.get(
       path: "${ApiConfig.accountPath}/$accountId",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getAccountMoviesWatchList({
+    required String locale,
+    required int page,
+    required int accountId,
+    required String sessionId,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.get(
+      path: "${ApiConfig.accountPath}/$accountId/watchlist/movies",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getAccountTVSeriesWatchList({
+    required String locale,
+    required int page,
+    required int accountId,
+    required String sessionId,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.get(
+      path: "${ApiConfig.accountPath}/$accountId/watchlist/tv",
       uriParameters: uriParameters,
     );
   }

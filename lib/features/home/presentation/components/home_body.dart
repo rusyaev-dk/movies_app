@@ -65,7 +65,10 @@ class HomeBody extends StatelessWidget {
           );
         }
 
-        return HomeContent.shimmerLoading(context);
+        return Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: HomeContent.shimmerLoading(context),
+        );
       },
     );
   }

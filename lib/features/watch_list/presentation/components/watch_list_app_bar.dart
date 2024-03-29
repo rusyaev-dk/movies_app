@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+class WatchListAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const WatchListAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +26,17 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Image.asset("assets/images/app_logo.png"),
+              child: const Padding(
+                padding: EdgeInsets.all(4),
+                child: Icon(
+                  Icons.bookmark,
+                  color: Colors.black,
+                ),
               ),
             ),
             const SizedBox(width: 10),
             Text(
-              "The Movie Database",
+              "Your watch list",
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .extension<ThemeTextStyles>()!

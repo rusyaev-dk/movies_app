@@ -8,9 +8,7 @@ class MovieDetailsAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.star_border))
-      ],
+      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.airplay))],
     );
   }
 

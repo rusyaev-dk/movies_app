@@ -19,6 +19,8 @@ class MovieDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MovieDetailsBloc(
+        // sessionDataRepository: RepositoryProvider.of<SessionDataRepository>(context),
+        // accountRepository: RepositoryProvider.of<AccountRepository>(context),
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(MovieDetailsLoadDetailsEvent(movieId: movieId)),
       child: const Scaffold(

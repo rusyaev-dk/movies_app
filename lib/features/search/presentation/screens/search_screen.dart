@@ -17,7 +17,7 @@ class SearchScreen extends StatelessWidget {
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       ),
       child: const Scaffold(
-        appBar: CustomSearchAppBar(),
+        appBar: SearchAppBar(),
         body: SearchBody(),
       ),
     );

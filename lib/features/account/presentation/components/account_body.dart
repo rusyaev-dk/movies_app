@@ -59,7 +59,7 @@ class AccountBody extends StatelessWidget {
           return AccountContent(account: state.account);
         }
 
-        return const Center(child: CircularProgressIndicator());
+        return AccountContent.shimmerLoading(context);
       },
     );
   }
@@ -138,7 +138,7 @@ class AccountContent extends StatelessWidget {
       imagePath: account.avatarPath,
       diameter: 200,
     );
-    
+
     return SmartRefresher(
       enablePullDown: true,
       controller: refreshController,
@@ -146,7 +146,7 @@ class AccountContent extends StatelessWidget {
           AccountRefreshAccountDetailsEvent(
               refreshController: refreshController)),
       child: ListView(
-        padding: const EdgeInsets.all(0),
+        padding: EdgeInsets.zero,
         children: [
           Container(
             width: double.infinity,

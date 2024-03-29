@@ -54,7 +54,7 @@ class AccountRepository {
     }
   }
 
-  Future<AccountRepositoryPattern<bool>> onMarkAsFavorite({
+  Future<AccountRepositoryPattern<bool>> onAddFavourite({
     required int accountId,
     required String sessionId,
     required TMDBMediaType mediaType,
@@ -62,7 +62,7 @@ class AccountRepository {
     required bool isFavorite,
   }) async {
     try {
-      final response = await _accountApiClient.markAsFavourite(
+      final response = await _accountApiClient.addFavourite(
         accountId: accountId,
         sessionId: sessionId,
         mediaType: mediaType,
@@ -143,4 +143,108 @@ class AccountRepository {
       return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
+
+  Future<AccountRepositoryPattern<List<T>>> onGetAccountMediaWatchList<T>({
+    required TMDBMediaType mediaType,
+    required String locale,
+    required int page,
+    required int accountId,
+    required String sessionId,
+  }) async {
+    try {
+      final Response? response;
+      final TMDBModel Function(Map<String, dynamic>)? fromJson;
+      switch (mediaType) {
+        case TMDBMediaType.movie:
+          response = await _accountApiClient.getAccountMoviesWatchList(
+            locale: locale,
+            page: page,
+            accountId: accountId,
+            sessionId: sessionId,
+          );
+          fromJson = MovieModel.fromJSON;
+        case TMDBMediaType.tv:
+          response = await _accountApiClient.getAccountTVSeriesWatchList(
+            locale: locale,
+            page: page,
+            accountId: accountId,
+            sessionId: sessionId,
+          );
+          fromJson = TVSeriesModel.fromJSON;
+        default:
+          response = null;
+          fromJson = null;
+      }
+
+      final List<T> models = (response!.data["results"] as List)
+          .map((json) => fromJson!(json) as T)
+          .toList();
+      return (null, models);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      RepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  // Future<AccountRepositoryPattern<bool>> onIsFavourite({
+  //   required TMDBMediaType mediaType,
+  //   required int mediaId,
+  //   required int accountId,
+  //   required String sessionId,
+  // }) async {
+  //   try {
+  //     await onGetAccountFavouriteMedia(mediaType: mediaType, locale: "en-US", page: 1, accountId: accountId, sessionId: sessionId)
+  //   } on ApiClientException catch (exception, stackTrace) {
+  //     final error = exception.error;
+  //     final errorParams = switch (error) {
+  //       DioException _ => (
+  //           ApiClientExceptionType.network,
+  //           (error).message,
+  //         ),
+  //       FormatException _ => (
+  //           ApiClientExceptionType.network,
+  //           (error).message,
+  //         ),
+  //       HttpException _ => (
+  //           ApiClientExceptionType.network,
+  //           (error).message,
+  //         ),
+  //       TimeoutException _ => (
+  //           ApiClientExceptionType.network,
+  //           (error).message ?? exception.message,
+  //         ),
+  //       _ => (ApiClientExceptionType.unknown, exception.message),
+  //     };
+
+  //     RepositoryFailure repositoryFailure =
+  //         (error, stackTrace, errorParams.$1, errorParams.$2);
+  //     return (repositoryFailure, null);
+  //   } catch (error, stackTrace) {
+  //     return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+  //   }
+  // }
 }

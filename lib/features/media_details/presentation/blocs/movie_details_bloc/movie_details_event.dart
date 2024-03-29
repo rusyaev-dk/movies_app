@@ -11,3 +11,13 @@ class MovieDetailsLoadDetailsEvent extends MovieDetailsEvent {
     required this.movieId,
   });
 }
+
+// class MovieDetailsAddFavouriteEvent extends MovieDetailsEvent {
+//   final int movieId;
+//   final bool isFavorite;
+
+//   MovieDetailsAddFavouriteEvent({
+//     required this.movieId,
+//     required this.isFavorite,
+//   });
+// }

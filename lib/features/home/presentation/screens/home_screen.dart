@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(HomeLoadMediaEvent()), // ..add(HomeLoadAllMediaEvent()) добавить
       child: const Scaffold(
-        appBar: CustomHomeAppBar(),
+        appBar: HomeAppBar(),
         body: HomeBody(),
       ),
     );
