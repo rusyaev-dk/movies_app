@@ -130,4 +130,65 @@ class ApiImageFormatter {
       },
     );
   }
+
+  static Widget formatImageWidgetWithAspectRatio(
+    BuildContext context, {
+    required String? imagePath,
+    required double aspectRatio,
+    required double width,
+    required double height,
+  }) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    String unknownMediaPath;
+    if (isDark) {
+      unknownMediaPath = _unknownMediaDarkPath;
+    } else {
+      unknownMediaPath = _unknownMediaLigthPath;
+    }
+
+    Widget assetImageWidget = SizedBox(
+      width: width,
+      height: height,
+      child: Image.asset(
+        unknownMediaPath,
+        fit: BoxFit.cover,
+      ),
+    );
+
+    if (imagePath == null) return assetImageWidget;
+
+    return CachedNetworkImage(
+      imageUrl: formatImageUrl(path: imagePath),
+      imageBuilder: (context, imageProvider) {
+        return AspectRatio(
+          aspectRatio: aspectRatio,
+          child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+      placeholder: (context, url) {
+        return SizedBox(
+          height: height,
+          width: width,
+        );
+      },
+      errorListener: (value) {
+        // logging...
+        print("Image Exception: $value");
+      },
+      errorWidget: (context, url, error) {
+        return assetImageWidget;
+      },
+    );
+  }
 }

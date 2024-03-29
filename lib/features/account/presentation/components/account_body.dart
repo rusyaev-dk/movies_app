@@ -115,7 +115,7 @@ class AccountContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
             child: Container(
-              height: 80,
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

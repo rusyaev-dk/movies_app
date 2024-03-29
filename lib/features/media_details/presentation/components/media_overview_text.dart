@@ -77,14 +77,14 @@ class MediaOverviewText extends StatelessWidget {
               .subtitleTextStyle
               .copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 15,
+                fontSize: 16,
               ),
         ),
         const SizedBox(height: 15),
         Text(
           otherSensetnses,
           style:
-              Theme.of(context).extension<ThemeTextStyles>()!.subtitleTextStyle,
+              Theme.of(context).extension<ThemeTextStyles>()!.subtitleTextStyle.copyWith(fontSize: 15),
         ),
       ],
     );

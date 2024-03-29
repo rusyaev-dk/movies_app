@@ -8,6 +8,8 @@ import 'package:movies_app/features/media_details/presentation/blocs/tv_series_d
 import 'package:movies_app/core/presentation/components/dark_poster_gradient.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_details_buttons.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_details_rating.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_overview_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/tv_series/tv_series_details_head.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
@@ -58,6 +60,7 @@ class TVSeriesDetailsBody extends StatelessWidget {
         if (state is TVSeriesDetailsLoadedState) {
           return TVSeriesDetailsContent(
             tvSeries: state.tvSeriesModel,
+            tvSeriesImages: state.tvSeriesImages ?? [],
             tvSeriesCredits: state.tvSeriesCredits ?? [],
           );
         }
@@ -74,10 +77,12 @@ class TVSeriesDetailsContent extends StatelessWidget {
   const TVSeriesDetailsContent({
     super.key,
     required this.tvSeries,
+    required this.tvSeriesImages,
     required this.tvSeriesCredits,
   });
 
   final TVSeriesModel tvSeries;
+  final List<MediaImageModel> tvSeriesImages;
   final List<PersonModel> tvSeriesCredits;
 
   static Widget shimmerLoading(BuildContext context) {
@@ -133,6 +138,15 @@ class TVSeriesDetailsContent extends StatelessWidget {
         const SizedBox(height: 10),
         TVSeriesDetailsHead(tvSeries: tvSeries),
         const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MediaDetailsButtons(
+            favouriteBtnOnPressed: () {},
+            watchListBtnOnPressed: () {},
+            shareBtnOnPressed: () {},
+          ),
+        ),
+        const SizedBox(height: 15),
         Divider(
           height: 1,
           thickness: 1,
@@ -143,15 +157,34 @@ class TVSeriesDetailsContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaOverviewText(overview: tvSeries.overview),
         ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: MediaHorizontalListView(
-            title: "Credits",
-            withAllButton: false,
-            models: tvSeriesCredits,
+        if (tvSeriesImages.isNotEmpty) const SizedBox(height: 15),
+        if (tvSeriesImages.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Images",
+              withAllButton: false,
+              models: tvSeriesImages,
+            ),
           ),
-        )
+        const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MediaDetailsRating(
+            voteAverage: tvSeries.voteAverage ?? 0,
+            voteCount: tvSeries.voteCount ?? 0,
+          ),
+        ),
+        if (tvSeriesCredits.isNotEmpty) const SizedBox(height: 10),
+        if (tvSeriesCredits.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Credits",
+              withAllButton: false,
+              models: tvSeriesCredits,
+            ),
+          )
       ],
     );
   }

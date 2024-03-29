@@ -1,19 +1,16 @@
 part of '../theme.dart';
 
 class ThemeColors extends ThemeExtension<ThemeColors> {
-  final Color filterButtonFillColor;
-  // ПОДПРАВИТЬ 
-  const ThemeColors({
-    required this.filterButtonFillColor,
-  });
+  final Color surfaceDarker;
+
+  ThemeColors({required this.surfaceDarker});
 
   @override
   ThemeExtension<ThemeColors> copyWith({
-    Color? filterButtonFillColor,
+    Color? surfaceDarker,
   }) {
     return ThemeColors(
-      filterButtonFillColor:
-          filterButtonFillColor ?? this.filterButtonFillColor,
+      surfaceDarker: surfaceDarker ?? this.surfaceDarker,
     );
   }
 
@@ -27,16 +24,15 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     }
 
     return ThemeColors(
-      filterButtonFillColor:
-          Color.lerp(filterButtonFillColor, other.filterButtonFillColor, t)!,
+      surfaceDarker: Color.lerp(surfaceDarker, other.surfaceDarker, t)!,
     );
   }
 
-  static get light => const ThemeColors(
-        filterButtonFillColor: AppColors.grey,
+  static get light => ThemeColors(
+        surfaceDarker: const Color(0xFF1D1D1D).withAlpha(140),
       );
 
-  static get dark => const ThemeColors(
-        filterButtonFillColor: AppColors.white,
+  static get dark => ThemeColors(
+        surfaceDarker: const Color(0xFF1D1D1D).withAlpha(140),
       );
 }

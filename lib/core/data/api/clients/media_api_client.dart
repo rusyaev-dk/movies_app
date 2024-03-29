@@ -137,12 +137,12 @@ class MediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: "${ApiConfig.moviePath}/$movieId/credits",
+      path: "${ApiConfig.moviePath}/$movieId/${ApiConfig.creditsPath}",
       uriParameters: uriParameters,
     );
   }
 
- Future<Response> getTVSeriesCredits({
+  Future<Response> getTVSeriesCredits({
     required int tvSeriesId,
     required String locale,
   }) async {
@@ -151,9 +151,40 @@ class MediaApiClient {
       'api_key': _apiKey,
     };
     return await _httpClient.get(
-      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/credits",
+      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/${ApiConfig.creditsPath}",
       uriParameters: uriParameters,
     );
   }
 
+  Future<Response> getMovieImages({
+    required int movieId,
+    required String locale,
+    String? includeImageLanguage = "en",
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'include_image_language': includeImageLanguage,
+      'language': locale,
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.moviePath}/$movieId/${ApiConfig.imagesPath}",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getTVSeriesImages({
+    required int tvSeriesId,
+    required String locale,
+    String? includeImageLanguage = "en",
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'include_image_language': includeImageLanguage,
+      'language': locale,
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/${ApiConfig.imagesPath}",
+      uriParameters: uriParameters,
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
 class CustomGradientButton extends StatelessWidget {
@@ -89,15 +90,15 @@ class CustomSettingsButton extends StatelessWidget {
     switch (borderRadiusDirection) {
       case BorderRadiusDirection.onlyTop:
         borderRadius = const BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          );
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        );
         break;
-      case  BorderRadiusDirection.onlyBottom:
-        borderRadius =  const BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
-              );
+      case BorderRadiusDirection.onlyBottom:
+        borderRadius = const BorderRadius.only(
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        );
         break;
       case BorderRadiusDirection.none:
         borderRadius = BorderRadius.zero;
@@ -141,6 +142,46 @@ class CustomSettingsButton extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+    required this.text,
+  });
+
+  final void Function() onPressed;
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            text,
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .subtitleTextStyle
+                .copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+          )
+        ],
       ),
     );
   }

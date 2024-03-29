@@ -291,6 +291,30 @@ class ProductionCountry {
   }
 }
 
+class MediaImageModel extends TMDBModel {
+  final dynamic aspectRatio;
+  final dynamic height;
+  final dynamic width;
+  final String? filePath;
+
+  MediaImageModel({
+    this.aspectRatio,
+    this.height,
+    this.width,
+    this.filePath,
+  }) : super._();
+
+  @override
+  factory MediaImageModel.fromJSON(Map<String, dynamic> json) {
+    return MediaImageModel(
+      aspectRatio: json["aspect_ratio"],
+      height: json["height"],
+      width: json["width"],
+      filePath: json["file_path"],
+    );
+  }
+}
+
 class AccountModel extends TMDBModel {
   final int? id;
   final String? name;

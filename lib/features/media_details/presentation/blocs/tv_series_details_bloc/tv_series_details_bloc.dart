@@ -35,11 +35,26 @@ class TvSeriesDetailsBloc
       case (final RepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
-      case (null, final TVSeriesModel model):
-        tvSeriesModel = model;
+      case (null, final TVSeriesModel patternModel):
+        tvSeriesModel = patternModel;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaCredits(
+      mediaType: TMDBMediaType.tv,
+      mediaId: event.tvSeriesId,
+      locale: event.locale,
+    );
+
+    List<PersonModel>? tvSeriesCredits;
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(TVSeriesDetailsFailureState(
+            failure: failure, tvSeriesId: event.tvSeriesId));
+      case (null, final List<PersonModel> patternCredits):
+        tvSeriesCredits = patternCredits;
+    }
+
+    mediaRepoPattern = await _mediaRepository.onGetMediaImages(
       mediaType: TMDBMediaType.tv,
       mediaId: event.tvSeriesId,
       locale: event.locale,
@@ -49,10 +64,11 @@ class TvSeriesDetailsBloc
       case (final RepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
-      case (null, final List<PersonModel> mediaCredits):
+      case (null, final List<MediaImageModel> patternImages):
         return emit(TVSeriesDetailsLoadedState(
           tvSeriesModel: tvSeriesModel!,
-          tvSeriesCredits: mediaCredits,
+          tvSeriesCredits: tvSeriesCredits!,
+          tvSeriesImages: patternImages,
         ));
     }
   }

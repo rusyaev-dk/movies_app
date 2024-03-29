@@ -87,7 +87,7 @@ class MediaRepository {
       }
 
       List<T> models =
-          _createModelsList(fromJson: fromJson!, response: response!);
+          _createModelsList<T>(fromJson: fromJson!, response: response!);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
@@ -252,12 +252,67 @@ class MediaRepository {
           response = null;
       }
 
-      final List<PersonModel> persons = _createModelsList(
+      final List<PersonModel> persons = _createModelsList<PersonModel>(
         fromJson: PersonModel.fromJSON,
         response: response!,
         jsonKey: "cast",
       );
       return (null, persons);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      RepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<MediaImageModel>>> onGetMediaImages({
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required String locale,
+  }) async {
+    try {
+      final Response? response;
+      switch (mediaType) {
+        case TMDBMediaType.movie:
+          response = await _mediaApiClient.getMovieImages(
+              movieId: mediaId, locale: locale);
+        case TMDBMediaType.tv:
+          response = await _mediaApiClient.getTVSeriesImages(
+              tvSeriesId: mediaId, locale: locale);
+        default:
+          response = null;
+      }
+
+      final List<MediaImageModel> images = _createModelsList<MediaImageModel>(
+        fromJson: MediaImageModel.fromJSON,
+        response: response!,
+        jsonKey: "backdrops",
+      );
+
+      return (null, images.reversed.toList());
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {

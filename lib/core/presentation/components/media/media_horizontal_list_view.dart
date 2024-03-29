@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
+import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -228,6 +229,14 @@ class MediaListView extends StatelessWidget {
               imagePath: model.profilePath,
               cardText: model.name ?? "Unknown person",
             ),
+          );
+        } else if (model is MediaImageModel) {
+          return ApiImageFormatter.formatImageWidgetWithAspectRatio(
+            context,
+            imagePath: model.filePath,
+            aspectRatio: model.aspectRatio ?? 1.778,
+            width: 240,
+            height: 180,
           );
         } else {
           return MediaCard(

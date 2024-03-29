@@ -34,11 +34,26 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       case (final RepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
-      case (null, final MovieModel model):
-        movieModel = model;
+      case (null, final MovieModel patternModel):
+        movieModel = patternModel;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaCredits(
+      mediaType: TMDBMediaType.movie,
+      mediaId: event.movieId,
+      locale: event.locale,
+    );
+
+    List<PersonModel>? movieCredits;
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(
+            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+      case (null, final List<PersonModel> patternCredits):
+        movieCredits = patternCredits;
+    }
+
+    mediaRepoPattern = await _mediaRepository.onGetMediaImages(
       mediaType: TMDBMediaType.movie,
       mediaId: event.movieId,
       locale: event.locale,
@@ -48,10 +63,11 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       case (final RepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
-      case (null, final List<PersonModel> mediaCredits):
+      case (null, final List<MediaImageModel> patternImages):
         return emit(MovieDetailsLoadedState(
           movieModel: movieModel!,
-          movieCredits: mediaCredits,
+          movieCredits: movieCredits!,
+          movieImages: patternImages,
         ));
     }
   }

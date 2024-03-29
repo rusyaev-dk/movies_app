@@ -8,12 +8,15 @@ import 'package:movies_app/features/media_details/presentation/blocs/movie_detai
 import 'package:movies_app/core/presentation/components/dark_poster_gradient.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_details_buttons.dart';
+import 'package:movies_app/features/media_details/presentation/components/media_details_rating.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_overview_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_head.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/components/movie_details_budget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MovieDetailsBody extends StatelessWidget {
@@ -58,6 +61,7 @@ class MovieDetailsBody extends StatelessWidget {
         if (state is MovieDetailsLoadedState) {
           return MovieDetailsContent(
             movie: state.movieModel,
+            movieImages: state.movieImages ?? [],
             movieCredits: state.movieCredits ?? [],
           );
         }
@@ -74,10 +78,12 @@ class MovieDetailsContent extends StatelessWidget {
   const MovieDetailsContent({
     super.key,
     required this.movie,
+    required this.movieImages,
     required this.movieCredits,
   });
 
   final MovieModel movie;
+  final List<MediaImageModel> movieImages;
   final List<PersonModel> movieCredits;
 
   static Widget shimmerLoading(BuildContext context) {
@@ -133,6 +139,15 @@ class MovieDetailsContent extends StatelessWidget {
         const SizedBox(height: 10),
         MovieDetailsHead(movie: movie),
         const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MediaDetailsButtons(
+            favouriteBtnOnPressed: () {},
+            watchListBtnOnPressed: () {},
+            shareBtnOnPressed: () {},
+          ),
+        ),
+        const SizedBox(height: 15),
         Divider(
           height: 1,
           thickness: 1,
@@ -143,15 +158,42 @@ class MovieDetailsContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaOverviewText(overview: movie.overview),
         ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: MediaHorizontalListView(
-            title: "Credits",
-            withAllButton: false,
-            models: movieCredits,
+        if (movieImages.isNotEmpty) const SizedBox(height: 15),
+        if (movieImages.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Images",
+              withAllButton: false,
+              models: movieImages,
+            ),
           ),
-        )
+        const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MediaDetailsRating(
+            voteAverage: movie.voteAverage ?? 0,
+            voteCount: movie.voteCount ?? 0,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: MediaDetailsBudget(
+            budget: movie.budget ?? 0,
+            revenue: movie.revenue ?? 0,
+          ),
+        ),
+        if (movieCredits.isNotEmpty) const SizedBox(height: 10),
+        if (movieCredits.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Credits",
+              withAllButton: false,
+              models: movieCredits,
+            ),
+          )
       ],
     );
   }

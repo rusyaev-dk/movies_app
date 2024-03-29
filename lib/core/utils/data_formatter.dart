@@ -71,4 +71,13 @@ class DataFormatter {
     if (year == 0) return "Unknown";
     return year.toString();
   }
+
+  static String formatNumberWithThousandsSeparator(int number) {
+    String numberString = number.toString();
+    
+    RegExp regex = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+    
+    return numberString.replaceAllMapped(
+        regex, (Match match) => '${match[1]} ');
+  }
 }
