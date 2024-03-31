@@ -8,13 +8,13 @@ class ConnectivityRepository {
   
   Connectivity get connectivity => _connectivity;
 
-  Future<bool> isConnected() async {
-    ConnectivityResult res = await _connectivity.checkConnectivity();
-    if (res == ConnectivityResult.mobile || res == ConnectivityResult.wifi) return true;
-    return false;
-  }
+  // Future<bool> isConnected() async {
+  //   ConnectivityResult res = await _connectivity.checkConnectivity();
+  //   if (res == ConnectivityResult.mobile || res == ConnectivityResult.wifi) return true;
+  //   return false;
+  // }
 
-  Future<ConnectivityResult> checkConnectivity() async {
-    return await _connectivity.checkConnectivity();
-  }
+  // Future<ConnectivityResult> checkConnectivity() async {
+  //   return await _connectivity.checkConnectivity();
+  // }
 }

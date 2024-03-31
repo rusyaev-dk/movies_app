@@ -13,7 +13,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final NetworkCubit _networkCubit;
+  late final NetworkCubit _networkCubit;
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
 
@@ -44,7 +44,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onNetworkStateChanged(NetworkState state) {
-    if (state.type == NetworkStateType.offline) {
+    if (state.type == NetworkStateType.offline ||
+        state.type == NetworkStateType.unknown) {
       add(HomeNetworkErrorEvent());
     } else if (state.type == NetworkStateType.connected) {
       add(HomeLoadMediaEvent());
@@ -111,7 +112,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  Future<void> _onRefreshMedia(HomeRefreshMediaEvent event, Emitter<HomeState> emit) async {
+  Future<void> _onRefreshMedia(
+      HomeRefreshMediaEvent event, Emitter<HomeState> emit) async {
     add(HomeLoadMediaEvent(locale: event.locale, page: event.page));
     event.refreshController.refreshCompleted();
   }

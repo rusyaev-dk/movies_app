@@ -8,11 +8,13 @@ class MovieDetailsLoadedState extends MovieDetailsState {
   final MovieModel movieModel;
   final List<MediaImageModel>? movieImages;
   final List<PersonModel>? movieCredits;
+  final List<MovieModel>? similarMovies;
 
   MovieDetailsLoadedState({
     required this.movieModel,
     this.movieImages,
     this.movieCredits,
+    this.similarMovies,
   });
 }
 

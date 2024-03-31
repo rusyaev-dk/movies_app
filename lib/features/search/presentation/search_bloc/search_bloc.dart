@@ -18,7 +18,7 @@ EventTransformer<E> debounceDroppable<E>(Duration duration) {
 }
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final NetworkCubit _networkCubit;
+  late final NetworkCubit _networkCubit;
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
 
