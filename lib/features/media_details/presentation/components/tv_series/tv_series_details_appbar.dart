@@ -31,9 +31,10 @@ class TVSeriesDetailsAppBar extends StatelessWidget
 
         return AnimatedContainer(
           duration: const Duration(milliseconds: 400),
-          height: 75,
           width: double.infinity,
-          padding: const EdgeInsets.only(left: 5, right: 5, top: 25),
+          padding: appBarTitle.length >= 25
+              ? const EdgeInsets.only(left: 5, right: 5, top: 35, bottom: 5)
+              : const EdgeInsets.only(left: 5, right: 5, top: 25),
           decoration: BoxDecoration(color: appBarColor),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,14 +46,17 @@ class TVSeriesDetailsAppBar extends StatelessWidget
                   size: 25,
                 ),
               ),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 450),
-                opacity: showTitle ? 1 : 0,
-                child: Text(
-                  appBarTitle,
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle,
+              Expanded(
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 450),
+                  opacity: showTitle ? 1 : 0,
+                  child: Text(
+                    appBarTitle,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .headingTextStyle,
+                  ),
                 ),
               ),
               IconButton(
@@ -70,5 +74,6 @@ class TVSeriesDetailsAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size(double.infinity, 75);
+  Size get preferredSize =>
+      Size(double.infinity, appBarTitle.length >= 25 ? 85 : 75);
 }

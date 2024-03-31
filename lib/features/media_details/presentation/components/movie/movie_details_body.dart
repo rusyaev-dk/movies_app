@@ -179,11 +179,13 @@ class MovieDetailsContent extends StatelessWidget {
           thickness: 1,
           color: Theme.of(context).colorScheme.surface,
         ),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaOverviewText(overview: movie.overview),
-        ),
+        if (movie.overview != null && movie.overview!.trim().isNotEmpty)
+          const SizedBox(height: 15),
+        if (movie.overview != null && movie.overview!.trim().isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: MediaOverviewText(overview: movie.overview!),
+          ),
         if (movieImages.isNotEmpty) const SizedBox(height: 15),
         if (movieImages.isNotEmpty)
           Padding(

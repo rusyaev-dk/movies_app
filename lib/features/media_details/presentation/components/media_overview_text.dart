@@ -8,7 +8,7 @@ class MediaOverviewText extends StatelessWidget {
     required this.overview,
   });
 
-  final String? overview;
+  final String overview;
 
   static Widget shimmerLoading() {
     return Column(
@@ -42,19 +42,9 @@ class MediaOverviewText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (overview == null) {
-      return Center(
-        child: Text(
-          "No overview",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
-        ),
-      );
-    }
-
-    if (DataFormatter.countSentences(overview!) <= 1) {
+    if (DataFormatter.countSentences(overview) <= 1) {
       return Text(
-        overview!,
+        overview,
         style: Theme.of(context)
             .extension<ThemeTextStyles>()!
             .subtitleTextStyle
@@ -64,8 +54,8 @@ class MediaOverviewText extends StatelessWidget {
             ),
       );
     }
-    String firstSentense = overview!.substring(0, overview!.indexOf('.') + 1);
-    String otherSensetnses = overview!.substring(overview!.indexOf('.') + 2);
+    String firstSentense = overview.substring(0, overview.indexOf('.') + 1);
+    String otherSensetnses = overview.substring(overview.indexOf('.') + 2);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

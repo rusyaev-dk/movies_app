@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
@@ -28,14 +30,17 @@ class MediaTitleText extends StatelessWidget {
     if (title.length >= 25) {
       padding = const EdgeInsets.symmetric(horizontal: 20);
       children = [
-        Text(
-          "$roundedVoteAverage",
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
-              .copyWith(color: voteColor, fontSize: 20),
+        Expanded(
+          child: Text(
+            "$roundedVoteAverage",
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .headingTextStyle
+                .copyWith(color: voteColor, fontSize: 20),
+          ),
         ),
         Expanded(
+          flex: 8,
           child: Text(
             title,
             textAlign: TextAlign.center,

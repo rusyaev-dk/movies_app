@@ -174,11 +174,13 @@ class TVSeriesDetailsContent extends StatelessWidget {
           thickness: 1,
           color: Theme.of(context).colorScheme.surface,
         ),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaOverviewText(overview: tvSeries.overview),
-        ),
+        if (tvSeries.overview != null && tvSeries.overview!.trim().isNotEmpty)
+          const SizedBox(height: 15),
+        if (tvSeries.overview != null && tvSeries.overview!.trim().isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: MediaOverviewText(overview: tvSeries.overview!),
+          ),
         if (tvSeriesImages.isNotEmpty) const SizedBox(height: 15),
         if (tvSeriesImages.isNotEmpty)
           Padding(
@@ -212,7 +214,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
-              title: "Similar TV Series",
+              title: "Similar TV series",
               withAllButton: false,
               models: similarTVSeries,
             ),
