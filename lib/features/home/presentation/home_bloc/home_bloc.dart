@@ -32,7 +32,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         super(HomeState()) {
     Future.microtask(
       () {
-        _onNetworkStateChanged(networkCubit.state);
         _networkCubitSubscription =
             _networkCubit.stream.listen(_onNetworkStateChanged);
       },
@@ -88,8 +87,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       switch (mediaRepoPattern) {
         case (final RepositoryFailure failure, null):
           return emit(HomeFailureState(failure: failure));
-        case (null, final List<TMDBModel> models):
-          if (models.isEmpty) {
+        case (null, final List<TMDBModel> resModels):
+          if (resModels.isEmpty) {
             return emit(HomeFailureState(failure: (
               1,
               StackTrace.current,
@@ -97,7 +96,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ""
             )));
           }
-          modelsMap[type.asString()] = models;
+          modelsMap[type.asString()] = resModels;
           break;
       }
 

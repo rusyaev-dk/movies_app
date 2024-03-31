@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -16,6 +17,7 @@ import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TVSeriesDetailsBody extends StatelessWidget {
@@ -62,6 +64,7 @@ class TVSeriesDetailsBody extends StatelessWidget {
             tvSeries: state.tvSeriesModel,
             tvSeriesImages: state.tvSeriesImages ?? [],
             tvSeriesCredits: state.tvSeriesCredits ?? [],
+            similarTVSeries: state.similarTVSeries ?? [],
           );
         }
 
@@ -79,11 +82,13 @@ class TVSeriesDetailsContent extends StatelessWidget {
     required this.tvSeries,
     required this.tvSeriesImages,
     required this.tvSeriesCredits,
+    required this.similarTVSeries,
   });
 
   final TVSeriesModel tvSeries;
   final List<MediaImageModel> tvSeriesImages;
   final List<PersonModel> tvSeriesCredits;
+  final List<TVSeriesModel> similarTVSeries;
 
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
@@ -118,10 +123,27 @@ class TVSeriesDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
+    scrollController.addListener(() {
+      final currentState = context.read<MediaDetailsAppbarCubit>().state;
+
+      if (scrollController.position.pixels > 600 &&
+          currentState == MediaDetailsAppbarState.transparent) {
+        context.read<MediaDetailsAppbarCubit>().fillAppBar();
+      } else if (scrollController.position.userScrollDirection ==
+              ScrollDirection.forward &&
+          scrollController.position.pixels < 600 &&
+          currentState == MediaDetailsAppbarState.filled) {
+        context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+      }
+    });
+
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
         imagePath: tvSeries.posterPath, width: 100);
 
     return ListView(
+      controller: scrollController,
       padding: EdgeInsets.zero,
       children: [
         Stack(
@@ -184,7 +206,17 @@ class TVSeriesDetailsContent extends StatelessWidget {
               withAllButton: false,
               models: tvSeriesCredits,
             ),
-          )
+          ),
+        if (similarTVSeries.isNotEmpty) const SizedBox(height: 10),
+        if (similarTVSeries.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Similar TV Series",
+              withAllButton: false,
+              models: similarTVSeries,
+            ),
+          ),
       ],
     );
   }

@@ -69,14 +69,14 @@ class MediaApiClient {
 
   Future<Response> getSearchMultiMedia({
     required String query,
-    required String language,
+    required String locale,
     required int page,
     bool includeAdult = false,
   }) async {
     Map<String, dynamic> uriParameters = {
       'query': query,
       'include_adult': includeAdult.toString(),
-      'language': language,
+      'language': locale,
       'page': page.toString(),
       'api_key': _apiKey,
     };
@@ -184,6 +184,38 @@ class MediaApiClient {
     };
     return await _httpClient.get(
       path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/${ApiConfig.imagesPath}",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getSimilarMovies({
+    required int movieId,
+    required String locale,
+    required int page,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.moviePath}/$movieId/${ApiConfig.similarPath}",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getSimilarTVSeries({
+    required int tvSeriesId,
+    required String locale,
+    required int page,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: "${ApiConfig.tvSeriesPath}/$tvSeriesId/${ApiConfig.similarPath}",
       uriParameters: uriParameters,
     );
   }

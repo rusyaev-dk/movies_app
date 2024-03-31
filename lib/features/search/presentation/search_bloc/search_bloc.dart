@@ -40,7 +40,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchMultiEvent>(
       _onSearchMulti,
       transformer: debounceDroppable(
-        const Duration(milliseconds: 400),
+        const Duration(milliseconds: 350),
       ),
     );
   }
@@ -77,8 +77,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(SearchFailureState(failure: failure, query: event.query));
-      case (null, final List<TMDBModel> searchModels):
-        return emit(SearchLoadedState(searchModels: searchModels));
+      case (null, final List<TMDBModel> resSearchModels):
+        return emit(SearchLoadedState(searchModels: resSearchModels));
     }
   }
 

@@ -3,7 +3,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -69,8 +69,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     switch (authRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(AuthFailureState(failure));
-      case (null, final String patternSessionId):
-        sessionId = patternSessionId;
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
         break;
     }
 
@@ -80,8 +80,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     switch (accountRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(AuthFailureState(failure));
-      case (null, final int patternAccountId):
-        accountId = patternAccountId;
+      case (null, final int resAccountId):
+        accountId = resAccountId;
         break;
     }
 

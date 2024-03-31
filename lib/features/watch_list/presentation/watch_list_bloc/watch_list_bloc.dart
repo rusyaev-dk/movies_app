@@ -37,8 +37,8 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     switch (sessionDataRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
-      case (null, final String patternSessionId):
-        sessionId = patternSessionId;
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
     }
 
     sessionDataRepositoryPattern =
@@ -46,8 +46,8 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     switch (sessionDataRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
-      case (null, final int patternAccountId):
-        accountId = patternAccountId;
+      case (null, final int resAccountId):
+        accountId = resAccountId;
     }
 
     List<MovieModel>? favouriteMovies;
@@ -63,8 +63,8 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     switch (accountRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
-      case (null, final List<MovieModel> movieModels):
-        favouriteMovies = movieModels;
+      case (null, final List<MovieModel> resMovieModels):
+        favouriteMovies = resMovieModels;
     }
 
     accountRepositoryPattern =
@@ -79,10 +79,10 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     switch (accountRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
-      case (null, final List<TVSeriesModel> tvSeriesModels):
+      case (null, final List<TVSeriesModel> resTVSeriesModels):
         return emit(WatchListLoadedState(
           moviesWatchList: favouriteMovies!,
-          tvSeriesWatchList: tvSeriesModels,
+          tvSeriesWatchList: resTVSeriesModels,
         ));
     }
   }

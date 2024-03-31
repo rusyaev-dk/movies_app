@@ -37,8 +37,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     switch (sessionDataRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
-      case (null, final String patternSessionId):
-        sessionId = patternSessionId;
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
     }
 
     sessionDataRepositoryPattern =
@@ -46,8 +46,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     switch (sessionDataRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
-      case (null, final int patternAccountId):
-        accountId = patternAccountId;
+      case (null, final int resAccountId):
+        accountId = resAccountId;
     }
 
     AccountRepositoryPattern accountRepositoryPattern =
@@ -59,8 +59,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     switch (accountRepositoryPattern) {
       case (final RepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
-      case (null, final AccountModel account):
-        return emit(AccountLoadedState(account: account));
+      case (null, final AccountModel resAccountModel):
+        return emit(AccountLoadedState(account: resAccountModel));
     }
   }
 

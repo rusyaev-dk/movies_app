@@ -171,8 +171,10 @@ class MediaListView extends StatelessWidget {
         final model = models[i];
         if (model is MovieModel) {
           return GestureDetector(
-            onTap: () => context
-                .go("/home/movie_details", extra: [model.id, model.title]),
+            onTap: () {
+              context
+                  .push("/home/movie_details", extra: [model.id, model.title]);
+            },
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,
@@ -183,8 +185,10 @@ class MediaListView extends StatelessWidget {
           );
         } else if (model is TVSeriesModel) {
           return GestureDetector(
-            onTap: () => context
-                .go("/home/tv_series_details", extra: [model.id, model.name]),
+            onTap: () {
+              context.push("/home/tv_series_details",
+                  extra: [model.id, model.name]);
+            },
             child: MediaCard(
               key: ValueKey(model.id),
               width: cardWidth,
@@ -204,21 +208,21 @@ class MediaListView extends StatelessWidget {
 
               if (currentRoute ==
                   "${AppRoutes.home}/${AppRoutes.movieDetails}") {
-                context.go(
+                context.push(
                     "${AppRoutes.home}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               } else if (currentRoute ==
                   "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}") {
-                context.go(
+                context.push(
                     "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               } else if (currentRoute ==
                   "${AppRoutes.search}/${AppRoutes.movieDetails}") {
-                context.go(
+                context.push(
                     "${AppRoutes.search}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               } else {
-                context.go(
+                context.push(
                     "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
                     extra: [model.id, model.name]);
               }

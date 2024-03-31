@@ -33,8 +33,8 @@ class PersonDetailsBloc extends Bloc<PersonDetailsEvent, PersonDetailsState> {
       case (final RepositoryFailure failure, null):
         return emit(PersonDetailsFailureState(
             failure: failure, personId: event.personId));
-      case (null, final PersonModel patternModel):
-        return emit(PersonDetailsLoadedState(personModel: patternModel));
+      case (null, final PersonModel resPersonModel):
+        return emit(PersonDetailsLoadedState(personModel: resPersonModel));
     }
   }
 }

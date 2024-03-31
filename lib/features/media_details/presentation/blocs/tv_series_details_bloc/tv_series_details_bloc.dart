@@ -35,8 +35,8 @@ class TvSeriesDetailsBloc
       case (final RepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
-      case (null, final TVSeriesModel patternModel):
-        tvSeriesModel = patternModel;
+      case (null, final TVSeriesModel resTVSeriesModel):
+        tvSeriesModel = resTVSeriesModel;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaCredits(
@@ -50,8 +50,8 @@ class TvSeriesDetailsBloc
       case (final RepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
-      case (null, final List<PersonModel> patternCredits):
-        tvSeriesCredits = patternCredits;
+      case (null, final List<PersonModel> resTVSeriesCredits):
+        tvSeriesCredits = resTVSeriesCredits;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaImages(
@@ -60,15 +60,32 @@ class TvSeriesDetailsBloc
       locale: event.locale,
     );
 
+    List<MediaImageModel>? tvSeriesImages;
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
-      case (null, final List<MediaImageModel> patternImages):
+      case (null, final List<MediaImageModel> resTVSeriesImages):
+        tvSeriesImages = resTVSeriesImages;
+    }
+
+    mediaRepoPattern = await _mediaRepository.onGetSimilarMedia<TVSeriesModel>(
+      mediaType: TMDBMediaType.tv,
+      mediaId: event.tvSeriesId,
+      locale: event.locale,
+      page: 1,
+    );
+
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(TVSeriesDetailsFailureState(
+            failure: failure, tvSeriesId: event.tvSeriesId));
+      case (null, final List<TVSeriesModel> resSimilarTVSeries):
         return emit(TVSeriesDetailsLoadedState(
           tvSeriesModel: tvSeriesModel!,
+          tvSeriesImages: tvSeriesImages!,
           tvSeriesCredits: tvSeriesCredits!,
-          tvSeriesImages: patternImages,
+          similarTVSeries: resSimilarTVSeries,
         ));
     }
   }

@@ -34,8 +34,8 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       case (final RepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
-      case (null, final MovieModel patternModel):
-        movieModel = patternModel;
+      case (null, final MovieModel resMovieModel):
+        movieModel = resMovieModel;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaCredits(
@@ -49,8 +49,8 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       case (final RepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
-      case (null, final List<PersonModel> patternCredits):
-        movieCredits = patternCredits;
+      case (null, final List<PersonModel> resMovieCredits):
+        movieCredits = resMovieCredits;
     }
 
     mediaRepoPattern = await _mediaRepository.onGetMediaImages(
@@ -59,16 +59,32 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       locale: event.locale,
     );
 
+    List<MediaImageModel>? movieImages;
     switch (mediaRepoPattern) {
       case (final RepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
-      case (null, final List<MediaImageModel> patternImages):
+      case (null, final List<MediaImageModel> resMovieImages):
+        movieImages = resMovieImages;
+    }
+
+    mediaRepoPattern = await _mediaRepository.onGetSimilarMedia<MovieModel>(
+      mediaType: TMDBMediaType.movie,
+      mediaId: event.movieId,
+      locale: event.locale,
+      page: 1,
+    );
+
+    switch (mediaRepoPattern) {
+      case (final RepositoryFailure failure, null):
+        return emit(
+            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+      case (null, final List<MovieModel> resSimilarMovies):
         return emit(MovieDetailsLoadedState(
-          movieModel: movieModel!,
-          movieCredits: movieCredits!,
-          movieImages: patternImages,
-        ));
+            movieModel: movieModel!,
+            movieImages: movieImages!,
+            movieCredits: movieCredits!,
+            similarMovies: resSimilarMovies));
     }
   }
 }

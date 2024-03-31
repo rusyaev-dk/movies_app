@@ -4,6 +4,7 @@ import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/movie_details_bloc/movie_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_appbar.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_body.dart';
+import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 
 class MovieDetailsScreen extends StatelessWidget {
   const MovieDetailsScreen({
@@ -17,16 +18,22 @@ class MovieDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MovieDetailsBloc(
-        // sessionDataRepository: RepositoryProvider.of<SessionDataRepository>(context),
-        // accountRepository: RepositoryProvider.of<AccountRepository>(context),
-        mediaRepository: RepositoryProvider.of<MediaRepository>(context),
-      )..add(MovieDetailsLoadDetailsEvent(movieId: movieId)),
-      child: const Scaffold(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => MovieDetailsBloc(
+            mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+          )..add(MovieDetailsLoadDetailsEvent(movieId: movieId)),
+        ),
+        BlocProvider(
+          key: ValueKey([movieId, appBarTitle]),
+          create: (context) => MediaDetailsAppbarCubit(),
+        ),
+      ],
+      child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: MovieDetailsAppBar(),
-        body: MovieDetailsBody(),
+        appBar: MovieDetailsAppBar(appBarTitle: appBarTitle),
+        body: const MovieDetailsBody(),
       ),
     );
   }

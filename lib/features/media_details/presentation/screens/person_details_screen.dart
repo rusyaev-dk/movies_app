@@ -21,10 +21,9 @@ class PersonDetailsScreen extends StatelessWidget {
       create: (context) => PersonDetailsBloc(
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
-      child: const Scaffold(
-        // extendBodyBehindAppBar: true,
-        appBar: PersonDetailsAppBar(),
-        body: PersonDetailsBody(),
+      child: Scaffold(
+        appBar: PersonDetailsAppBar(appBarTitle: appBarTitle),
+        body: const PersonDetailsBody(),
       ),
     );
   }

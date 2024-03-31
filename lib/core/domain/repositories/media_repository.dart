@@ -128,7 +128,7 @@ class MediaRepository {
     try {
       final response = await _mediaApiClient.getSearchMultiMedia(
         query: query,
-        language: locale,
+        locale: locale,
         page: page,
       );
 
@@ -313,6 +313,66 @@ class MediaRepository {
       );
 
       return (null, images.reversed.toList());
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      RepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<T>>> onGetSimilarMedia<T>({
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required String locale,
+    required int page,
+  }) async {
+    try {
+      final Response? response;
+      final TMDBModel Function(Map<String, dynamic>)? fromJson;
+      switch (mediaType) {
+        case TMDBMediaType.movie:
+          response = await _mediaApiClient.getSimilarMovies(
+              movieId: mediaId, locale: locale, page: page);
+          fromJson = MovieModel.fromJSON;
+        case TMDBMediaType.tv:
+          response = await _mediaApiClient.getSimilarTVSeries(
+              tvSeriesId: mediaId, locale: locale, page: page);
+          fromJson = TVSeriesModel.fromJSON;
+        default:
+          response = null;
+          fromJson = null;
+      }
+
+      final List<T> models = _createModelsList<T>(
+        fromJson: fromJson!,
+        response: response!,
+        jsonKey: "results",
+      );
+
+      return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {

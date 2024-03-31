@@ -1,5 +1,3 @@
-
-
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 
 typedef RepositoryFailure = (

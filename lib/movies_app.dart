@@ -5,7 +5,7 @@ import 'package:movies_app/core/domain/repositories/connectivity_repository.dart
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/themes/theme.dart';

@@ -8,11 +8,13 @@ class TVSeriesDetailsLoadedState extends TVSeriesDetailsState {
   final TVSeriesModel tvSeriesModel;
   final List<MediaImageModel>? tvSeriesImages;
   final List<PersonModel>? tvSeriesCredits;
+  final List<TVSeriesModel>? similarTVSeries;
 
   TVSeriesDetailsLoadedState({
     required this.tvSeriesModel,
     this.tvSeriesImages,
     this.tvSeriesCredits,
+    this.similarTVSeries,
   });
 }
 

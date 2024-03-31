@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -17,6 +18,7 @@ import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie_details_budget.dart';
+import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MovieDetailsBody extends StatelessWidget {
@@ -63,6 +65,7 @@ class MovieDetailsBody extends StatelessWidget {
             movie: state.movieModel,
             movieImages: state.movieImages ?? [],
             movieCredits: state.movieCredits ?? [],
+            similarMovies: state.similarMovies ?? [],
           );
         }
 
@@ -80,11 +83,13 @@ class MovieDetailsContent extends StatelessWidget {
     required this.movie,
     required this.movieImages,
     required this.movieCredits,
+    required this.similarMovies,
   });
 
   final MovieModel movie;
   final List<MediaImageModel> movieImages;
   final List<PersonModel> movieCredits;
+  final List<MovieModel> similarMovies;
 
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
@@ -119,10 +124,31 @@ class MovieDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
-        imagePath: movie.posterPath, width: 100);
+    final ScrollController scrollController = ScrollController();
+
+    scrollController.addListener(() {
+      final currentState = context.read<MediaDetailsAppbarCubit>().state;
+
+      if (scrollController.position.pixels > 600 &&
+          currentState == MediaDetailsAppbarState.transparent) {
+        context.read<MediaDetailsAppbarCubit>().fillAppBar();
+      } else if (scrollController.position.userScrollDirection ==
+              ScrollDirection.forward &&
+          scrollController.position.pixels < 600 &&
+          currentState == MediaDetailsAppbarState.filled) {
+        context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+      }
+    });
+
+    Widget imageWidget = ApiImageFormatter.formatImageWidget(
+      context,
+      imagePath: movie.posterPath,
+      width: 100,
+      height: 600,
+    );
 
     return ListView(
+      controller: scrollController,
       padding: EdgeInsets.zero,
       children: [
         Stack(
@@ -133,7 +159,7 @@ class MovieDetailsContent extends StatelessWidget {
               width: double.infinity,
               child: imageWidget,
             ),
-            const DarkPosterGradient(),
+            if (movie.posterPath != null) const DarkPosterGradient(),
           ],
         ),
         const SizedBox(height: 10),
@@ -193,7 +219,17 @@ class MovieDetailsContent extends StatelessWidget {
               withAllButton: false,
               models: movieCredits,
             ),
-          )
+          ),
+        if (similarMovies.isNotEmpty) const SizedBox(height: 10),
+        if (similarMovies.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: MediaHorizontalListView(
+              title: "Similar movies",
+              withAllButton: false,
+              models: similarMovies,
+            ),
+          ),
       ],
     );
   }
