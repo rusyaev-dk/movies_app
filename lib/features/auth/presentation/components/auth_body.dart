@@ -3,11 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 
-class AuthBody extends StatelessWidget {
-  AuthBody({super.key});
+class AuthBody extends StatefulWidget {
+  const AuthBody({super.key});
 
-  final TextEditingController _loginController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  @override
+  State<AuthBody> createState() => _AuthBodyState();
+}
+
+class _AuthBodyState extends State<AuthBody> {
+  late final TextEditingController _loginController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _loginController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +58,18 @@ class AuthBody extends StatelessWidget {
                   passwordController: _passwordController,
                 ),
               ),
-              const Text("asdfasdfasdfasdf"),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
 

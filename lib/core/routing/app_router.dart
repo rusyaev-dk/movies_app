@@ -69,6 +69,7 @@ class AppRouter {
             builder: (context, state) {
               final args = state.extra as List;
               return MovieDetailsScreen(
+                key: ValueKey(args),
                 movieId: args[0],
                 appBarTitle: args[1],
               );

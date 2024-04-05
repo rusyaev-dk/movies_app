@@ -76,7 +76,7 @@ class TVSeriesDetailsBody extends StatelessWidget {
   }
 }
 
-class TVSeriesDetailsContent extends StatelessWidget {
+class TVSeriesDetailsContent extends StatefulWidget {
   const TVSeriesDetailsContent({
     super.key,
     required this.tvSeries,
@@ -122,28 +122,39 @@ class TVSeriesDetailsContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
+  State<TVSeriesDetailsContent> createState() => _TVSeriesDetailsContentState();
+}
 
-    scrollController.addListener(() {
+class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
       final currentState = context.read<MediaDetailsAppbarCubit>().state;
 
-      if (scrollController.position.pixels > 600 &&
+      if (_scrollController.position.pixels > 600 &&
           currentState == MediaDetailsAppbarState.transparent) {
         context.read<MediaDetailsAppbarCubit>().fillAppBar();
-      } else if (scrollController.position.userScrollDirection ==
+      } else if (_scrollController.position.userScrollDirection ==
               ScrollDirection.forward &&
-          scrollController.position.pixels < 600 &&
+          _scrollController.position.pixels < 600 &&
           currentState == MediaDetailsAppbarState.filled) {
         context.read<MediaDetailsAppbarCubit>().unFillAppBar();
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
-        imagePath: tvSeries.posterPath, width: 100);
+        imagePath: widget.tvSeries.posterPath, width: 100);
 
     return ListView(
-      controller: scrollController,
+      controller: _scrollController,
       padding: EdgeInsets.zero,
       children: [
         Stack(
@@ -158,7 +169,7 @@ class TVSeriesDetailsContent extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        TVSeriesDetailsHead(tvSeries: tvSeries),
+        TVSeriesDetailsHead(tvSeries: widget.tvSeries),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -174,52 +185,60 @@ class TVSeriesDetailsContent extends StatelessWidget {
           thickness: 1,
           color: Theme.of(context).colorScheme.surface,
         ),
-        if (tvSeries.overview != null && tvSeries.overview!.trim().isNotEmpty)
+        if (widget.tvSeries.overview != null &&
+            widget.tvSeries.overview!.trim().isNotEmpty)
           const SizedBox(height: 15),
-        if (tvSeries.overview != null && tvSeries.overview!.trim().isNotEmpty)
+        if (widget.tvSeries.overview != null &&
+            widget.tvSeries.overview!.trim().isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: MediaOverviewText(overview: tvSeries.overview!),
+            child: MediaOverviewText(overview: widget.tvSeries.overview!),
           ),
-        if (tvSeriesImages.isNotEmpty) const SizedBox(height: 15),
-        if (tvSeriesImages.isNotEmpty)
+        if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 15),
+        if (widget.tvSeriesImages.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Images",
               withAllButton: false,
-              models: tvSeriesImages,
+              models: widget.tvSeriesImages,
             ),
           ),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsRating(
-            voteAverage: tvSeries.voteAverage ?? 0,
-            voteCount: tvSeries.voteCount ?? 0,
+            voteAverage: widget.tvSeries.voteAverage ?? 0,
+            voteCount: widget.tvSeries.voteCount ?? 0,
           ),
         ),
-        if (tvSeriesCredits.isNotEmpty) const SizedBox(height: 10),
-        if (tvSeriesCredits.isNotEmpty)
+        if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 10),
+        if (widget.tvSeriesCredits.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Credits",
               withAllButton: false,
-              models: tvSeriesCredits,
+              models: widget.tvSeriesCredits,
             ),
           ),
-        if (similarTVSeries.isNotEmpty) const SizedBox(height: 10),
-        if (similarTVSeries.isNotEmpty)
+        if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 10),
+        if (widget.similarTVSeries.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Similar TV series",
               withAllButton: false,
-              models: similarTVSeries,
+              models: widget.similarTVSeries,
             ),
           ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

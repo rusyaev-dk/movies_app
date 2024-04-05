@@ -100,7 +100,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           break;
       }
 
-      await Future.delayed(const Duration(milliseconds: 400));
+      await Future.delayed(const Duration(milliseconds: 150));
     }
 
     emit(HomeLoadedState(

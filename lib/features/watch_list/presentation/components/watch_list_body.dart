@@ -84,7 +84,7 @@ class WatchListBody extends StatelessWidget {
   }
 }
 
-class WatchListContent extends StatelessWidget {
+class WatchListContent extends StatefulWidget {
   const WatchListContent({
     super.key,
     required this.moviesWatchList,
@@ -114,33 +114,49 @@ class WatchListContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    RefreshController refreshController =
-        RefreshController(initialRefresh: false);
+  State<WatchListContent> createState() => _WatchListContentState();
+}
 
+class _WatchListContentState extends State<WatchListContent> {
+  late final RefreshController _refreshController;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshController = RefreshController(initialRefresh: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SmartRefresher(
       enablePullDown: true,
-      controller: refreshController,
+      controller: _refreshController,
       onRefresh: () => context.read<WatchListBloc>().add(
-          WatchListRefreshWatchListEvent(refreshController: refreshController)),
+          WatchListRefreshWatchListEvent(refreshController: _refreshController)),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           MediaHorizontalListView(
-            models: moviesWatchList,
-            withAllButton: moviesWatchList.length > 10,
+            models: widget.moviesWatchList,
+            withAllButton: widget.moviesWatchList.length > 10,
             cardHeight: 210,
             cardWidth: 140,
           ),
           const SizedBox(height: 10),
           MediaHorizontalListView(
-            models: tvSeriesWatchList,
-            withAllButton: moviesWatchList.length > 10,
+            models: widget.tvSeriesWatchList,
+            withAllButton: widget.moviesWatchList.length > 10,
             cardHeight: 210,
             cardWidth: 140,
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 }

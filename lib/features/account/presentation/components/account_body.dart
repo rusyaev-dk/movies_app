@@ -65,7 +65,7 @@ class AccountBody extends StatelessWidget {
   }
 }
 
-class AccountContent extends StatelessWidget {
+class AccountContent extends StatefulWidget {
   const AccountContent({
     super.key,
     required this.account,
@@ -129,22 +129,32 @@ class AccountContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    RefreshController refreshController =
-        RefreshController(initialRefresh: false);
+  State<AccountContent> createState() => _AccountContentState();
+}
 
+class _AccountContentState extends State<AccountContent> {
+  late final RefreshController _refreshController;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshController = RefreshController(initialRefresh: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Widget avatarWidget = ApiImageFormatter.formatAvatarImageWidget(
       context,
-      imagePath: account.avatarPath,
+      imagePath: widget.account.avatarPath,
       diameter: 200,
     );
 
     return SmartRefresher(
       enablePullDown: true,
-      controller: refreshController,
+      controller: _refreshController,
       onRefresh: () => context.read<AccountBloc>().add(
           AccountRefreshAccountDetailsEvent(
-              refreshController: refreshController)),
+              refreshController: _refreshController)),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -163,7 +173,7 @@ class AccountContent extends StatelessWidget {
                   avatarWidget,
                   const SizedBox(height: 20),
                   Text(
-                    account.username ?? "Unknown username",
+                    widget.account.username ?? "Unknown username",
                     style: Theme.of(context)
                         .extension<ThemeTextStyles>()!
                         .headingTextStyle
@@ -183,5 +193,11 @@ class AccountContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 }

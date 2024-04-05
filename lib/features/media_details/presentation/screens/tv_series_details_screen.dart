@@ -26,7 +26,7 @@ class TVSeriesDetailsScreen extends StatelessWidget {
           )..add(TVSeriesDetailsLoadDetailsEvent(tvSeriesId: tvSeriesId)),
         ),
         BlocProvider(
-          key: ValueKey([tvSeriesId, appBarTitle]),
+      
           create: (context) => MediaDetailsAppbarCubit(),
         ),
       ],

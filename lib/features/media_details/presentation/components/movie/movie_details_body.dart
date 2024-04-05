@@ -77,7 +77,7 @@ class MovieDetailsBody extends StatelessWidget {
   }
 }
 
-class MovieDetailsContent extends StatelessWidget {
+class MovieDetailsContent extends StatefulWidget {
   const MovieDetailsContent({
     super.key,
     required this.movie,
@@ -123,32 +123,43 @@ class MovieDetailsContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
+  State<MovieDetailsContent> createState() => _MovieDetailsContentState();
+}
 
-    scrollController.addListener(() {
+class _MovieDetailsContentState extends State<MovieDetailsContent> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
       final currentState = context.read<MediaDetailsAppbarCubit>().state;
-
-      if (scrollController.position.pixels > 600 &&
+      if (_scrollController.position.pixels > 600 &&
           currentState == MediaDetailsAppbarState.transparent) {
         context.read<MediaDetailsAppbarCubit>().fillAppBar();
-      } else if (scrollController.position.userScrollDirection ==
+      } else if (_scrollController.position.userScrollDirection ==
               ScrollDirection.forward &&
-          scrollController.position.pixels < 600 &&
+          _scrollController.position.pixels < 600 &&
           currentState == MediaDetailsAppbarState.filled) {
         context.read<MediaDetailsAppbarCubit>().unFillAppBar();
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    print("BUILD MOVIE DETAILS");
     Widget imageWidget = ApiImageFormatter.formatImageWidget(
       context,
-      imagePath: movie.posterPath,
+      imagePath: widget.movie.posterPath,
       width: 100,
       height: 600,
     );
 
     return ListView(
-      controller: scrollController,
+      controller: _scrollController,
       padding: EdgeInsets.zero,
       children: [
         Stack(
@@ -159,11 +170,11 @@ class MovieDetailsContent extends StatelessWidget {
               width: double.infinity,
               child: imageWidget,
             ),
-            if (movie.posterPath != null) const DarkPosterGradient(),
+            if (widget.movie.posterPath != null) const DarkPosterGradient(),
           ],
         ),
         const SizedBox(height: 10),
-        MovieDetailsHead(movie: movie),
+        MovieDetailsHead(movie: widget.movie),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -179,60 +190,68 @@ class MovieDetailsContent extends StatelessWidget {
           thickness: 1,
           color: Theme.of(context).colorScheme.surface,
         ),
-        if (movie.overview != null && movie.overview!.trim().isNotEmpty)
+        if (widget.movie.overview != null &&
+            widget.movie.overview!.trim().isNotEmpty)
           const SizedBox(height: 15),
-        if (movie.overview != null && movie.overview!.trim().isNotEmpty)
+        if (widget.movie.overview != null &&
+            widget.movie.overview!.trim().isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: MediaOverviewText(overview: movie.overview!),
+            child: MediaOverviewText(overview: widget.movie.overview!),
           ),
-        if (movieImages.isNotEmpty) const SizedBox(height: 15),
-        if (movieImages.isNotEmpty)
+        if (widget.movieImages.isNotEmpty) const SizedBox(height: 15),
+        if (widget.movieImages.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Images",
               withAllButton: false,
-              models: movieImages,
+              models: widget.movieImages,
             ),
           ),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsRating(
-            voteAverage: movie.voteAverage ?? 0,
-            voteCount: movie.voteCount ?? 0,
+            voteAverage: widget.movie.voteAverage ?? 0,
+            voteCount: widget.movie.voteCount ?? 0,
           ),
         ),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsBudget(
-            budget: movie.budget ?? 0,
-            revenue: movie.revenue ?? 0,
+            budget: widget.movie.budget ?? 0,
+            revenue: widget.movie.revenue ?? 0,
           ),
         ),
-        if (movieCredits.isNotEmpty) const SizedBox(height: 10),
-        if (movieCredits.isNotEmpty)
+        if (widget.movieCredits.isNotEmpty) const SizedBox(height: 10),
+        if (widget.movieCredits.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Credits",
               withAllButton: false,
-              models: movieCredits,
+              models: widget.movieCredits,
             ),
           ),
-        if (similarMovies.isNotEmpty) const SizedBox(height: 10),
-        if (similarMovies.isNotEmpty)
+        if (widget.similarMovies.isNotEmpty) const SizedBox(height: 10),
+        if (widget.similarMovies.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: MediaHorizontalListView(
               title: "Similar movies",
               withAllButton: false,
-              models: similarMovies,
+              models: widget.similarMovies,
             ),
           ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

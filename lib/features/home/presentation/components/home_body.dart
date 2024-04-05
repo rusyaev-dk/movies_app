@@ -74,7 +74,7 @@ class HomeBody extends StatelessWidget {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({
     super.key,
     required this.popularMovies,
@@ -105,47 +105,63 @@ class HomeContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    RefreshController refreshController =
-        RefreshController(initialRefresh: false);
+  State<HomeContent> createState() => _HomeContentState();
+}
 
+class _HomeContentState extends State<HomeContent> {
+  late final RefreshController _refreshController;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshController = RefreshController(initialRefresh: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SmartRefresher(
       enablePullDown: true,
-      controller: refreshController,
+      controller: _refreshController,
       onRefresh: () => context
           .read<HomeBloc>()
-          .add(HomeRefreshMediaEvent(refreshController: refreshController)),
+          .add(HomeRefreshMediaEvent(refreshController: _refreshController)),
       child: ListView(
         children: [
           MediaHorizontalListView(
             title: "Popular movies for you",
-            models: popularMovies,
+            models: widget.popularMovies,
             cardHeight: 270,
             cardWidth: 180,
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
             title: "Trending movies",
-            models: trendingMovies,
+            models: widget.trendingMovies,
             cardHeight: 210,
             cardWidth: 140,
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
             title: "Popular TV series",
-            models: popularTVSeries,
+            models: widget.popularTVSeries,
             cardHeight: 210,
             cardWidth: 140,
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
             title: "Trending TV series",
-            models: trendingTVSeries,
+            models: widget.trendingTVSeries,
             cardHeight: 210,
             cardWidth: 140,
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
   }
 }

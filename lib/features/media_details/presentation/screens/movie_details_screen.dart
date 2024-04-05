@@ -26,7 +26,6 @@ class MovieDetailsScreen extends StatelessWidget {
           )..add(MovieDetailsLoadDetailsEvent(movieId: movieId)),
         ),
         BlocProvider(
-          key: ValueKey([movieId, appBarTitle]),
           create: (context) => MediaDetailsAppbarCubit(),
         ),
       ],
