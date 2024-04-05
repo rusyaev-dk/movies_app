@@ -132,25 +132,27 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
   @override
   void initState() {
     super.initState();
-    
+
     _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      final currentState = context.read<MediaDetailsAppbarCubit>().state;
-      if (_scrollController.position.pixels > 600 &&
-          currentState == MediaDetailsAppbarState.transparent) {
-        context.read<MediaDetailsAppbarCubit>().fillAppBar();
-      } else if (_scrollController.position.userScrollDirection ==
-              ScrollDirection.forward &&
-          _scrollController.position.pixels < 600 &&
-          currentState == MediaDetailsAppbarState.filled) {
-        context.read<MediaDetailsAppbarCubit>().unFillAppBar();
-      }
-    });
+    _scrollController.addListener(
+      () {
+        final currentState = context.read<MediaDetailsAppbarCubit>().state;
+        
+        if (_scrollController.position.pixels > 600 &&
+            currentState == MediaDetailsAppbarState.transparent) {
+          context.read<MediaDetailsAppbarCubit>().fillAppBar();
+        } else if (_scrollController.position.userScrollDirection ==
+                ScrollDirection.forward &&
+            _scrollController.position.pixels < 600 &&
+            currentState == MediaDetailsAppbarState.filled) {
+          context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    print("BUILD MOVIE DETAILS");
     Widget imageWidget = ApiImageFormatter.formatImageWidget(
       context,
       imagePath: widget.movie.posterPath,

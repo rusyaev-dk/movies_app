@@ -73,8 +73,12 @@ class MediaOverviewText extends StatelessWidget {
         const SizedBox(height: 15),
         Text(
           otherSensetnses,
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.subtitleTextStyle.copyWith(fontSize: 15),
+          style: Theme.of(context)
+              .extension<ThemeTextStyles>()!
+              .subtitleTextStyle
+              .copyWith(
+                fontSize: 15,
+              ),
         ),
       ],
     );

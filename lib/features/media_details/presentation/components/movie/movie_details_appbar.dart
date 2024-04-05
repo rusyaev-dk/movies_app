@@ -21,7 +21,7 @@ class MovieDetailsAppBar extends StatelessWidget
         bool showTitle = false;
         switch (state) {
           case (MediaDetailsAppbarState.filled):
-            appBarColor = Theme.of(context).colorScheme.background;
+            appBarColor = Theme.of(context).extension<ThemeColors>()!.background;
             showTitle = true;
             break;
           case (MediaDetailsAppbarState.transparent):

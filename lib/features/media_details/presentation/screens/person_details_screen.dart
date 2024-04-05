@@ -4,6 +4,7 @@ import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/person_details_bloc/person_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/person/person_details_appbar.dart';
 import 'package:movies_app/features/media_details/presentation/components/person/person_details_body.dart';
+import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 
 class PersonDetailsScreen extends StatelessWidget {
   const PersonDetailsScreen({
@@ -17,10 +18,17 @@ class PersonDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PersonDetailsBloc(
-        mediaRepository: RepositoryProvider.of<MediaRepository>(context),
-      )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PersonDetailsBloc(
+            mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+          )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
+        ),
+        BlocProvider(
+          create: (context) => MediaDetailsAppbarCubit(),
+        ),
+      ],
       child: Scaffold(
         appBar: PersonDetailsAppBar(appBarTitle: appBarTitle),
         body: const PersonDetailsBody(),

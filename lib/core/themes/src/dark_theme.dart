@@ -15,8 +15,6 @@ ThemeData createDarkTheme() {
       primary: AppColors.orange,
       primaryContainer: AppColors.orangeVariant,
       secondary: AppColors.grey,
-      background: AppColors.black,
-      onBackground: AppColors.white,
       surface: AppColors.darkerGrey,
       error: AppColors.red,
       tertiary: AppColors.green,

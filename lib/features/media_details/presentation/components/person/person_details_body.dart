@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -11,6 +12,7 @@ import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PersonDetailsBody extends StatelessWidget {
@@ -64,7 +66,7 @@ class PersonDetailsBody extends StatelessWidget {
   }
 }
 
-class PersonDetailsContent extends StatelessWidget {
+class PersonDetailsContent extends StatefulWidget {
   const PersonDetailsContent({
     super.key,
     required this.person,
@@ -157,11 +159,41 @@ class PersonDetailsContent extends StatelessWidget {
   }
 
   @override
+  State<PersonDetailsContent> createState() => _PersonDetailsContentState();
+}
+
+class _PersonDetailsContentState extends State<PersonDetailsContent> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
+    _scrollController.addListener(
+      () {
+        final currentState = context.read<MediaDetailsAppbarCubit>().state;
+        
+        if (_scrollController.position.pixels > 33 &&
+            currentState == MediaDetailsAppbarState.transparent) {
+          context.read<MediaDetailsAppbarCubit>().fillAppBar();
+        } else if (_scrollController.position.userScrollDirection ==
+                ScrollDirection.forward &&
+            _scrollController.position.pixels < 33 &&
+            currentState == MediaDetailsAppbarState.filled) {
+          context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
-        imagePath: person.profilePath, width: 100);
+        imagePath: widget.person.profilePath, width: 100);
 
     return ListView(
+      controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       children: [
         Row(
@@ -175,17 +207,17 @@ class PersonDetailsContent extends StatelessWidget {
             const SizedBox(width: 20),
             Expanded(
               child: PersonInfoText(
-                name: person.name,
-                knownForDepartment: person.knownForDepartment,
-                birthday: person.birthday,
-                deathday: person.deathday,
+                name: widget.person.name,
+                knownForDepartment: widget.person.knownForDepartment,
+                birthday: widget.person.birthday,
+                deathday: widget.person.deathday,
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
         Text(
-          person.biography ?? "No additional info",
+          widget.person.biography ?? "No additional info",
           style: Theme.of(context)
               .extension<ThemeTextStyles>()!
               .subtitleTextStyle
@@ -193,5 +225,11 @@ class PersonDetailsContent extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

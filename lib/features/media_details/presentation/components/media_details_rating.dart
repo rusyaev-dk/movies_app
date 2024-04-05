@@ -39,7 +39,7 @@ class MediaDetailsRating extends StatelessWidget {
                 height: 100,
                 child: RadialPercentWidget(
                   percent: voteAverage * 10 / 100,
-                  fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                   lineColor: Theme.of(context).colorScheme.primary,
                   freeColor:
                       Theme.of(context).colorScheme.primary.withAlpha(85),
