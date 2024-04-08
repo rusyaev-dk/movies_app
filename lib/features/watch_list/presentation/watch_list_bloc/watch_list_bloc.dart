@@ -35,7 +35,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
         await _sessionDataRepository.onGetSessionId();
 
     switch (sessionDataRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
@@ -44,7 +44,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     sessionDataRepositoryPattern =
         await _sessionDataRepository.onGetAccountId();
     switch (sessionDataRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
       case (null, final int resAccountId):
         accountId = resAccountId;
@@ -61,7 +61,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     );
 
     switch (accountRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
       case (null, final List<MovieModel> resMovieModels):
         favouriteMovies = resMovieModels;
@@ -77,7 +77,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
     );
 
     switch (accountRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(WatchListFailureState(failure: failure));
       case (null, final List<TVSeriesModel> resTVSeriesModels):
         return emit(WatchListLoadedState(

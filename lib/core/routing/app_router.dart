@@ -59,59 +59,71 @@ class AppRouter {
     required String parentPath,
     required Widget parentScreen,
   }) {
-    return StatefulShellBranch(routes: [
-      GoRoute(
-        path: parentPath,
-        builder: (context, state) => parentScreen,
-        routes: [
-          GoRoute(
-            path: AppRoutes.movieDetails,
-            builder: (context, state) {
-              final args = state.extra as List;
-              return MovieDetailsScreen(
-                key: ValueKey(args),
-                movieId: args[0],
-                appBarTitle: args[1],
-              );
-            },
-            routes: [
-              GoRoute(
-                path: AppRoutes.personDetails,
-                builder: (context, state) {
-                  final args = state.extra as List;
-                  return PersonDetailsScreen(
-                    personId: args[0],
-                    appBarTitle: args[1],
-                  );
-                },
-              ),
-            ],
-          ),
-          GoRoute(
-            path: AppRoutes.tvSeriesDetails,
-            builder: (context, state) {
-              final args = state.extra as List;
-              return TVSeriesDetailsScreen(
-                tvSeriesId: args[0],
-                appBarTitle: args[1],
-              );
-            },
-            routes: [
-              GoRoute(
-                path: AppRoutes.personDetails,
-                builder: (context, state) {
-                  final args = state.extra as List;
-                  return PersonDetailsScreen(
-                    personId: args[0],
-                    appBarTitle: args[1],
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
-    ]);
+    return StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: parentPath,
+          builder: (context, state) => parentScreen,
+          routes: [
+            GoRoute(
+              path: AppRoutes.movieDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return MovieDetailsScreen(
+                  key: ValueKey(args),
+                  movieId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppRoutes.personDetails,
+                  builder: (context, state) {
+                    final args = state.extra as List;
+                    return PersonDetailsScreen(
+                      personId: args[0],
+                      appBarTitle: args[1],
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppRoutes.tvSeriesDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return TVSeriesDetailsScreen(
+                  tvSeriesId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppRoutes.personDetails,
+                  builder: (context, state) {
+                    final args = state.extra as List;
+                    return PersonDetailsScreen(
+                      personId: args[0],
+                      appBarTitle: args[1],
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppRoutes.personDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return PersonDetailsScreen(
+                  personId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   static GoRouter get router => _router;

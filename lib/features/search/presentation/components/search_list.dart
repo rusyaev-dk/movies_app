@@ -64,6 +64,7 @@ class SearchList extends StatelessWidget {
                 imagePath: model.profilePath,
                 title: model.name ?? "Unknonwn",
                 originalTitle: model.originalName ?? "Unknown",
+                isPerson: true,
               ),
             );
           default:

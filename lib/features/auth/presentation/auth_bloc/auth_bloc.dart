@@ -50,7 +50,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final sessionDataRepoPattern =
         await _sessionDataRepository.onGetSessionId();
     switch (sessionDataRepoPattern) {
-      case (final RepositoryFailure _, null,):
+      case (
+          final ApiRepositoryFailure _,
+          null,
+        ):
         return emit(AuthUnauthorizedState());
       case (null, final String _):
         return emit(AuthAuthorizedState());
@@ -67,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final authRepoPattern = await _authRepository.onAuth(
         login: event.login, password: event.password);
     switch (authRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(AuthFailureState(failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
@@ -78,7 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final accountRepoPattern =
         await _accountRepository.onGetAccountId(sessionId: sessionId!);
     switch (accountRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(AuthFailureState(failure));
       case (null, final int resAccountId):
         accountId = resAccountId;

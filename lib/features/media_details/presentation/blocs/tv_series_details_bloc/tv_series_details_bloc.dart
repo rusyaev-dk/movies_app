@@ -32,7 +32,7 @@ class TvSeriesDetailsBloc
 
     TVSeriesModel? tvSeriesModel;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
       case (null, final TVSeriesModel resTVSeriesModel):
@@ -47,7 +47,7 @@ class TvSeriesDetailsBloc
 
     List<PersonModel>? tvSeriesCredits;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
       case (null, final List<PersonModel> resTVSeriesCredits):
@@ -62,7 +62,7 @@ class TvSeriesDetailsBloc
 
     List<MediaImageModel>? tvSeriesImages;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
       case (null, final List<MediaImageModel> resTVSeriesImages):
@@ -77,7 +77,7 @@ class TvSeriesDetailsBloc
     );
 
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(TVSeriesDetailsFailureState(
             failure: failure, tvSeriesId: event.tvSeriesId));
       case (null, final List<TVSeriesModel> resSimilarTVSeries):

@@ -8,7 +8,7 @@ import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/search/presentation/components/search_additional.dart';
 import 'package:movies_app/features/search/presentation/components/search_list.dart';
-import 'package:movies_app/features/search/presentation/search_bloc/search_bloc.dart';
+import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 
 class SearchBody extends StatelessWidget {
   const SearchBody({super.key});

@@ -19,7 +19,7 @@ class MovieDetailsLoadedState extends MovieDetailsState {
 }
 
 class MovieDetailsFailureState extends MovieDetailsState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
   final int? movieId;
 
   MovieDetailsFailureState({

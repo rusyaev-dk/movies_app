@@ -31,7 +31,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
     MovieModel? movieModel;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
       case (null, final MovieModel resMovieModel):
@@ -46,7 +46,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
     List<PersonModel>? movieCredits;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
       case (null, final List<PersonModel> resMovieCredits):
@@ -61,7 +61,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
     List<MediaImageModel>? movieImages;
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
       case (null, final List<MediaImageModel> resMovieImages):
@@ -76,7 +76,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     );
 
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(
             MovieDetailsFailureState(failure: failure, movieId: event.movieId));
       case (null, final List<MovieModel> resSimilarMovies):

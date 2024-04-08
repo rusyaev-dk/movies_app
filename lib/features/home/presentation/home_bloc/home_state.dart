@@ -19,7 +19,7 @@ class HomeLoadedState extends HomeState {
 }
 
 class HomeFailureState extends HomeState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
 
   HomeFailureState({
     required this.failure,

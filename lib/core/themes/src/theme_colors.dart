@@ -43,12 +43,12 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   static get light => ThemeColors(
         background: AppColors.white,
         onBackground: AppColors.black,
-        surfaceDarker: const Color(0xFF1D1D1D).withAlpha(140),
+        surfaceDarker: const Color(0xFF151515),
       );
 
   static get dark => ThemeColors(
         background: AppColors.black,
         onBackground: AppColors.white,
-        surfaceDarker: const Color(0xFF1D1D1D).withAlpha(140),
+        surfaceDarker: const Color(0xFF151515),
       );
 }

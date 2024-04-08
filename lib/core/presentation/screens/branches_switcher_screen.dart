@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
+import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 
 class BranchesSwitcherScreen extends StatelessWidget {
   const BranchesSwitcherScreen({super.key, required this.navigationShell});
@@ -10,8 +12,18 @@ class BranchesSwitcherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => MediaRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => MediaRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => SearchFiltersRepository(
+            keyValueStorageRepository:
+                RepositoryProvider.of<KeyValueStorageRepository>(context),
+          ),
+        ),
+      ],
       child: Scaffold(
         body: navigationShell,
         bottomNavigationBar: BottomNavigationBar(
@@ -19,6 +31,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
           selectedFontSize: 12.0,
           unselectedFontSize: 12.0,
           showUnselectedLabels: true,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).colorScheme.secondary,
           items: generateNavigationBarItems(context),

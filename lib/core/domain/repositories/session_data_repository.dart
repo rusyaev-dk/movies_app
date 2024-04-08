@@ -2,10 +2,10 @@ import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
-typedef SessionDataRepositoryPattern<T> = (RepositoryFailure?, T?);
+typedef SessionDataRepositoryPattern<T> = (ApiRepositoryFailure?, T?);
 
 extension SessionDataRepositoryPatternX<T> on SessionDataRepositoryPattern {
-  RepositoryFailure? get failure => $1;
+  ApiRepositoryFailure? get failure => $1;
 
   T? get accountId => $2;
 }

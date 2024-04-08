@@ -29,10 +29,10 @@ extension MediaTypeAsString on ApiQueryType {
   }
 }
 
-typedef MediaRepositoryPattern<T> = (RepositoryFailure?, T?);
+typedef MediaRepositoryPattern<T> = (ApiRepositoryFailure?, T?);
 
 extension MediaRepositoryPatternX<T> on MediaRepositoryPattern<T> {
-  RepositoryFailure? get failure => $1;
+  ApiRepositoryFailure? get failure => $1;
 
   T? get value => $2;
 }
@@ -112,7 +112,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -168,7 +168,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -226,7 +226,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -280,7 +280,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -335,7 +335,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -395,7 +395,7 @@ class MediaRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {

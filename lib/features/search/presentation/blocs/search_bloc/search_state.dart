@@ -15,7 +15,7 @@ class SearchLoadedState extends SearchState {
 }
 
 class SearchFailureState extends SearchState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
   final String? query;
 
   SearchFailureState({

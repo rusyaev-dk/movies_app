@@ -6,10 +6,10 @@ import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/api/clients/auth_api_client.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
-typedef AuthRepositoryPattern = (RepositoryFailure?, String?);
+typedef AuthRepositoryPattern = (ApiRepositoryFailure?, String?);
 
 extension AuthRepositoryX on AuthRepositoryPattern {
-  RepositoryFailure? get failure => $1;
+  ApiRepositoryFailure? get failure => $1;
 
   String? get value => $2;
 }
@@ -60,7 +60,7 @@ class AuthRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {

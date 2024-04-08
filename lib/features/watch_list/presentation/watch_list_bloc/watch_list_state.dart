@@ -15,7 +15,7 @@ class WatchListLoadedState extends WatchListState {
 }
 
 class WatchListFailureState extends WatchListState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
 
   WatchListFailureState({required this.failure});
 }

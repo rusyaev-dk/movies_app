@@ -17,6 +17,7 @@ class SearchListTile extends StatelessWidget {
     this.imagePath,
     this.genreIds,
     this.voteAverage,
+    this.isPerson = false,
   });
 
   final String title;
@@ -27,6 +28,7 @@ class SearchListTile extends StatelessWidget {
   final String? imagePath;
   final List<dynamic>? genreIds;
   final double? voteAverage;
+  final bool isPerson;
 
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
@@ -154,7 +156,9 @@ class SearchListTile extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           fontSize: 18,
                           overflow: TextOverflow.ellipsis,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context)
+                              .extension<ThemeColors>()!
+                              .onBackground,
                         ),
                   ),
                   Text(
@@ -168,12 +172,12 @@ class SearchListTile extends StatelessWidget {
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
-                  genresTextWidget,
+                  if (!isPerson) genresTextWidget,
                 ],
               ),
             ),
           ),
-          voteWidget,
+          if (!isPerson) voteWidget,
         ],
       ),
     );

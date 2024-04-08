@@ -7,10 +7,10 @@ import 'package:movies_app/core/data/api/clients/account_api_client.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
-typedef AccountRepositoryPattern<T> = (RepositoryFailure?, T?);
+typedef AccountRepositoryPattern<T> = (ApiRepositoryFailure?, T?);
 
 extension AuthRepositoryX<T> on AccountRepositoryPattern {
-  RepositoryFailure? get failure => $1;
+  ApiRepositoryFailure? get failure => $1;
 
   T? get accountId => $2;
 }
@@ -46,7 +46,7 @@ class AccountRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -93,7 +93,7 @@ class AccountRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -136,7 +136,7 @@ class AccountRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {
@@ -202,7 +202,7 @@ class AccountRepository {
         _ => (ApiClientExceptionType.unknown, exception.message),
       };
 
-      RepositoryFailure repositoryFailure =
+      ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
     } catch (error, stackTrace) {

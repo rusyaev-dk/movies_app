@@ -11,7 +11,7 @@ class AccountLoadedState extends AccountState {
 }
 
 class AccountFailureState extends AccountState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
 
   AccountFailureState({required this.failure});
 }

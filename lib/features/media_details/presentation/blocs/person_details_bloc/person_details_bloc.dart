@@ -30,7 +30,7 @@ class PersonDetailsBloc extends Bloc<PersonDetailsEvent, PersonDetailsState> {
     );
 
     switch (mediaRepoPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(PersonDetailsFailureState(
             failure: failure, personId: event.personId));
       case (null, final PersonModel resPersonModel):

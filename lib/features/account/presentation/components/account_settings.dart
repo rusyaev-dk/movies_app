@@ -16,7 +16,7 @@ class AccountSettings extends StatelessWidget {
           borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
-          CustomSettingsButton(
+          CustomRoundedButton(
             borderRadiusDirection: BorderRadiusDirection.onlyTop,
             icon: Icons.colorize_outlined,
             text: "Change theme",
@@ -26,9 +26,9 @@ class AccountSettings extends StatelessWidget {
             height: 1,
             thickness: 1,
             indent: 15,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.secondary.withAlpha(100),
           ),
-          CustomSettingsButton(
+          CustomRoundedButton(
             borderRadiusDirection: BorderRadiusDirection.onlyBottom,
             icon: Icons.logout,
             text: "Logout",

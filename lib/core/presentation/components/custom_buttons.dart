@@ -60,15 +60,10 @@ class CustomGradientButton extends StatelessWidget {
   }
 }
 
-enum BorderRadiusDirection {
-  all,
-  onlyTop,
-  onlyBottom,
-  none,
-}
+enum BorderRadiusDirection { all, onlyTop, onlyBottom, none, left, right }
 
-class CustomSettingsButton extends StatelessWidget {
-  const CustomSettingsButton({
+class CustomRoundedButton extends StatelessWidget {
+  const CustomRoundedButton({
     super.key,
     required this.icon,
     required this.text,
@@ -96,6 +91,18 @@ class CustomSettingsButton extends StatelessWidget {
       case BorderRadiusDirection.onlyBottom:
         borderRadius = const BorderRadius.only(
           bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.left:
+        borderRadius = const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          bottomLeft: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.right:
+        borderRadius = const BorderRadius.only(
+          topRight: Radius.circular(12),
           bottomRight: Radius.circular(12),
         );
         break;
@@ -139,6 +146,84 @@ class CustomSettingsButton extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomFilterButton extends StatelessWidget {
+  const CustomFilterButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    required this.color,
+    this.height = 55,
+    this.borderRadiusDirection = BorderRadiusDirection.onlyTop,
+  });
+
+  final String text;
+  final void Function() onPressed;
+  final Color color;
+  final double height;
+  final BorderRadiusDirection borderRadiusDirection;
+
+  @override
+  Widget build(BuildContext context) {
+    dynamic borderRadius;
+    switch (borderRadiusDirection) {
+      case BorderRadiusDirection.onlyTop:
+        borderRadius = const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.onlyBottom:
+        borderRadius = const BorderRadius.only(
+          bottomLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.left:
+        borderRadius = const BorderRadius.only(
+          topLeft: Radius.circular(12),
+          bottomLeft: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.right:
+        borderRadius = const BorderRadius.only(
+          topRight: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        );
+        break;
+      case BorderRadiusDirection.none:
+        borderRadius = BorderRadius.zero;
+        break;
+      case BorderRadiusDirection.all:
+        borderRadius = BorderRadius.circular(12);
+        break;
+    }
+
+    return InkWell(
+      borderRadius: borderRadius,
+      onTap: onPressed,
+      child: Container(
+        height: height,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: borderRadius,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: Theme.of(context)
+                .extension<ThemeTextStyles>()!
+                .subtitleTextStyle
+                .copyWith(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
         ),
       ),

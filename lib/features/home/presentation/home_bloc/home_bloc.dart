@@ -85,7 +85,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       switch (mediaRepoPattern) {
-        case (final RepositoryFailure failure, null):
+        case (final ApiRepositoryFailure failure, null):
           return emit(HomeFailureState(failure: failure));
         case (null, final List<TMDBModel> resModels):
           if (resModels.isEmpty) {

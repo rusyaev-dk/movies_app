@@ -13,7 +13,7 @@ class PersonDetailsLoadedState extends PersonDetailsState {
 }
 
 class PersonDetailsFailureState extends PersonDetailsState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
   final int? personId;
 
   PersonDetailsFailureState({

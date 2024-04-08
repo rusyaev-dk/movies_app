@@ -17,5 +17,3 @@ class SearchMultiEvent extends SearchEvent {
 class SearchNetworkErrorEvent extends SearchEvent {}
 
 class SearchNetworkConnectedEvent extends SearchEvent {}
-
-class SearchOpenFiltersEvent extends SearchEvent {}

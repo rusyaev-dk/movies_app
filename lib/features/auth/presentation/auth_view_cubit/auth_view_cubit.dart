@@ -46,7 +46,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
   }
 
   String _mapErrorToMessage(Object error) {
-    if (error is! RepositoryFailure) {
+    if (error is! ApiRepositoryFailure) {
       return 'Неизвестная ошибка, поторите попытку...';
     }
     switch (error.type) {

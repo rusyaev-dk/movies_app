@@ -35,7 +35,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         await _sessionDataRepository.onGetSessionId();
 
     switch (sessionDataRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
@@ -44,7 +44,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     sessionDataRepositoryPattern =
         await _sessionDataRepository.onGetAccountId();
     switch (sessionDataRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
       case (null, final int resAccountId):
         accountId = resAccountId;
@@ -57,7 +57,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     );
 
     switch (accountRepositoryPattern) {
-      case (final RepositoryFailure failure, null):
+      case (final ApiRepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
       case (null, final AccountModel resAccountModel):
         return emit(AccountLoadedState(account: resAccountModel));

@@ -13,7 +13,7 @@ class FailureWidget extends StatelessWidget {
     this.buttonText = "Update",
   });
 
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
   final IconData icon;
   final String buttonText;
   final void Function()? onPressed;

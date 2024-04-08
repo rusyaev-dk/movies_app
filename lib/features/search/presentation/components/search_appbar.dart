@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/features/search/presentation/components/filters_bottom_sheet.dart';
 import 'package:movies_app/features/search/presentation/components/search_textfield.dart';
-import 'package:movies_app/features/search/presentation/search_bloc/search_bloc.dart';
+import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({super.key});
@@ -19,7 +20,12 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
               context.read<SearchBloc>().add(SearchMultiEvent(query: query));
             },
             suffixIconOnTap: () {
-              context.read<SearchBloc>().add(SearchOpenFiltersEvent());
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const FiltersBottomSheet();
+                },
+              );
             },
             hintText: "Movies, series, persons",
             prefixIcon: Icons.search,

@@ -1,10 +1,10 @@
 import 'package:movies_app/core/data/storage/db_interface.dart';
+import 'package:movies_app/core/data/storage/storage_exceptions.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class SharedPrefsStorage implements DataBaseInterface {
-  SharedPrefsStorage();
+class KeyValueStorage implements DataBaseInterface {
+  KeyValueStorage();
 
   late final SharedPreferences _prefs;
 
@@ -21,16 +21,17 @@ class SharedPrefsStorage implements DataBaseInterface {
         value = _prefs.get(key);
       }
 
-      // значения ещё нет в бд
-      // if (value == null) {
-      //   return defaultValue;
-      // }
-
       return value as T;
-    } catch (err, stackTrace) {
-      // + реализовать logging...
-      print("$err, ${stackTrace.toString()}");
-      return null;
+    } on TypeError catch (err, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageDataTypeException(err, message: err.toString()),
+        stackTrace,
+      );
+    } on Exception catch (err, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageUnknownException(err, message: err.toString()),
+        stackTrace,
+      );
     }
   }
 
@@ -60,16 +61,26 @@ class SharedPrefsStorage implements DataBaseInterface {
       return _prefs.setInt(key, value.index);
     }
 
-    throw Exception('Wrong type for saving to database');
+    Error.throwWithStackTrace(
+      StorageDataTypeException(TypeError, message: TypeError().toString()),
+      StackTrace.current,
+    );
   }
 
   @override
   Future<void> delete<T>(String key) async {
     try {
       await _prefs.remove(key);
-    } catch (err, stackTrace) {
-      // + реализовать logging...
-      print("$err, ${stackTrace.toString()}");
+    } on TypeError catch (err, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageDataTypeException(err, message: err.toString()),
+        stackTrace,
+      );
+    } on Exception catch (err, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageUnknownException(err, message: err.toString()),
+        stackTrace,
+      );
     }
   }
 }

@@ -15,7 +15,8 @@ class RouterErrorScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Oops, something went wrong.",
+            "Oops, something went wrong...",
+            textAlign: TextAlign.center,
             style: Theme.of(context)
                 .extension<ThemeTextStyles>()!
                 .headingTextStyle,
@@ -24,7 +25,7 @@ class RouterErrorScreen extends StatelessWidget {
           CustomGradientButton(
             text: "Go home",
             onPressed: () => context.go(AppRoutes.home),
-          )
+          ),
         ],
       ),
     );

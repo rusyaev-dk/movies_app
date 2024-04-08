@@ -19,7 +19,7 @@ class TVSeriesDetailsLoadedState extends TVSeriesDetailsState {
 }
 
 class TVSeriesDetailsFailureState extends TVSeriesDetailsState {
-  final RepositoryFailure failure;
+  final ApiRepositoryFailure failure;
   final int? tvSeriesId;
 
   TVSeriesDetailsFailureState({
