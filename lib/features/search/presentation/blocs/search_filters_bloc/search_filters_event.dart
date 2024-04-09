@@ -2,24 +2,36 @@ part of 'search_filters_bloc.dart';
 
 class SearchFiltersEvent {}
 
-class SearchFiltersSetShowMediaTypeEvent extends SearchFiltersEvent {
+class SearchFiltersSetShowMediaTypeFilterEvent extends SearchFiltersEvent {
   final ShowMediaTypeFilter showMediaTypeFilter;
   final SearchFiltersModel prevFiltersModel;
 
-  SearchFiltersSetShowMediaTypeEvent({
+  SearchFiltersSetShowMediaTypeFilterEvent({
     required this.showMediaTypeFilter,
     required this.prevFiltersModel,
   });
 }
 
-class SearchFiltersSetSortByEvent extends SearchFiltersEvent {
+class SearchFiltersSetSortByFilterEvent extends SearchFiltersEvent {
   final SortByFilter sortByFilter;
   final SearchFiltersModel prevFiltersModel;
 
-  SearchFiltersSetSortByEvent({
+  SearchFiltersSetSortByFilterEvent({
     required this.sortByFilter,
     required this.prevFiltersModel,
   });
 }
+
+class SearchFiltersSetRatingFilterEvent extends SearchFiltersEvent {
+  final int ratingFilter;
+  final SearchFiltersModel prevFiltersModel;
+
+  SearchFiltersSetRatingFilterEvent({
+    required this.ratingFilter,
+    required this.prevFiltersModel,
+  });
+}
+
+class SearchFiltersResetFiltersEvent extends SearchFiltersEvent {}
 
 class SearchFiltersRestoreFiltersEvent extends SearchFiltersEvent {}

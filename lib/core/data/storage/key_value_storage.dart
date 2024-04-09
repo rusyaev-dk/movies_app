@@ -9,7 +9,10 @@ class KeyValueStorage implements DataBaseInterface {
   late final SharedPreferences _prefs;
 
   @override
-  Future<void> init() async => _prefs = await SharedPreferences.getInstance();
+  Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+    await _prefs.clear();
+  } 
 
   @override
   Future<T?> get<T>(String key) async {

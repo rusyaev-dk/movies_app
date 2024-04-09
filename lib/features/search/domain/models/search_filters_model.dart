@@ -1,5 +1,3 @@
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
-
 enum ShowMediaTypeFilter { all, movies, tvs, persons }
 
 extension ShowMediaTypeFilterX on ShowMediaTypeFilter {
@@ -64,31 +62,26 @@ class SearchFiltersModel {
   final ShowMediaTypeFilter showMediaTypeFilter;
   final List<String> genresFilter;
   final SortByFilter sortByFilter;
+  final int ratingFilter;
 
   SearchFiltersModel({
     required this.showMediaTypeFilter,
     required this.genresFilter,
     required this.sortByFilter,
+    required this.ratingFilter,
   });
-
-  factory SearchFiltersModel.fromStorage(
-      {required KeyValueStorageRepository sharedPrefsRepo}) {
-    return SearchFiltersModel(
-      showMediaTypeFilter: ShowMediaTypeFilter.all,
-      genresFilter: [],
-      sortByFilter: SortByFilter.rating,
-    );
-  }
 
   SearchFiltersModel copyWith({
     ShowMediaTypeFilter? showMediaTypeFilter,
     List<String>? genresFilter,
     SortByFilter? sortByFilter,
+    int? ratingFilter,
   }) {
     return SearchFiltersModel(
       showMediaTypeFilter: showMediaTypeFilter ?? this.showMediaTypeFilter,
       genresFilter: genresFilter ?? this.genresFilter,
       sortByFilter: sortByFilter ?? this.sortByFilter,
+      ratingFilter: ratingFilter ?? this.ratingFilter,
     );
   }
 }

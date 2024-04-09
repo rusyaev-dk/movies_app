@@ -96,13 +96,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final SearchFiltersModel searchFiltersModel =
         await _searchFiltersRepository.loadFiltersModel();
 
-    // print(searchFiltersModel.genresFilter);
-    // print(searchFiltersModel.sortByFilter);
-    // print(searchFiltersModel.showMediaTypeFilter);
-
-    searchModels.removeWhere((model) => !_mediaTypeCorresponding(
+    searchModels.removeWhere((model) =>
+        !_mediaTypeCorresponding(
           model,
           searchFiltersModel.showMediaTypeFilter,
+        ) ||
+        !_ratingCorresponding(
+          model,
+          searchFiltersModel.ratingFilter,
         ));
 
     if (searchFiltersModel.sortByFilter == SortByFilter.rating) {
@@ -159,7 +160,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     return false;
   }
 
-  // bool _genresFiltration(TMDBModel model, List<String> genresFilter) {
+  bool _ratingCorresponding(TMDBModel model, int ratingFilter) {
+    if (ratingFilter == 0) return true;
+
+    if ((model is MovieModel && model.voteAverage >= ratingFilter.toDouble()) ||
+        (model is TVSeriesModel &&
+            model.voteAverage >= ratingFilter.toDouble())) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // bool _genresCorresponding(TMDBModel model, List<String> genresFilter) {
   //   if (genresFilter.isEmpty) return true;
 
   //   return false;

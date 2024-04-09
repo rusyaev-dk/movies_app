@@ -7,13 +7,11 @@ class SearchTextField extends StatelessWidget {
     this.suffixIcon,
     required this.hintText,
     required this.onChanged,
-    required this.suffixIconOnTap,
   });
 
   final void Function(String) onChanged;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
-  final void Function() suffixIconOnTap;
   final String hintText;
 
   @override
@@ -32,24 +30,6 @@ class SearchTextField extends StatelessWidget {
         prefixIcon: Icon(
           prefixIcon,
           color: Theme.of(context).colorScheme.secondary,
-        ),
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 1,
-              height: 30,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            const SizedBox(width: 10),
-            GestureDetector(
-              onTap: suffixIconOnTap,
-              child: Icon(
-                suffixIcon,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ],
         ),
         hintText: hintText,
       ),

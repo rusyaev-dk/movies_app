@@ -53,4 +53,6 @@ class ApiMediaGenresFormatter {
     10767: "Talk",
     10768: "War & Politics",
   };
+
+  static Map<int, String> get genresMap => _genresMap;
 }

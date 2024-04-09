@@ -4,11 +4,13 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color background;
   final Color onBackground;
   final Color surfaceDarker;
+  final Color activatedFilterButtonColor;
 
   ThemeColors({
     required this.surfaceDarker,
     required this.background,
     required this.onBackground,
+    required this.activatedFilterButtonColor,
   });
 
   @override
@@ -16,12 +18,14 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     Color? background,
     Color? onBackground,
     Color? surfaceDarker,
+    Color? activatedFilterButtonColor,
   }) {
     return ThemeColors(
-      background: background ?? this.background,
-      onBackground: onBackground ?? this.onBackground,
-      surfaceDarker: surfaceDarker ?? this.surfaceDarker,
-    );
+        background: background ?? this.background,
+        onBackground: onBackground ?? this.onBackground,
+        surfaceDarker: surfaceDarker ?? this.surfaceDarker,
+        activatedFilterButtonColor:
+            activatedFilterButtonColor ?? this.activatedFilterButtonColor);
   }
 
   @override
@@ -37,6 +41,8 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
       background: Color.lerp(background, other.background, t)!,
       onBackground: Color.lerp(onBackground, other.onBackground, t)!,
       surfaceDarker: Color.lerp(surfaceDarker, other.surfaceDarker, t)!,
+      activatedFilterButtonColor: Color.lerp(
+          activatedFilterButtonColor, other.activatedFilterButtonColor, t)!,
     );
   }
 
@@ -44,11 +50,13 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         background: AppColors.white,
         onBackground: AppColors.black,
         surfaceDarker: const Color(0xFF151515),
+        activatedFilterButtonColor: const Color(0xFF4d4d4d),
       );
 
   static get dark => ThemeColors(
         background: AppColors.black,
         onBackground: AppColors.white,
         surfaceDarker: const Color(0xFF151515),
+        activatedFilterButtonColor: const Color(0xFF4d4d4d),
       );
 }
