@@ -32,6 +32,8 @@ class SearchFiltersSetRatingFilterEvent extends SearchFiltersEvent {
   });
 }
 
+class SearchFiltersApplyFiltersEvent extends SearchFiltersEvent {}
+
 class SearchFiltersResetFiltersEvent extends SearchFiltersEvent {}
 
 class SearchFiltersRestoreFiltersEvent extends SearchFiltersEvent {}

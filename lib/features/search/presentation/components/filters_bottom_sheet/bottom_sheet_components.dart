@@ -186,7 +186,7 @@ class RatingSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
+      height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Theme.of(context).extension<ThemeColors>()!.surfaceDarker,

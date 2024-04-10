@@ -76,7 +76,7 @@ class MediaVoteAdditionalInfo extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          "${DataFormatter.formatNumberWithThousandsSeparator(voteCount)} votes",
+          "${DataFormatter.formatNumberWithThousandsSeparator(voteCount)} ${voteCount > 1 ? 'votes' : 'vote'}" ,
           style: Theme.of(context)
               .extension<ThemeTextStyles>()!
               .headingTextStyle

@@ -2,11 +2,12 @@ import 'package:movies_app/core/domain/repositories/key_value_storage_repository
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 
-abstract class FiltersKeys {
+abstract class KeyValueStorageKeys {
   static const String showMediaTypeKey = "show_media_type";
   static const String genresKey = "genres";
   static const String sortByKey = "sort_by";
   static const String ratingKey = "rating";
+  static const String searchQueryKey = "search_query";
 }
 
 class SearchFiltersRepository {
@@ -19,7 +20,7 @@ class SearchFiltersRepository {
   Future<SearchFiltersModel> loadFiltersModel() async {
     KeyValueStorageRepositoryPattern keyValueStorageRepoPattern =
         await _keyValueStorageRepository.get<String>(
-            key: FiltersKeys.showMediaTypeKey);
+            key: KeyValueStorageKeys.showMediaTypeKey);
 
     ShowMediaTypeFilter? showMediaTypeFilter;
     switch (keyValueStorageRepoPattern) {
@@ -32,7 +33,7 @@ class SearchFiltersRepository {
     }
 
     keyValueStorageRepoPattern = await _keyValueStorageRepository
-        .get<List<String>>(key: FiltersKeys.genresKey);
+        .get<List<String>>(key: KeyValueStorageKeys.genresKey);
 
     List<String>? genresFilter;
     switch (keyValueStorageRepoPattern) {
@@ -44,7 +45,7 @@ class SearchFiltersRepository {
     }
 
     keyValueStorageRepoPattern = await _keyValueStorageRepository.get<String>(
-        key: FiltersKeys.sortByKey);
+        key: KeyValueStorageKeys.sortByKey);
 
     SortByFilter? sortByFilter;
     switch (keyValueStorageRepoPattern) {
@@ -55,8 +56,8 @@ class SearchFiltersRepository {
         sortByFilter = SortByFilterX.fromString(resSortByFilter);
     }
 
-    keyValueStorageRepoPattern =
-        await _keyValueStorageRepository.get<int>(key: FiltersKeys.ratingKey);
+    keyValueStorageRepoPattern = await _keyValueStorageRepository.get<int>(
+        key: KeyValueStorageKeys.ratingKey);
 
     int? ratingFilter;
     switch (keyValueStorageRepoPattern) {
@@ -79,7 +80,7 @@ class SearchFiltersRepository {
   Future<SearchFiltersModel> resetFiltersModel() async {
     KeyValueStorageRepositoryPattern keyValueStorageRepoPattern =
         await _keyValueStorageRepository.set<String>(
-      key: FiltersKeys.showMediaTypeKey,
+      key: KeyValueStorageKeys.showMediaTypeKey,
       value: ShowMediaTypeFilter.all.asString(),
     );
 
@@ -93,7 +94,7 @@ class SearchFiltersRepository {
 
     keyValueStorageRepoPattern =
         await _keyValueStorageRepository.set<List<String>>(
-      key: FiltersKeys.genresKey,
+      key: KeyValueStorageKeys.genresKey,
       value: [],
     );
 
@@ -106,7 +107,7 @@ class SearchFiltersRepository {
     }
 
     keyValueStorageRepoPattern = await _keyValueStorageRepository.set<String>(
-      key: FiltersKeys.sortByKey,
+      key: KeyValueStorageKeys.sortByKey,
       value: SortByFilter.rating.asString(),
     );
 
@@ -119,7 +120,7 @@ class SearchFiltersRepository {
     }
 
     keyValueStorageRepoPattern = await _keyValueStorageRepository.set<int>(
-      key: FiltersKeys.ratingKey,
+      key: KeyValueStorageKeys.ratingKey,
       value: 5,
     );
 

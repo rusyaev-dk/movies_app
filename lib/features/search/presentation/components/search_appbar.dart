@@ -23,7 +23,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onChanged: (query) {
                     context
                         .read<SearchBloc>()
-                        .add(SearchMultiEvent(query: query));
+                        .add(SearchMediaEvent(query: query));
                   },
                   hintText: "Movies, series, persons",
                   prefixIcon: Icons.search,
@@ -56,10 +56,15 @@ class FiltersButton extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
+        FocusScope.of(context).unfocus();
+        final SearchBloc searchBloc = BlocProvider.of<SearchBloc>(context);
         showModalBottomSheet(
           context: context,
           builder: (context) {
-            return const FiltersBottomSheet();
+            return BlocProvider.value(
+              value: searchBloc,
+              child: const FiltersBottomSheet(),
+            );
           },
         );
       },

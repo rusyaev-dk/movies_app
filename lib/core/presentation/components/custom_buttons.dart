@@ -159,7 +159,7 @@ class CustomFilterButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     required this.color,
-    this.height = 55,
+    this.height = 50,
     this.borderRadiusDirection = BorderRadiusDirection.onlyTop,
   });
 

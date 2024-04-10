@@ -3,6 +3,7 @@ import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
+import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 
 part 'search_filters_event.dart';
 part 'search_filters_state.dart';
@@ -10,18 +11,22 @@ part 'search_filters_state.dart';
 class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
   late final KeyValueStorageRepository _keyValueStorageRepository;
   late final SearchFiltersRepository _searchFiltersRepository;
+  late final SearchBloc _searchBloc;
 
   SearchFiltersBloc({
     required KeyValueStorageRepository keyValueStorageRepository,
     required SearchFiltersRepository searchFiltersRepository,
+    required SearchBloc searchBloc,
   })  : _keyValueStorageRepository = keyValueStorageRepository,
         _searchFiltersRepository = searchFiltersRepository,
+        _searchBloc = searchBloc,
         super(SearchFiltersLoadingState()) {
     on<SearchFiltersRestoreFiltersEvent>(_onRestoreSearchFiltersModel);
     on<SearchFiltersSetShowMediaTypeFilterEvent>(_onSetShowMediaTypeFilter);
     on<SearchFiltersSetSortByFilterEvent>(_onSetSortByFilter);
-    on<SearchFiltersResetFiltersEvent>(_onResetFilters);
     on<SearchFiltersSetRatingFilterEvent>(_onSetRatingFilter);
+    on<SearchFiltersApplyFiltersEvent>(_onApplyFilters);
+    on<SearchFiltersResetFiltersEvent>(_onResetFilters);
     add(SearchFiltersRestoreFiltersEvent());
   }
 
@@ -41,7 +46,7 @@ class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
   ) async {
     KeyValueStorageRepositoryPattern sharedPrefsRepoPattern =
         await _keyValueStorageRepository.set<String>(
-      key: FiltersKeys.showMediaTypeKey,
+      key: KeyValueStorageKeys.showMediaTypeKey,
       value: event.showMediaTypeFilter.asString(),
     );
 
@@ -68,7 +73,7 @@ class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
   ) async {
     KeyValueStorageRepositoryPattern sharedPrefsRepoPattern =
         await _keyValueStorageRepository.set<String>(
-      key: FiltersKeys.sortByKey,
+      key: KeyValueStorageKeys.sortByKey,
       value: event.sortByFilter.asString(),
     );
 
@@ -95,7 +100,7 @@ class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
   ) async {
     KeyValueStorageRepositoryPattern sharedPrefsRepoPattern =
         await _keyValueStorageRepository.set<int>(
-      key: FiltersKeys.ratingKey,
+      key: KeyValueStorageKeys.ratingKey,
       value: event.ratingFilter,
     );
 
@@ -113,6 +118,23 @@ class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
             ),
           ),
         );
+    }
+  }
+
+  Future<void> _onApplyFilters(
+    SearchFiltersApplyFiltersEvent event,
+    Emitter<SearchFiltersState> emit,
+  ) async {
+    final KeyValueStorageRepositoryPattern keyValueStorageRepoPattern =
+        await _keyValueStorageRepository.get<String>(
+            key: KeyValueStorageKeys.searchQueryKey);
+
+    switch (keyValueStorageRepoPattern) {
+      case (final StorageRepositoryFailure _, null):
+        //
+        return;
+      case (null, final String resSearchQuery):
+        return _searchBloc.add(SearchMediaEvent(query: resSearchQuery));
     }
   }
 

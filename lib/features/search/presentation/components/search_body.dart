@@ -36,7 +36,7 @@ class SearchBody extends StatelessWidget {
                 onPressed: state.query != null
                     ? () => context
                         .read<SearchBloc>()
-                        .add(SearchMultiEvent(query: state.query!))
+                        .add(SearchMediaEvent(query: state.query!))
                     : null,
               );
             default:

@@ -65,7 +65,7 @@ class MovieModel extends TMDBModel {
   }) : super._();
 
   @override
-  factory MovieModel.fromJSON(Map<String, dynamic> json) {
+  factory MovieModel.fromJson(Map<String, dynamic> json) {
     List<MediaGenre> genres = json["genres"] == null
         ? []
         : MediaGenre.fromJsonGenresList(json["genres"] as List<dynamic>);
@@ -157,7 +157,7 @@ class TVSeriesModel extends TMDBModel {
   }) : super._();
 
   @override
-  factory TVSeriesModel.fromJSON(Map<String, dynamic> json) {
+  factory TVSeriesModel.fromJson(Map<String, dynamic> json) {
     List<MediaGenre> genres = json["genres"] == null
         ? []
         : MediaGenre.fromJsonGenresList(json["genres"] as List<dynamic>);
@@ -224,7 +224,7 @@ class PersonModel extends TMDBModel {
   }) : super._();
 
   @override
-  factory PersonModel.fromJSON(Map<String, dynamic> json) {
+  factory PersonModel.fromJson(Map<String, dynamic> json) {
     return PersonModel(
       id: json["id"],
       gender: json["gender"],
@@ -249,7 +249,7 @@ class MediaGenre {
     this.name,
   });
 
-  factory MediaGenre.fromJSON(Map<String, dynamic> json) {
+  factory MediaGenre.fromJson(Map<String, dynamic> json) {
     return MediaGenre(
       id: json["id"],
       name: json["name"],
@@ -259,7 +259,7 @@ class MediaGenre {
   static List<MediaGenre> fromJsonGenresList(List<dynamic> genresList) {
     List<MediaGenre> resultList = [];
     for (Map<String, dynamic> json in genresList) {
-      resultList.add(MediaGenre.fromJSON(json));
+      resultList.add(MediaGenre.fromJson(json));
     }
     return resultList;
   }
@@ -274,7 +274,7 @@ class ProductionCountry {
     this.name,
   });
 
-  factory ProductionCountry.fromJSON(Map<String, dynamic> json) {
+  factory ProductionCountry.fromJson(Map<String, dynamic> json) {
     return ProductionCountry(
       iso_3166_1: json["iso_3166_1"],
       name: json["name"],
@@ -285,7 +285,7 @@ class ProductionCountry {
       List<dynamic> countriesList) {
     List<ProductionCountry> resultList = [];
     for (Map<String, dynamic> json in countriesList) {
-      resultList.add(ProductionCountry.fromJSON(json));
+      resultList.add(ProductionCountry.fromJson(json));
     }
     return resultList;
   }
@@ -329,7 +329,7 @@ class AccountModel extends TMDBModel {
   }) : super._();
 
   @override
-  factory AccountModel.fromJSON(Map<String, dynamic> json) {
+  factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
       id: json["id"],
       name: json["name"],

@@ -67,11 +67,11 @@ class MediaApiClient {
     );
   }
 
-  Future<Response> getSearchMultiMedia({
+  Future<Response> searchMultiMedia({
     required String query,
     required String locale,
     required int page,
-    bool includeAdult = false,
+    bool includeAdult = true,
   }) async {
     Map<String, dynamic> uriParameters = {
       'query': query,
@@ -82,6 +82,63 @@ class MediaApiClient {
     };
     return await _httpClient.get(
       path: ApiConfig.searchMultiMediaPath,
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> searchMovies({
+    required String query,
+    required String locale,
+    required int page,
+    bool includeAdult = true,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'query': query,
+      'include_adult': includeAdult.toString(),
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: ApiConfig.searchMoviesPath,
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> searchTVSeries({
+    required String query,
+    required String locale,
+    required int page,
+    bool includeAdult = true,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'query': query,
+      'include_adult': includeAdult.toString(),
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: ApiConfig.searchTVSeriesPath,
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> searchPersons({
+    required String query,
+    required String locale,
+    required int page,
+    bool includeAdult = true,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'query': query,
+      'include_adult': includeAdult.toString(),
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: ApiConfig.searchPersonsPath,
       uriParameters: uriParameters,
     );
   }

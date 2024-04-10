@@ -63,22 +63,22 @@ class MediaRepository {
         case ApiQueryType.popularMovies:
           response = await _mediaApiClient.getPopularMovies(
               locale: locale, page: page);
-          fromJson = MovieModel.fromJSON;
+          fromJson = MovieModel.fromJson;
           break;
         case ApiQueryType.trendingMovies:
           response = await _mediaApiClient.getTrendingMovies(
               locale: locale, page: page);
-          fromJson = MovieModel.fromJSON;
+          fromJson = MovieModel.fromJson;
           break;
         case ApiQueryType.popularTVSeries:
           response = await _mediaApiClient.getPopularTVSeries(
               locale: locale, page: page);
-          fromJson = TVSeriesModel.fromJSON;
+          fromJson = TVSeriesModel.fromJson;
           break;
         case ApiQueryType.trendingTVSeries:
           response = await _mediaApiClient.getTrendingTVSeries(
               locale: locale, page: page);
-          fromJson = TVSeriesModel.fromJSON;
+          fromJson = TVSeriesModel.fromJson;
           break;
         default:
           response = null;
@@ -120,31 +120,169 @@ class MediaRepository {
     }
   }
 
-  Future<MediaRepositoryPattern<List<TMDBModel>>> onGetSearchMultiMedia({
+  Future<MediaRepositoryPattern<List<TMDBModel>>> onSearchMultiMedia({
     required String query,
     required String locale,
     required int page,
   }) async {
     try {
-      final response = await _mediaApiClient.getSearchMultiMedia(
+      final response = await _mediaApiClient.searchMultiMedia(
         query: query,
         locale: locale,
         page: page,
       );
 
-      List<TMDBModel> searchModels = [];
+      List<TMDBModel> models = [];
       for (Map<String, dynamic> json in response.data["results"] as List) {
         if (json["media_type"] == TMDBMediaType.movie.asString()) {
-          searchModels.add(MovieModel.fromJSON(json));
+          models.add(MovieModel.fromJson(json));
         } else if (json["media_type"] == TMDBMediaType.tv.asString()) {
-          searchModels.add(TVSeriesModel.fromJSON(json));
+          models.add(TVSeriesModel.fromJson(json));
         } else if (json["media_type"] == TMDBMediaType.person.asString()) {
-          searchModels.add(PersonModel.fromJSON(json));
+          models.add(PersonModel.fromJson(json));
         } else {
           throw ApiJsonKeyException(ApiClientExceptionType.jsonKey);
         }
       }
-      return (null, searchModels);
+      return (null, models);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      ApiRepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<MovieModel>>> onSearchMovies({
+    required String query,
+    required String locale,
+    required int page,
+  }) async {
+    try {
+      final response = await _mediaApiClient.searchMovies(
+        query: query,
+        locale: locale,
+        page: page,
+      );
+
+      List<MovieModel> models = _createModelsList<MovieModel>(
+          fromJson: MovieModel.fromJson, response: response);
+      return (null, models);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      ApiRepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<TVSeriesModel>>> onSearchTVSeries({
+    required String query,
+    required String locale,
+    required int page,
+  }) async {
+    try {
+      final response = await _mediaApiClient.searchTVSeries(
+        query: query,
+        locale: locale,
+        page: page,
+      );
+
+      List<TVSeriesModel> models = _createModelsList<TVSeriesModel>(
+          fromJson: TVSeriesModel.fromJson, response: response);
+      return (null, models);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      ApiRepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<MediaRepositoryPattern<List<PersonModel>>> onSearchPersons({
+    required String query,
+    required String locale,
+    required int page,
+  }) async {
+    try {
+      final response = await _mediaApiClient.searchPersons(
+        query: query,
+        locale: locale,
+        page: page,
+      );
+
+      List<PersonModel> models = _createModelsList<PersonModel>(
+          fromJson: PersonModel.fromJson, response: response);
+      return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
 
@@ -188,15 +326,15 @@ class MediaRepository {
         case TMDBMediaType.movie:
           response = await _mediaApiClient.getMovieDetails(
               movieId: mediaId, locale: locale);
-          fromJson = MovieModel.fromJSON;
+          fromJson = MovieModel.fromJson;
         case TMDBMediaType.tv:
           response = await _mediaApiClient.getTVSeriesDetails(
               tvSeriesId: mediaId, locale: locale);
-          fromJson = TVSeriesModel.fromJSON;
+          fromJson = TVSeriesModel.fromJson;
         case TMDBMediaType.person:
           response = await _mediaApiClient.getPersonDetails(
               personId: mediaId, locale: locale);
-          fromJson = PersonModel.fromJSON;
+          fromJson = PersonModel.fromJson;
         default:
           response = null;
           fromJson = null;
@@ -252,12 +390,12 @@ class MediaRepository {
           response = null;
       }
 
-      final List<PersonModel> persons = _createModelsList<PersonModel>(
-        fromJson: PersonModel.fromJSON,
+      final List<PersonModel> models = _createModelsList<PersonModel>(
+        fromJson: PersonModel.fromJson,
         response: response!,
         jsonKey: "cast",
       );
-      return (null, persons);
+      return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {
@@ -306,13 +444,13 @@ class MediaRepository {
           response = null;
       }
 
-      final List<MediaImageModel> images = _createModelsList<MediaImageModel>(
+      final List<MediaImageModel> models = _createModelsList<MediaImageModel>(
         fromJson: MediaImageModel.fromJSON,
         response: response!,
         jsonKey: "backdrops",
       );
 
-      return (null, images.reversed.toList());
+      return (null, models.reversed.toList());
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {
@@ -356,11 +494,11 @@ class MediaRepository {
         case TMDBMediaType.movie:
           response = await _mediaApiClient.getSimilarMovies(
               movieId: mediaId, locale: locale, page: page);
-          fromJson = MovieModel.fromJSON;
+          fromJson = MovieModel.fromJson;
         case TMDBMediaType.tv:
           response = await _mediaApiClient.getSimilarTVSeries(
               tvSeriesId: mediaId, locale: locale, page: page);
-          fromJson = TVSeriesModel.fromJSON;
+          fromJson = TVSeriesModel.fromJson;
         default:
           response = null;
           fromJson = null;

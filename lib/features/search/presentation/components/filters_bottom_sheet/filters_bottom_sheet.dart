@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
+import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_filters_bloc/search_filters_bloc.dart';
 import 'package:movies_app/features/search/presentation/components/filters_bottom_sheet/bottom_sheet_components.dart';
 
@@ -19,6 +21,7 @@ class FiltersBottomSheet extends StatelessWidget {
             RepositoryProvider.of<KeyValueStorageRepository>(context),
         searchFiltersRepository:
             RepositoryProvider.of<SearchFiltersRepository>(context),
+        searchBloc: RepositoryProvider.of<SearchBloc>(context),
       ),
       child: const FiltersBottomSheetContent(),
     );
@@ -64,9 +67,9 @@ class FiltersBottomSheetContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 MediaTypeFilterSection(filtersModel: state.searchFiltersModel),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 SortByFilterSection(filtersModel: state.searchFiltersModel),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 AnimatedOpacity(
                   opacity: state.searchFiltersModel.showMediaTypeFilter !=
                           ShowMediaTypeFilter.persons
@@ -194,7 +197,13 @@ class BottomButtonsSection extends StatelessWidget {
           child: CustomGradientButton(
             text: "Apply filters",
             width: double.infinity,
-            onPressed: () {},
+            onPressed: () {
+              context.pop();
+              context
+                  .read<SearchFiltersBloc>()
+                  .add(SearchFiltersApplyFiltersEvent());
+              FocusScope.of(context).unfocus();
+            },
           ),
         ),
         const SizedBox(width: 10),

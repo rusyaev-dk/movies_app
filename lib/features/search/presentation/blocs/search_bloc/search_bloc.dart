@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
@@ -23,14 +24,17 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   late final NetworkCubit _networkCubit;
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
+  late final KeyValueStorageRepository _keyValueStorageRepository;
   late final SearchFiltersRepository _searchFiltersRepository;
 
   SearchBloc({
     required NetworkCubit networkCubit,
     required MediaRepository mediaRepository,
+    required KeyValueStorageRepository keyValueStorageRepository,
     required SearchFiltersRepository searchFiltersRepository,
   })  : _networkCubit = networkCubit,
         _mediaRepository = mediaRepository,
+        _keyValueStorageRepository = keyValueStorageRepository,
         _searchFiltersRepository = searchFiltersRepository,
         super(SearchState()) {
     Future.microtask(
@@ -42,8 +46,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     );
 
     on<SearchNetworkConnectedEvent>(_onNetworkConnected);
-    on<SearchMultiEvent>(
-      _onSearchMulti,
+    on<SearchMediaEvent>(
+      _onSearch,
       transformer: debounceDroppable(
         const Duration(milliseconds: 350),
       ),
@@ -63,19 +67,53 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(SearchState());
   }
 
-  Future<void> _onSearchMulti(
-    SearchMultiEvent event,
+  Future<void> _onSearch(
+    SearchMediaEvent event,
     Emitter<SearchState> emit,
   ) async {
     if (event.query.isEmpty) return emit(SearchState());
 
     emit(SearchLoadingState(query: event.query));
 
-    final mediaRepoPattern = await _mediaRepository.onGetSearchMultiMedia(
-      query: event.query,
-      locale: event.locale,
-      page: event.page,
+    await _keyValueStorageRepository.set<String>(
+      key: KeyValueStorageKeys.searchQueryKey,
+      value: event.query,
     );
+
+    final SearchFiltersModel searchFiltersModel =
+        await _searchFiltersRepository.loadFiltersModel();
+
+    final MediaRepositoryPattern mediaRepoPattern;
+    switch (searchFiltersModel.showMediaTypeFilter) {
+      case (ShowMediaTypeFilter.all):
+        mediaRepoPattern = await _mediaRepository.onSearchMultiMedia(
+          query: event.query,
+          locale: event.locale,
+          page: event.page,
+        );
+        break;
+      case (ShowMediaTypeFilter.movies):
+        mediaRepoPattern = await _mediaRepository.onSearchMovies(
+          query: event.query,
+          locale: event.locale,
+          page: event.page,
+        );
+        break;
+      case (ShowMediaTypeFilter.tvs):
+        mediaRepoPattern = await _mediaRepository.onSearchTVSeries(
+          query: event.query,
+          locale: event.locale,
+          page: event.page,
+        );
+        break;
+      case (ShowMediaTypeFilter.persons):
+        mediaRepoPattern = await _mediaRepository.onSearchPersons(
+          query: event.query,
+          locale: event.locale,
+          page: event.page,
+        );
+        break;
+    }
 
     List<TMDBModel>? searchModels;
     switch (mediaRepoPattern) {
@@ -85,23 +123,20 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         searchModels = resSearchModels;
     }
 
-    searchModels = await _searchModelsFiltration(searchModels: searchModels);
+    searchModels = await _searchModelsFiltration(
+      searchModels: searchModels,
+      searchFiltersModel: searchFiltersModel,
+    );
     emit(SearchLoadedState(searchModels: searchModels));
   }
 
-  Future<List<TMDBModel>> _searchModelsFiltration(
-      {required List<TMDBModel>? searchModels}) async {
+  Future<List<TMDBModel>> _searchModelsFiltration({
+    required List<TMDBModel>? searchModels,
+    required SearchFiltersModel searchFiltersModel,
+  }) async {
     if (searchModels == null || searchModels.isEmpty) return [];
 
-    final SearchFiltersModel searchFiltersModel =
-        await _searchFiltersRepository.loadFiltersModel();
-
-    searchModels.removeWhere((model) =>
-        !_mediaTypeCorresponding(
-          model,
-          searchFiltersModel.showMediaTypeFilter,
-        ) ||
-        !_ratingCorresponding(
+    searchModels.removeWhere((model) => !_ratingCorresponding(
           model,
           searchFiltersModel.ratingFilter,
         ));
@@ -144,24 +179,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     return searchModels;
   }
 
-  bool _mediaTypeCorresponding(
-      TMDBModel model, ShowMediaTypeFilter mediaTypeFilter) {
-    if (mediaTypeFilter == ShowMediaTypeFilter.all) return true;
-
-    if ((model is MovieModel &&
-            mediaTypeFilter == ShowMediaTypeFilter.movies) ||
-        (model is TVSeriesModel &&
-            mediaTypeFilter == ShowMediaTypeFilter.tvs) ||
-        (model is PersonModel &&
-            mediaTypeFilter == ShowMediaTypeFilter.persons)) {
-      return true;
-    }
-
-    return false;
-  }
-
   bool _ratingCorresponding(TMDBModel model, int ratingFilter) {
-    if (ratingFilter == 0) return true;
+    if (ratingFilter == 0 || model is PersonModel) return true;
 
     if ((model is MovieModel && model.voteAverage >= ratingFilter.toDouble()) ||
         (model is TVSeriesModel &&

@@ -112,7 +112,7 @@ class AccountRepository {
       );
 
       final AccountModel account =
-          AccountModel.fromJSON(response.data as Map<String, dynamic>);
+          AccountModel.fromJson(response.data as Map<String, dynamic>);
       return (null, account);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
@@ -162,7 +162,7 @@ class AccountRepository {
             accountId: accountId,
             sessionId: sessionId,
           );
-          fromJson = MovieModel.fromJSON;
+          fromJson = MovieModel.fromJson;
         case TMDBMediaType.tv:
           response = await _accountApiClient.getAccountTVSeriesWatchList(
             locale: locale,
@@ -170,7 +170,7 @@ class AccountRepository {
             accountId: accountId,
             sessionId: sessionId,
           );
-          fromJson = TVSeriesModel.fromJSON;
+          fromJson = TVSeriesModel.fromJson;
         default:
           response = null;
           fromJson = null;

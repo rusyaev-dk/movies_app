@@ -13,7 +13,12 @@ abstract class ApiConfig {
   static const String trendingMoviesPath = "/trending/movie/day";
   static const String popularTVSeriesPath = "/tv/popular";
   static const String trendingTVSeriesPath = "/trending/tv/day";
+
   static const String searchMultiMediaPath = "/search/multi";
+  static const String searchMoviesPath = "/search/movie";
+  static const String searchTVSeriesPath = "/search/tv";
+  static const String searchPersonsPath = "/search/person";
+  
   static const String moviePath = "/movie";
   static const String tvSeriesPath = "/tv";
   static const String personPath = "/person";
