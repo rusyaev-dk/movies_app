@@ -95,7 +95,7 @@ class TVSeriesDetailsContent extends StatefulWidget {
       direction: ShimmerDirection.ltr,
       gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
       child: ListView(
-        padding: const EdgeInsets.all(0),
+        padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         children: [
           Container(
@@ -133,21 +133,21 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
     super.initState();
 
     _scrollController = ScrollController();
-    _scrollController.addListener(
-      () {
-        final currentState = context.read<MediaDetailsAppbarCubit>().state;
+    _scrollController.addListener(_onScroll);
+  }
 
-        if (_scrollController.position.pixels > 600 &&
-            currentState == MediaDetailsAppbarState.transparent) {
-          context.read<MediaDetailsAppbarCubit>().fillAppBar();
-        } else if (_scrollController.position.userScrollDirection ==
-                ScrollDirection.forward &&
-            _scrollController.position.pixels < 600 &&
-            currentState == MediaDetailsAppbarState.filled) {
-          context.read<MediaDetailsAppbarCubit>().unFillAppBar();
-        }
-      },
-    );
+  void _onScroll() {
+    final currentState = context.read<MediaDetailsAppbarCubit>().state;
+
+    if (_scrollController.position.pixels > 600 &&
+        currentState == MediaDetailsAppbarState.transparent) {
+      context.read<MediaDetailsAppbarCubit>().fillAppBar();
+    } else if (_scrollController.position.userScrollDirection ==
+            ScrollDirection.forward &&
+        _scrollController.position.pixels < 600 &&
+        currentState == MediaDetailsAppbarState.filled) {
+      context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+    }
   }
 
   @override
@@ -196,7 +196,7 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: MediaOverviewText(overview: widget.tvSeries.overview!),
           ),
-        if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 15),
+        if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 20),
         if (widget.tvSeriesImages.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -206,7 +206,7 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
               models: widget.tvSeriesImages,
             ),
           ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsRating(
@@ -214,7 +214,7 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
             voteCount: widget.tvSeries.voteCount ?? 0,
           ),
         ),
-        if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 10),
+        if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 20),
         if (widget.tvSeriesCredits.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -224,7 +224,7 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
               models: widget.tvSeriesCredits,
             ),
           ),
-        if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 10),
+        if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 20),
         if (widget.similarTVSeries.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -234,13 +234,16 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
               models: widget.similarTVSeries,
             ),
           ),
+        const SizedBox(height: 15),
       ],
     );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 }

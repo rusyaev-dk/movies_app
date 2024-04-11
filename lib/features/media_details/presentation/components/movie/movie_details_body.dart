@@ -134,21 +134,21 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
     super.initState();
 
     _scrollController = ScrollController();
-    _scrollController.addListener(
-      () {
-        final currentState = context.read<MediaDetailsAppbarCubit>().state;
-        
-        if (_scrollController.position.pixels > 600 &&
-            currentState == MediaDetailsAppbarState.transparent) {
-          context.read<MediaDetailsAppbarCubit>().fillAppBar();
-        } else if (_scrollController.position.userScrollDirection ==
-                ScrollDirection.forward &&
-            _scrollController.position.pixels < 600 &&
-            currentState == MediaDetailsAppbarState.filled) {
-          context.read<MediaDetailsAppbarCubit>().unFillAppBar();
-        }
-      },
-    );
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final currentState = context.read<MediaDetailsAppbarCubit>().state;
+
+    if (_scrollController.position.pixels > 600 &&
+        currentState == MediaDetailsAppbarState.transparent) {
+      context.read<MediaDetailsAppbarCubit>().fillAppBar();
+    } else if (_scrollController.position.userScrollDirection ==
+            ScrollDirection.forward &&
+        _scrollController.position.pixels < 600 &&
+        currentState == MediaDetailsAppbarState.filled) {
+      context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+    }
   }
 
   @override
@@ -201,7 +201,7 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: MediaOverviewText(overview: widget.movie.overview!),
           ),
-        if (widget.movieImages.isNotEmpty) const SizedBox(height: 15),
+        if (widget.movieImages.isNotEmpty) const SizedBox(height: 20),
         if (widget.movieImages.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -211,7 +211,7 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
               models: widget.movieImages,
             ),
           ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsRating(
@@ -219,7 +219,7 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
             voteCount: widget.movie.voteCount ?? 0,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: MediaDetailsBudget(
@@ -227,7 +227,7 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
             revenue: widget.movie.revenue ?? 0,
           ),
         ),
-        if (widget.movieCredits.isNotEmpty) const SizedBox(height: 10),
+        if (widget.movieCredits.isNotEmpty) const SizedBox(height: 20),
         if (widget.movieCredits.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -237,7 +237,7 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
               models: widget.movieCredits,
             ),
           ),
-        if (widget.similarMovies.isNotEmpty) const SizedBox(height: 10),
+        if (widget.similarMovies.isNotEmpty) const SizedBox(height: 20),
         if (widget.similarMovies.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -247,13 +247,16 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
               models: widget.similarMovies,
             ),
           ),
+        const SizedBox(height: 15),
       ],
     );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 }

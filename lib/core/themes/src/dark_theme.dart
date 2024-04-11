@@ -2,6 +2,9 @@ part of '../theme.dart';
 
 ThemeData createDarkTheme() {
   return ThemeData(
+    dialogTheme: const DialogTheme(
+      backgroundColor: AppColors.darkerGrey,
+    ),
     textTheme: createTextTheme(),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.black,

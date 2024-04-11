@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
+import 'package:movies_app/core/presentation/screens/grid_media_screen.dart';
 import 'package:movies_app/features/account/presentation/screens/account_screen.dart';
 import 'package:movies_app/features/watch_list/presentation/screens/watch_list_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
@@ -30,10 +32,7 @@ class AppRouter {
         builder: (context, state, navigationShell) =>
             BranchesSwitcherScreen(navigationShell: navigationShell),
         branches: [
-          patternBranchBuilder(
-            parentPath: AppRoutes.home,
-            parentScreen: const HomeScreen(),
-          ),
+          homeBranchBuilder(),
           patternBranchBuilder(
             parentPath: AppRoutes.search,
             parentScreen: const SearchScreen(),
@@ -54,6 +53,83 @@ class AppRouter {
       ),
     ],
   );
+
+  static StatefulShellBranch homeBranchBuilder() {
+    return StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: AppRoutes.home,
+          builder: (context, state) => const HomeScreen(),
+          routes: [
+            GoRoute(
+              path: AppRoutes.movieDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return MovieDetailsScreen(
+                  key: ValueKey(args),
+                  movieId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppRoutes.personDetails,
+                  builder: (context, state) {
+                    final args = state.extra as List;
+                    return PersonDetailsScreen(
+                      personId: args[0],
+                      appBarTitle: args[1],
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppRoutes.tvSeriesDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return TVSeriesDetailsScreen(
+                  tvSeriesId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppRoutes.personDetails,
+                  builder: (context, state) {
+                    final args = state.extra as List;
+                    return PersonDetailsScreen(
+                      personId: args[0],
+                      appBarTitle: args[1],
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppRoutes.personDetails,
+              builder: (context, state) {
+                final args = state.extra as List;
+                return PersonDetailsScreen(
+                  personId: args[0],
+                  appBarTitle: args[1],
+                );
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.allMediaView,
+              builder: (context, state) {
+                final args = state.extra as ApiMediaQueryType;
+                return GridMediaScreen(
+                  queryType: args,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
   static StatefulShellBranch patternBranchBuilder({
     required String parentPath,

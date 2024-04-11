@@ -51,11 +51,17 @@ class PersonDetailsBody extends StatelessWidget {
           }
         }
         if (state is PersonDetailsLoadingState) {
-          return PersonDetailsContent.shimmerLoading(context);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: PersonDetailsContent.shimmerLoading(context),
+          );
         }
 
         if (state is PersonDetailsLoadedState) {
-          return PersonDetailsContent(person: state.personModel);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: PersonDetailsContent(person: state.personModel),
+          );
         }
 
         return const Center(
@@ -79,7 +85,7 @@ class PersonDetailsContent extends StatefulWidget {
       direction: ShimmerDirection.ltr,
       gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
       child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.zero,
         physics: const NeverScrollableScrollPhysics(),
         children: [
           Row(
@@ -170,21 +176,21 @@ class _PersonDetailsContentState extends State<PersonDetailsContent> {
     super.initState();
 
     _scrollController = ScrollController();
-    _scrollController.addListener(
-      () {
-        final currentState = context.read<MediaDetailsAppbarCubit>().state;
-        
-        if (_scrollController.position.pixels > 33 &&
-            currentState == MediaDetailsAppbarState.transparent) {
-          context.read<MediaDetailsAppbarCubit>().fillAppBar();
-        } else if (_scrollController.position.userScrollDirection ==
-                ScrollDirection.forward &&
-            _scrollController.position.pixels < 33 &&
-            currentState == MediaDetailsAppbarState.filled) {
-          context.read<MediaDetailsAppbarCubit>().unFillAppBar();
-        }
-      },
-    );
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final currentState = context.read<MediaDetailsAppbarCubit>().state;
+
+    if (_scrollController.position.pixels > 33 &&
+        currentState == MediaDetailsAppbarState.transparent) {
+      context.read<MediaDetailsAppbarCubit>().fillAppBar();
+    } else if (_scrollController.position.userScrollDirection ==
+            ScrollDirection.forward &&
+        _scrollController.position.pixels < 33 &&
+        currentState == MediaDetailsAppbarState.filled) {
+      context.read<MediaDetailsAppbarCubit>().unFillAppBar();
+    }
   }
 
   @override
@@ -194,7 +200,7 @@ class _PersonDetailsContentState extends State<PersonDetailsContent> {
 
     return ListView(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.zero,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,13 +229,16 @@ class _PersonDetailsContentState extends State<PersonDetailsContent> {
               .subtitleTextStyle
               .copyWith(fontSize: 16),
         ),
+        const SizedBox(height: 15),
       ],
     );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 }

@@ -7,24 +7,37 @@ import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
-enum ApiQueryType {
+enum ApiMediaQueryType {
   popularMovies,
   trendingMovies,
   popularTVSeries,
   trendingTVSeries,
 }
 
-extension MediaTypeAsString on ApiQueryType {
+extension ApiMediaQueryTypeX on ApiMediaQueryType {
   String asString() {
     switch (this) {
-      case ApiQueryType.popularMovies:
+      case ApiMediaQueryType.popularMovies:
         return 'popularMovies';
-      case ApiQueryType.trendingMovies:
+      case ApiMediaQueryType.trendingMovies:
         return 'trendingMovies';
-      case ApiQueryType.popularTVSeries:
+      case ApiMediaQueryType.popularTVSeries:
         return 'popularTVSeries';
-      case ApiQueryType.trendingTVSeries:
+      case ApiMediaQueryType.trendingTVSeries:
         return 'trendingTVSeries';
+    }
+  }
+
+  String asAppBarTitle() {
+    switch (this) {
+      case ApiMediaQueryType.popularMovies:
+        return 'Popular movies';
+      case ApiMediaQueryType.trendingMovies:
+        return 'Trending movies';
+      case ApiMediaQueryType.popularTVSeries:
+        return 'Popular TV series';
+      case ApiMediaQueryType.trendingTVSeries:
+        return 'Trending TV series';
     }
   }
 }
@@ -52,7 +65,7 @@ class MediaRepository {
   }
 
   Future<MediaRepositoryPattern<List<T>>> onGetMediaModels<T>({
-    required ApiQueryType type,
+    required ApiMediaQueryType type,
     required String locale,
     required int page,
   }) async {
@@ -60,22 +73,22 @@ class MediaRepository {
       final Response? response;
       final TMDBModel Function(Map<String, dynamic>)? fromJson;
       switch (type) {
-        case ApiQueryType.popularMovies:
+        case ApiMediaQueryType.popularMovies:
           response = await _mediaApiClient.getPopularMovies(
               locale: locale, page: page);
           fromJson = MovieModel.fromJson;
           break;
-        case ApiQueryType.trendingMovies:
+        case ApiMediaQueryType.trendingMovies:
           response = await _mediaApiClient.getTrendingMovies(
               locale: locale, page: page);
           fromJson = MovieModel.fromJson;
           break;
-        case ApiQueryType.popularTVSeries:
+        case ApiMediaQueryType.popularTVSeries:
           response = await _mediaApiClient.getPopularTVSeries(
               locale: locale, page: page);
           fromJson = TVSeriesModel.fromJson;
           break;
-        case ApiQueryType.trendingTVSeries:
+        case ApiMediaQueryType.trendingTVSeries:
           response = await _mediaApiClient.getTrendingTVSeries(
               locale: locale, page: page);
           fromJson = TVSeriesModel.fromJson;
@@ -86,8 +99,10 @@ class MediaRepository {
           break;
       }
 
+      if (response!.data["success"] == false) return (null, <T>[]);
+
       List<T> models =
-          _createModelsList<T>(fromJson: fromJson!, response: response!);
+          _createModelsList<T>(fromJson: fromJson!, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;

@@ -15,11 +15,13 @@ class MediaHorizontalListView extends StatelessWidget {
     this.withAllButton = true,
     this.cardWidth = 100,
     this.cardHeight = 150,
+    this.onAllButtonPressed,
   });
 
   final List<TMDBModel> models;
   final String? title;
   final bool withAllButton;
+  final void Function()? onAllButtonPressed;
   final double cardWidth;
   final double cardHeight;
 
@@ -49,9 +51,7 @@ class MediaHorizontalListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget listView = const Placeholder(); // ВРЕМЕННО
-
-    listView = MediaListView(
+    Widget listView = MediaListView(
       models: models,
       cardWidth: cardWidth,
     );
@@ -62,6 +62,7 @@ class MediaHorizontalListView extends StatelessWidget {
         if (title != null)
           ListTitle(
             withAllButton: withAllButton,
+            onAllButtonPressed: onAllButtonPressed,
             title: title!,
           ),
         const SizedBox(height: 10),
@@ -80,10 +81,12 @@ class ListTitle extends StatelessWidget {
     super.key,
     required this.title,
     this.withAllButton = true,
+    this.onAllButtonPressed,
   });
 
   final String title;
   final bool withAllButton;
+  final void Function()? onAllButtonPressed;
 
   static Widget shimmerLoading() {
     return Padding(
@@ -120,14 +123,17 @@ class ListTitle extends StatelessWidget {
           ),
           if (withAllButton) const Spacer(),
           if (withAllButton)
-            Text(
-              "All",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle
-                  .copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+            InkWell(
+              onTap: onAllButtonPressed,
+              child: Text(
+                "All",
+                style: Theme.of(context)
+                    .extension<ThemeTextStyles>()!
+                    .headingTextStyle
+                    .copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
             ),
         ],
       ),
@@ -162,6 +168,17 @@ class MediaListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (models.isEmpty) {
+      return Center(
+        child: Text(
+          "Oops, there is no media... Please try again later.",
+          textAlign: TextAlign.center,
+          style:
+              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+        ),
+      );
+    }
+
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       separatorBuilder: (context, index) {

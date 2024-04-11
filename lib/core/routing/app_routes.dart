@@ -10,4 +10,6 @@ abstract class AppRoutes {
   static const String movieDetails = "movie_details";
   static const String tvSeriesDetails = "tv_series_details";
   static const String personDetails = "person_details";
+
+  static const String allMediaView = "all_media_view";
 }

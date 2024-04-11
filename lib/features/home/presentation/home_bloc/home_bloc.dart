@@ -17,11 +17,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
 
-  static const List<ApiQueryType> _searchTypes = [
-    ApiQueryType.popularMovies,
-    ApiQueryType.trendingMovies,
-    ApiQueryType.popularTVSeries,
-    ApiQueryType.trendingTVSeries,
+  static const List<ApiMediaQueryType> _searchTypes = [
+    ApiMediaQueryType.popularMovies,
+    ApiMediaQueryType.trendingMovies,
+    ApiMediaQueryType.popularTVSeries,
+    ApiMediaQueryType.trendingTVSeries,
   ];
 
   HomeBloc({
@@ -66,10 +66,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeLoadingState());
     Map<String, List<dynamic>> modelsMap = {};
 
-    for (ApiQueryType type in _searchTypes) {
+    for (ApiMediaQueryType type in _searchTypes) {
       MediaRepositoryPattern mediaRepoPattern;
-      if (type == ApiQueryType.popularMovies ||
-          type == ApiQueryType.trendingMovies) {
+      if (type == ApiMediaQueryType.popularMovies ||
+          type == ApiMediaQueryType.trendingMovies) {
         mediaRepoPattern = await _mediaRepository.onGetMediaModels<MovieModel>(
           type: type,
           locale: event.locale,
@@ -88,19 +88,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         case (final ApiRepositoryFailure failure, null):
           return emit(HomeFailureState(failure: failure));
         case (null, final List<TMDBModel> resModels):
-          if (resModels.isEmpty) {
-            return emit(HomeFailureState(failure: (
-              1,
-              StackTrace.current,
-              ApiClientExceptionType.unknown,
-              ""
-            )));
-          }
           modelsMap[type.asString()] = resModels;
-          break;
       }
 
-      await Future.delayed(const Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150)); // убрать в релизе
     }
 
     emit(HomeLoadedState(

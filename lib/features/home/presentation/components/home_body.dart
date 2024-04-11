@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
@@ -129,27 +130,51 @@ class _HomeContentState extends State<HomeContent> {
         children: [
           MediaHorizontalListView(
             title: "Popular movies for you",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.popularMovies,
+              );
+            },
             models: widget.popularMovies,
             cardHeight: 270,
             cardWidth: 180,
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
-            title: "Trending movies",
-            models: widget.trendingMovies,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
             title: "Popular TV series",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.popularTVSeries,
+              );
+            },
             models: widget.popularTVSeries,
             cardHeight: 210,
             cardWidth: 140,
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
+            title: "Trending movies",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.trendingMovies,
+              );
+            },
+            models: widget.trendingMovies,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
             title: "Trending TV series",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.trendingTVSeries,
+              );
+            },
             models: widget.trendingTVSeries,
             cardHeight: 210,
             cardWidth: 140,
