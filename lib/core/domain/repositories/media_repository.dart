@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/data/api/clients/media_api_client.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
@@ -14,7 +15,6 @@ enum ApiMediaQueryType {
   trendingTVSeries,
   onTheAirTVSeries,
   popularPersons,
-  
 }
 
 extension ApiMediaQueryTypeX on ApiMediaQueryType {
@@ -63,6 +63,7 @@ extension MediaRepositoryPatternX<T> on MediaRepositoryPattern<T> {
 
 class MediaRepository {
   final MediaApiClient _mediaApiClient = MediaApiClient();
+  final Logger _logger = Logger("MediaRepo");
 
   List<T> _createModelsList<T>({
     required TMDBModel Function(Map<String, dynamic>) fromJson,
@@ -126,8 +127,8 @@ class MediaRepository {
           _createModelsList<T>(fromJson: fromJson!, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
-
       final errorParams = switch (error) {
         DioException _ => (
             ApiClientExceptionType.network,
@@ -151,8 +152,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -182,8 +187,8 @@ class MediaRepository {
       }
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
-
       final errorParams = switch (error) {
         DioException _ => (
             ApiClientExceptionType.network,
@@ -228,8 +233,8 @@ class MediaRepository {
           fromJson: MovieModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
-
       final errorParams = switch (error) {
         DioException _ => (
             ApiClientExceptionType.network,
@@ -253,8 +258,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -274,8 +283,8 @@ class MediaRepository {
           fromJson: TVSeriesModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
-
       final errorParams = switch (error) {
         DioException _ => (
             ApiClientExceptionType.network,
@@ -299,8 +308,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -320,8 +333,8 @@ class MediaRepository {
           fromJson: PersonModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
-
       final errorParams = switch (error) {
         DioException _ => (
             ApiClientExceptionType.network,
@@ -345,8 +358,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -379,6 +396,7 @@ class MediaRepository {
       final T model = fromJson!(response!.data as Map<String, dynamic>) as T;
       return (null, model);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -403,8 +421,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -433,6 +455,7 @@ class MediaRepository {
       );
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -457,8 +480,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -488,6 +515,7 @@ class MediaRepository {
 
       return (null, models.reversed.toList());
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -512,8 +540,12 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -548,6 +580,7 @@ class MediaRepository {
 
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -572,8 +605,9 @@ class MediaRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
 }

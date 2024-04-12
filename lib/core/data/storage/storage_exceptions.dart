@@ -1,5 +1,4 @@
-
-enum StorageExceptionType { dataType, key, unknown }
+enum StorageExceptionType { incorrectDataType, key, unknown }
 
 abstract class StorageException implements Exception {
   final Object error;

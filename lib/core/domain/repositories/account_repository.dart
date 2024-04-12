@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/api/clients/account_api_client.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -17,6 +18,7 @@ extension AuthRepositoryX<T> on AccountRepositoryPattern {
 
 class AccountRepository {
   static final AccountApiClient _accountApiClient = AccountApiClient();
+  final Logger _logger = Logger("AccountRepo");
 
   Future<AccountRepositoryPattern<int>> onGetAccountId(
       {required String sessionId}) async {
@@ -25,6 +27,7 @@ class AccountRepository {
           await _accountApiClient.getAccountId(sessionId: sessionId);
       return (null, response.data["id"] as int);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -49,8 +52,12 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -72,6 +79,7 @@ class AccountRepository {
 
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -96,8 +104,12 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -119,6 +131,7 @@ class AccountRepository {
 
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -143,8 +156,12 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -162,6 +179,7 @@ class AccountRepository {
           AccountModel.fromJson(response.data as Map<String, dynamic>);
       return (null, account);
     } on ApiClientException catch (exception, stackTrace) {
+       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -186,8 +204,9 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
 
@@ -228,6 +247,7 @@ class AccountRepository {
           .toList();
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -252,8 +272,9 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
 
@@ -282,6 +303,7 @@ class AccountRepository {
 
       return (null, accountStateMap);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -306,8 +328,9 @@ class AccountRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
 }

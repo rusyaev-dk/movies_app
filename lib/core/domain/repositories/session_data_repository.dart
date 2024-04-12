@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
@@ -17,6 +18,7 @@ abstract class SessionDataKeys {
 
 class SessionDataRepository {
   late final SecureStorage _secureStorage;
+  final Logger _logger = Logger("SessionDataRepo");
 
   SessionDataRepository({required SecureStorage secureStorage})
       : _secureStorage = secureStorage;
@@ -25,6 +27,8 @@ class SessionDataRepository {
     String? sessionId =
         await _secureStorage.get<String?>(SessionDataKeys.sessionId);
     if (sessionId == null) {
+      _logger.severe(
+          "Exception caught: $ApiAuthException. StackTrace: ${StackTrace.current}");
       return (
         (1, StackTrace.current, ApiClientExceptionType.auth, ""),
         null,
@@ -38,6 +42,8 @@ class SessionDataRepository {
         await _secureStorage.get<String?>(SessionDataKeys.accountId);
     int? parsedId = accoutId != null ? int.tryParse(accoutId) : null;
     if (accoutId == null) {
+      _logger.severe(
+          "Exception caught: $ApiAuthException. StackTrace: ${StackTrace.current}");
       return (
         (1, StackTrace.current, ApiClientExceptionType.auth, ""),
         null,

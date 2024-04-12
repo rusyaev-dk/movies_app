@@ -12,7 +12,7 @@ class KeyValueStorage implements DataBaseInterface {
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
     await _prefs.clear();
-  } 
+  }
 
   @override
   Future<T?> get<T>(String key) async {
@@ -25,43 +25,43 @@ class KeyValueStorage implements DataBaseInterface {
       }
 
       return value as T;
-    } on TypeError catch (err, stackTrace) {
+    } on TypeError catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        StorageDataTypeException(err, message: err.toString()),
+        StorageDataTypeException(exception, message: exception.toString()),
         stackTrace,
       );
-    } on Exception catch (err, stackTrace) {
+    } on Exception catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        StorageUnknownException(err, message: err.toString()),
+        StorageUnknownException(exception, message: exception.toString()),
         stackTrace,
       );
     }
   }
 
   @override
-  Future<void> set<T>(String key, T value) {
+  Future<bool> set<T>(String key, T value) async {
     if (sameTypes<T, bool>()) {
-      return _prefs.setBool(key, value as bool);
+      return await _prefs.setBool(key, value as bool);
     }
 
     if (sameTypes<T, int>()) {
-      return _prefs.setInt(key, value as int);
+      return await _prefs.setInt(key, value as int);
     }
 
     if (sameTypes<T, double>()) {
-      return _prefs.setDouble(key, value as double);
+      return await _prefs.setDouble(key, value as double);
     }
 
     if (sameTypes<T, String>()) {
-      return _prefs.setString(key, value as String);
+      return await _prefs.setString(key, value as String);
     }
 
     if (sameTypes<T, List<String>>()) {
-      return _prefs.setStringList(key, value as List<String>);
+      return await _prefs.setStringList(key, value as List<String>);
     }
 
     if (value is Enum) {
-      return _prefs.setInt(key, value.index);
+      return await _prefs.setInt(key, value.index);
     }
 
     Error.throwWithStackTrace(
@@ -71,17 +71,17 @@ class KeyValueStorage implements DataBaseInterface {
   }
 
   @override
-  Future<void> delete<T>(String key) async {
+  Future<bool> delete<T>(String key) async {
     try {
-      await _prefs.remove(key);
-    } on TypeError catch (err, stackTrace) {
+      return await _prefs.remove(key);
+    } on TypeError catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        StorageDataTypeException(err, message: err.toString()),
+        StorageDataTypeException(exception, message: exception.toString()),
         stackTrace,
       );
-    } on Exception catch (err, stackTrace) {
+    } on Exception catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        StorageUnknownException(err, message: err.toString()),
+        StorageUnknownException(exception, message: exception.toString()),
         stackTrace,
       );
     }

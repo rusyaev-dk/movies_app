@@ -33,24 +33,24 @@ class AppHttpClient {
       );
       _validateResponse(response: response);
       return response;
-    } on DioException catch (err, stackStrace) {
-      if (err.error is SocketException) {
+    } on DioException catch (exception, stackTrace) {
+      if (exception.error is SocketException) {
         Error.throwWithStackTrace(
-          ApiNetworkException(err, message: err.message),
-          stackStrace,
+          ApiNetworkException(exception, message: exception.message),
+          stackTrace,
         );
       } else {
         Error.throwWithStackTrace(
-          ApiUnknownException(err, message: err.message),
-          stackStrace,
+          ApiUnknownException(exception, message: exception.message),
+          stackTrace,
         );
       }
     } on ApiClientException {
       rethrow;
-    } catch (err, stackStrace) {
+    } catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        ApiUnknownException(err),
-        stackStrace,
+        ApiUnknownException(exception),
+        stackTrace,
       );
     }
   }
@@ -69,25 +69,25 @@ class AppHttpClient {
         options: Options(headers: headers),
       );
       return response;
-    } on DioException catch (err, stackStrace) {
-      if (err.error is SocketException) {
+    } on DioException catch (exception, stackTrace) {
+      if (exception.error is SocketException) {
         Error.throwWithStackTrace(
-          ApiNetworkException(err, message: err.message),
-          stackStrace,
+          ApiNetworkException(exception, message: exception.message),
+          stackTrace,
         );
       } else {
-        _validateResponse(response: err.response!);
+        _validateResponse(response: exception.response!);
         Error.throwWithStackTrace(
-          ApiUnknownException(err),
-          stackStrace,
+          ApiUnknownException(exception),
+          stackTrace,
         );
       }
     } on ApiClientException {
       rethrow;
-    } catch (err, stackStrace) {
+    } catch (exception, stackTrace) {
       Error.throwWithStackTrace(
-        ApiUnknownException(err),
-        stackStrace,
+        ApiUnknownException(exception),
+        stackTrace,
       );
     }
   }

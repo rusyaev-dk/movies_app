@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:movies_app/core/data/storage/db_interface.dart';
+import 'package:movies_app/core/data/storage/storage_exceptions.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
-
 
 class SecureStorage implements DataBaseInterface {
   static const _secureStorage = FlutterSecureStorage();
@@ -9,7 +9,8 @@ class SecureStorage implements DataBaseInterface {
   @override
   Future<void> init() async {
     throw UnimplementedError(
-        "init() method is not implemented for SecureStorage");
+      "init() method is not implemented for SecureStorage",
+    );
   }
 
   @override
@@ -17,15 +18,17 @@ class SecureStorage implements DataBaseInterface {
     Object? value;
     try {
       value = await _secureStorage.read(key: key);
-      // значения ещё нет в бд
-      // if (value == null) {
-      //   return defaultValue;
-      // }
       return value as T;
-    } catch (err, stackTrace) {
-      // + реализовать logging...
-      print("$err, ${stackTrace.toString()}");
-      return null;
+    } on TypeError catch (exception, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageDataTypeException(exception, message: exception.toString()),
+        stackTrace,
+      );
+    } on Exception catch (exception, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageUnknownException(exception, message: exception.toString()),
+        stackTrace,
+      );
     }
   }
 
@@ -54,23 +57,41 @@ class SecureStorage implements DataBaseInterface {
     }
 
     if (sameTypes<T, List<String>>()) {
-      throw Exception('Wrong type for saving to database');
+      Error.throwWithStackTrace(
+        StorageDataTypeException(TypeError,
+            message: "List of strings is not supported for Secure storage"),
+        StackTrace.current,
+      );
     }
 
     if (value is Enum) {
-      throw Exception('Wrong type for saving to database');
+      Error.throwWithStackTrace(
+        StorageDataTypeException(TypeError,
+            message: "Enum of strings is not supported for Secure storage"),
+        StackTrace.current,
+      );
     }
 
-    throw Exception('Wrong type for saving to database');
+    Error.throwWithStackTrace(
+      StorageDataTypeException(TypeError, message: TypeError().toString()),
+      StackTrace.current,
+    );
   }
 
   @override
   Future<void> delete<T>(String key) async {
     try {
       await _secureStorage.delete(key: key);
-    } catch (err, stackTrace) {
-      // + реализовать logging...
-      print("$err, ${stackTrace.toString()}");
+    } on TypeError catch (exception, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageDataTypeException(exception, message: exception.toString()),
+        stackTrace,
+      );
+    } on Exception catch (exception, stackTrace) {
+      Error.throwWithStackTrace(
+        StorageUnknownException(exception, message: exception.toString()),
+        stackTrace,
+      );
     }
   }
 }

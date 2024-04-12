@@ -2,32 +2,28 @@ part of '../theme.dart';
 
 ThemeData createLightTheme() {
   return ThemeData(
+    dialogTheme: const DialogTheme(
+      backgroundColor: AppColors.lightGrey,
+    ),
     textTheme: createTextTheme(),
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.white,
+    hintColor: AppColors.grey,
     extensions: <ThemeExtension<dynamic>>[
       ThemeColors.light,
-      // ThemeTextStyles.light,
-      // ThemeGradients.light,
+      ThemeTextStyles.light,
+      ThemeGradients.light,
     ],
     colorScheme: const ColorScheme.light(
       primary: AppColors.orange,
-      secondary: AppColors.lightGrey,
-      background: AppColors.white,
-      onBackground: AppColors.black,
+      primaryContainer: AppColors.orangeVariant,
+      secondary: AppColors.grey,
+      surface: AppColors.darkerGrey,
+      error: AppColors.red,
+      tertiary: AppColors.green,
+      onTertiary: AppColors.white,
     ),
-    dialogTheme: DialogTheme(
-      backgroundColor: AppColors.white,
-      titleTextStyle: displayMedium.copyWith(
-        color: AppColors.black,
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-      ),
-      contentTextStyle: displayMedium.copyWith(
-        color: AppColors.black,
-      ),
-    ),
-    focusColor: Colors.blue.withOpacity(0.2),
-    appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+    focusColor: Colors.white.withOpacity(0.2),
+    appBarTheme: const AppBarTheme(backgroundColor: AppColors.white),
   );
 }

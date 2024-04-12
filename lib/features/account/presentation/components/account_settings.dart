@@ -21,7 +21,8 @@ class AccountSettings extends StatelessWidget {
             borderRadiusDirection: BorderRadiusDirection.onlyTop,
             icon: Icons.colorize_outlined,
             text: "Change theme",
-            onPressed: () {},
+            onPressed: () {
+            },
           ),
           Divider(
             height: 1,

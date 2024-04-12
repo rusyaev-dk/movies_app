@@ -36,7 +36,7 @@ class WatchlistAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              "Your watchlist",
+              "Watchlist",
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .extension<ThemeTextStyles>()!

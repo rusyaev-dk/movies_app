@@ -25,7 +25,6 @@ class MoviesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final Connectivity connectivity = Connectivity();
     final SecureStorage secureStorage = SecureStorage();
-
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(

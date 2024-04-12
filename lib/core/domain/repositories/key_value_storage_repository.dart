@@ -27,7 +27,7 @@ class KeyValueStorageRepository {
 
       final errorParams = switch (error) {
         TypeError _ => (
-            StorageExceptionType.dataType,
+            StorageExceptionType.incorrectDataType,
             (error).toString(),
           ),
         _ => (StorageExceptionType.unknown, exception.message),
@@ -46,14 +46,14 @@ class KeyValueStorageRepository {
     required T value,
   }) async {
     try {
-      await _storage.set<T>(key, value);
-      return (null, true);
+      final bool res = await _storage.set<T>(key, value);
+      return (null, res);
     } on StorageException catch (exception, stackTrace) {
       final error = exception.error;
 
       final errorParams = switch (error) {
         TypeError _ => (
-            StorageExceptionType.dataType,
+            StorageExceptionType.incorrectDataType,
             (error).toString(),
           ),
         _ => (StorageExceptionType.unknown, exception.message),
@@ -70,14 +70,14 @@ class KeyValueStorageRepository {
   Future<KeyValueStorageRepositoryPattern<bool>> delete<T>(
       {required String key}) async {
     try {
-      await _storage.delete<T>(key);
-      return (null, true);
+      final bool res = await _storage.delete<T>(key);
+      return (null, res);
     } on StorageException catch (exception, stackTrace) {
       final error = exception.error;
 
       final errorParams = switch (error) {
         TypeError _ => (
-            StorageExceptionType.dataType,
+            StorageExceptionType.incorrectDataType,
             (error).toString(),
           ),
         _ => (StorageExceptionType.unknown, exception.message),

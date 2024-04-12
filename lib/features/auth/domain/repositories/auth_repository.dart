@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/api/clients/auth_api_client.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
@@ -16,6 +17,7 @@ extension AuthRepositoryX on AuthRepositoryPattern {
 
 class AuthRepository {
   static final _authApiClient = AuthApiClient();
+  final Logger _logger = Logger("AuthRepo");
 
   Future<AuthRepositoryPattern> onAuth({
     required String login,
@@ -39,6 +41,7 @@ class AuthRepository {
 
       return (null, sessionId);
     } on ApiClientException catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
       final error = exception.error;
       final errorParams = switch (error) {
         DioException _ => (
@@ -63,8 +66,9 @@ class AuthRepository {
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
       return (repositoryFailure, null);
-    } catch (error, stackTrace) {
-      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    } catch (exception, stackTrace) {
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
     }
   }
 }

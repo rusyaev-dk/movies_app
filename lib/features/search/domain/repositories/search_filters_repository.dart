@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
@@ -12,6 +13,7 @@ abstract class KeyValueStorageKeys {
 
 class SearchFiltersRepository {
   late final KeyValueStorageRepository _keyValueStorageRepository;
+  final Logger _logger = Logger("SearchFiltersRepo");
 
   SearchFiltersRepository(
       {required KeyValueStorageRepository keyValueStorageRepository})
@@ -85,8 +87,9 @@ class SearchFiltersRepository {
     );
 
     switch (keyValueStorageRepoPattern) {
-      case (final StorageRepositoryFailure _, null):
-        // print("Error");
+      case (final StorageRepositoryFailure failure, null):
+        _logger.severe(
+            "Exception caught: $failure. StackTrace: ${StackTrace.current}");
         break;
       case (null, true):
         break;
@@ -99,8 +102,9 @@ class SearchFiltersRepository {
     );
 
     switch (keyValueStorageRepoPattern) {
-      case (final StorageRepositoryFailure _, null):
-        // print("Error");
+      case (final StorageRepositoryFailure failure, null):
+        _logger.severe(
+            "Exception caught: $failure. StackTrace: ${StackTrace.current}");
         break;
       case (null, true):
         break;
@@ -112,8 +116,9 @@ class SearchFiltersRepository {
     );
 
     switch (keyValueStorageRepoPattern) {
-      case (final StorageRepositoryFailure _, null):
-        // print("Error");
+      case (final StorageRepositoryFailure failure, null):
+        _logger.severe(
+            "Exception caught: $failure. StackTrace: ${StackTrace.current}");
         break;
       case (null, true):
         break;
@@ -125,8 +130,9 @@ class SearchFiltersRepository {
     );
 
     switch (keyValueStorageRepoPattern) {
-      case (final StorageRepositoryFailure _, null):
-        // print("Error");
+      case (final StorageRepositoryFailure failure, null):
+        _logger.severe(
+            "Exception caught: $failure. StackTrace: ${StackTrace.current}");
         break;
       case (null, true):
         break;
