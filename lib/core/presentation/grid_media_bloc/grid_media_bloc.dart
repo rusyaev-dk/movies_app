@@ -35,15 +35,24 @@ class GridMediaBloc extends Bloc<GridMediaEvent, GridMediaState> {
     if (state.hasReachedMax) return;
 
     final MediaRepositoryPattern mediaRepoPattern;
-    if (event.queryType.asString().toLowerCase().contains("movies")) {
-      mediaRepoPattern = await _mediaRepository.onGetMediaModels<MovieModel>(
-        type: event.queryType,
+    if (event.queryType.asString().contains("movies")) {
+      mediaRepoPattern =
+          await _mediaRepository.onGetMediaModelsFromQueryType<MovieModel>(
+        queryType: event.queryType,
+        locale: event.locale,
+        page: event.page,
+      );
+    } else if (event.queryType.asString().contains("series")) {
+      mediaRepoPattern =
+          await _mediaRepository.onGetMediaModelsFromQueryType<TVSeriesModel>(
+        queryType: event.queryType,
         locale: event.locale,
         page: event.page,
       );
     } else {
-      mediaRepoPattern = await _mediaRepository.onGetMediaModels<TVSeriesModel>(
-        type: event.queryType,
+      mediaRepoPattern =
+          await _mediaRepository.onGetMediaModelsFromQueryType<PersonModel>(
+        queryType: event.queryType,
         locale: event.locale,
         page: event.page,
       );

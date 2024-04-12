@@ -28,11 +28,11 @@ class MovieDetailsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
       builder: (context, state) {
-        if (state is MovieDetailsFailureState) {
-          switch (state.failure.type) {
+        if (state.failure != null) {
+          switch (state.failure!.type) {
             case (ApiClientExceptionType.sessionExpired):
               return FailureWidget(
-                  failure: state.failure,
+                  failure: state.failure!,
                   buttonText: "Login",
                   icon: Icons.exit_to_app_outlined,
                   onPressed: () {
@@ -41,7 +41,7 @@ class MovieDetailsBody extends StatelessWidget {
                   });
             case (ApiClientExceptionType.network):
               return FailureWidget(
-                failure: state.failure,
+                failure: state.failure!,
                 buttonText: "Update",
                 icon: Icons.wifi_off,
                 onPressed: () {
@@ -53,25 +53,23 @@ class MovieDetailsBody extends StatelessWidget {
                 },
               );
             default:
-              return FailureWidget(failure: state.failure);
+              return FailureWidget(failure: state.failure!);
           }
         }
-        if (state is MovieDetailsLoadingState) {
+        if (state.isLoading) {
           return MovieDetailsContent.shimmerLoading(context);
         }
 
-        if (state is MovieDetailsLoadedState) {
+        if (!state.isLoading && state.movieModel != null) {
           return MovieDetailsContent(
-            movie: state.movieModel,
+            movie: state.movieModel!,
             movieImages: state.movieImages ?? [],
             movieCredits: state.movieCredits ?? [],
             similarMovies: state.similarMovies ?? [],
           );
         }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return MovieDetailsContent.shimmerLoading(context);
       },
     );
   }
@@ -180,10 +178,33 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaDetailsButtons(
-            favouriteBtnOnPressed: () {},
-            watchListBtnOnPressed: () {},
-            shareBtnOnPressed: () {},
+          child: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
+            buildWhen: (previous, current) =>
+                previous.isFavourite != current.isFavourite ||
+                previous.isInWatchlist != current.isInWatchlist,
+            builder: (context, state) {
+              return MediaDetailsButtons(
+                isFavourite: state.isFavourite!,
+                isInWatchlist: state.isInWatchlist!,
+                favouriteBtnOnPressed: () {
+                  context
+                      .read<MovieDetailsBloc>()
+                      .add(MovieDetailsAddToFavouriteEvent(
+                        movieId: state.movieModel!.id!,
+                        isFavorite: state.isFavourite!,
+                      ));
+                },
+                watchListBtnOnPressed: () {
+                  context
+                      .read<MovieDetailsBloc>()
+                      .add(MovieDetailsAddToWatchlistEvent(
+                        movieId: state.movieModel!.id!,
+                        isInWatchlist: state.isInWatchlist!,
+                      ));
+                },
+                shareBtnOnPressed: () {},
+              );
+            },
           ),
         ),
         const SizedBox(height: 15),

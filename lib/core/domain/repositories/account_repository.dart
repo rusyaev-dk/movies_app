@@ -54,23 +54,70 @@ class AccountRepository {
     }
   }
 
-  Future<AccountRepositoryPattern<bool>> onAddFavourite({
+  Future<AccountRepositoryPattern<bool>> onAddToFavourite({
     required int accountId,
     required String sessionId,
     required TMDBMediaType mediaType,
     required int mediaId,
-    required bool isFavorite,
+    required bool isFavourite,
   }) async {
     try {
-      final response = await _accountApiClient.addFavourite(
+      final response = await _accountApiClient.addToFavourite(
         accountId: accountId,
         sessionId: sessionId,
         mediaType: mediaType,
         mediaId: mediaId,
-        isFavorite: isFavorite,
+        isFavourite: isFavourite,
       );
 
-      return (null, response.data["status_code"] == 1);
+      return (null, response.data["success"] as bool);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      ApiRepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
+
+  Future<AccountRepositoryPattern<bool>> onAddToWatchlist({
+    required int accountId,
+    required String sessionId,
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required bool isInWatchlist,
+  }) async {
+    try {
+      final response = await _accountApiClient.addToWatchlist(
+        accountId: accountId,
+        sessionId: sessionId,
+        mediaType: mediaType,
+        mediaId: mediaId,
+        isInWatchlist: isInWatchlist,
+      );
+
+      return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
       final error = exception.error;
       final errorParams = switch (error) {
@@ -210,41 +257,57 @@ class AccountRepository {
     }
   }
 
-  // Future<AccountRepositoryPattern<bool>> onIsFavourite({
-  //   required TMDBMediaType mediaType,
-  //   required int mediaId,
-  //   required int accountId,
-  //   required String sessionId,
-  // }) async {
-  //   try {
-  //     await onGetAccountFavouriteMedia(mediaType: mediaType, locale: "en-US", page: 1, accountId: accountId, sessionId: sessionId)
-  //   } on ApiClientException catch (exception, stackTrace) {
-  //     final error = exception.error;
-  //     final errorParams = switch (error) {
-  //       DioException _ => (
-  //           ApiClientExceptionType.network,
-  //           (error).message,
-  //         ),
-  //       FormatException _ => (
-  //           ApiClientExceptionType.network,
-  //           (error).message,
-  //         ),
-  //       HttpException _ => (
-  //           ApiClientExceptionType.network,
-  //           (error).message,
-  //         ),
-  //       TimeoutException _ => (
-  //           ApiClientExceptionType.network,
-  //           (error).message ?? exception.message,
-  //         ),
-  //       _ => (ApiClientExceptionType.unknown, exception.message),
-  //     };
+  Future<AccountRepositoryPattern<Map<String, bool>>> onGetAccountStates({
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required String sessionId,
+  }) async {
+    try {
+      final Response? response;
+      switch (mediaType) {
+        case (TMDBMediaType.movie):
+          response = await _accountApiClient.getMovieAccountStates(
+              movieId: mediaId, sessionId: sessionId);
+        case (TMDBMediaType.tv):
+          response = await _accountApiClient.getTvSeriesAccountStates(
+              tvSeriesId: mediaId, sessionId: sessionId);
+        default:
+          response = null;
+      }
 
-  //     RepositoryFailure repositoryFailure =
-  //         (error, stackTrace, errorParams.$1, errorParams.$2);
-  //     return (repositoryFailure, null);
-  //   } catch (error, stackTrace) {
-  //     return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
-  //   }
-  // }
+      final Map<String, bool> accountStateMap = {
+        "favourite": response!.data["favorite"] ?? false,
+        "watchlist": response.data["watchlist"] ?? false,
+      };
+
+      return (null, accountStateMap);
+    } on ApiClientException catch (exception, stackTrace) {
+      final error = exception.error;
+      final errorParams = switch (error) {
+        DioException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        FormatException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        HttpException _ => (
+            ApiClientExceptionType.network,
+            (error).message,
+          ),
+        TimeoutException _ => (
+            ApiClientExceptionType.network,
+            (error).message ?? exception.message,
+          ),
+        _ => (ApiClientExceptionType.unknown, exception.message),
+      };
+
+      ApiRepositoryFailure repositoryFailure =
+          (error, stackTrace, errorParams.$1, errorParams.$2);
+      return (repositoryFailure, null);
+    } catch (error, stackTrace) {
+      return ((error, stackTrace, ApiClientExceptionType.unknown, null), null);
+    }
+  }
 }

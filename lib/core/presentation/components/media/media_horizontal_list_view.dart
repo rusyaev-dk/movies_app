@@ -168,17 +168,6 @@ class MediaListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (models.isEmpty) {
-      return Center(
-        child: Text(
-          "Oops, there is no media... Please try again later.",
-          textAlign: TextAlign.center,
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
-        ),
-      );
-    }
-
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       separatorBuilder: (context, index) {

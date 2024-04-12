@@ -12,12 +12,22 @@ class MovieDetailsLoadDetailsEvent extends MovieDetailsEvent {
   });
 }
 
-// class MovieDetailsAddFavouriteEvent extends MovieDetailsEvent {
-//   final int movieId;
-//   final bool isFavorite;
+class MovieDetailsAddToFavouriteEvent extends MovieDetailsEvent {
+  final int movieId;
+  final bool isFavorite;
 
-//   MovieDetailsAddFavouriteEvent({
-//     required this.movieId,
-//     required this.isFavorite,
-//   });
-// }
+  MovieDetailsAddToFavouriteEvent({
+    required this.movieId,
+    required this.isFavorite,
+  });
+}
+
+class MovieDetailsAddToWatchlistEvent extends MovieDetailsEvent {
+  final int movieId;
+  final bool isInWatchlist;
+
+  MovieDetailsAddToWatchlistEvent({
+    required this.movieId,
+    required this.isInWatchlist,
+  });
+}

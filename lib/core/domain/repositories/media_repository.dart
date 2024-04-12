@@ -12,19 +12,26 @@ enum ApiMediaQueryType {
   trendingMovies,
   popularTVSeries,
   trendingTVSeries,
+  onTheAirTVSeries,
+  popularPersons,
+  
 }
 
 extension ApiMediaQueryTypeX on ApiMediaQueryType {
   String asString() {
     switch (this) {
       case ApiMediaQueryType.popularMovies:
-        return 'popularMovies';
+        return 'popular_movies';
       case ApiMediaQueryType.trendingMovies:
-        return 'trendingMovies';
+        return 'trending_movies';
       case ApiMediaQueryType.popularTVSeries:
-        return 'popularTVSeries';
+        return 'popular_tv_series';
       case ApiMediaQueryType.trendingTVSeries:
-        return 'trendingTVSeries';
+        return 'trending_tv_series';
+      case ApiMediaQueryType.onTheAirTVSeries:
+        return 'on_the_air_tv_series';
+      case ApiMediaQueryType.popularPersons:
+        return 'popular_persons';
     }
   }
 
@@ -38,6 +45,10 @@ extension ApiMediaQueryTypeX on ApiMediaQueryType {
         return 'Popular TV series';
       case ApiMediaQueryType.trendingTVSeries:
         return 'Trending TV series';
+      case ApiMediaQueryType.onTheAirTVSeries:
+        return 'On the air';
+      case ApiMediaQueryType.popularPersons:
+        return 'Popular persons';
     }
   }
 }
@@ -64,15 +75,15 @@ class MediaRepository {
     return models;
   }
 
-  Future<MediaRepositoryPattern<List<T>>> onGetMediaModels<T>({
-    required ApiMediaQueryType type,
+  Future<MediaRepositoryPattern<List<T>>> onGetMediaModelsFromQueryType<T>({
+    required ApiMediaQueryType queryType,
     required String locale,
     required int page,
   }) async {
     try {
       final Response? response;
       final TMDBModel Function(Map<String, dynamic>)? fromJson;
-      switch (type) {
+      switch (queryType) {
         case ApiMediaQueryType.popularMovies:
           response = await _mediaApiClient.getPopularMovies(
               locale: locale, page: page);
@@ -92,6 +103,16 @@ class MediaRepository {
           response = await _mediaApiClient.getTrendingTVSeries(
               locale: locale, page: page);
           fromJson = TVSeriesModel.fromJson;
+          break;
+        case ApiMediaQueryType.onTheAirTVSeries:
+          response = await _mediaApiClient.getOnTheAirTVSeries(
+              locale: locale, page: page);
+          fromJson = TVSeriesModel.fromJson;
+          break;
+        case ApiMediaQueryType.popularPersons:
+          response = await _mediaApiClient.getPopularPersons(
+              locale: locale, page: page);
+          fromJson = PersonModel.fromJson;
           break;
         default:
           response = null;

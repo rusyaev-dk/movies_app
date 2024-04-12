@@ -9,19 +9,19 @@ import 'package:movies_app/core/presentation/components/media/media_horizontal_l
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/features/watch_list/presentation/components/watch_list_additional.dart';
-import 'package:movies_app/features/watch_list/presentation/watch_list_bloc/watch_list_bloc.dart';
+import 'package:movies_app/features/watchlist/presentation/components/watchlist_additional.dart';
+import 'package:movies_app/features/watchlist/presentation/watchlist_bloc/watchlist_bloc.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shimmer/shimmer.dart';
 
-class WatchListBody extends StatelessWidget {
-  const WatchListBody({super.key});
+class WatchlistBody extends StatelessWidget {
+  const WatchlistBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WatchListBloc, WatchListState>(
+    return BlocBuilder<WatchlistBloc, WatchlistState>(
       builder: (context, state) {
-        if (state is WatchListFailureState) {
+        if (state is WatchlistFailureState) {
           switch (state.failure.type) {
             case (ApiClientExceptionType.sessionExpired):
               return FailureWidget(
@@ -38,61 +38,61 @@ class WatchListBody extends StatelessWidget {
                 buttonText: "Update",
                 icon: Icons.wifi_off,
                 onPressed: () => context
-                    .read<WatchListBloc>()
-                    .add(WatchListLoadWatchListEvent()),
+                    .read<WatchlistBloc>()
+                    .add(WatchlistloadWatchlistEvent()),
               );
             default:
               return FailureWidget(
                 failure: state.failure,
                 onPressed: () => context
-                    .read<WatchListBloc>()
-                    .add(WatchListLoadWatchListEvent()),
+                    .read<WatchlistBloc>()
+                    .add(WatchlistloadWatchlistEvent()),
               );
           }
         }
 
-        if (state is WatchListLoadingState) {
+        if (state is WatchlistLoadingState) {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: WatchListContent.shimmerLoading(context),
+            child: WatchlistContent.shimmerLoading(context),
           );
         }
 
-        if (state is WatchListLoadedState) {
-          if (state.moviesWatchList.isEmpty &&
-              state.tvSeriesWatchList.isEmpty) {
+        if (state is WatchlistLoadedState) {
+          if (state.moviesWatchlist.isEmpty &&
+              state.tvSeriesWatchlist.isEmpty) {
             return const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: NoAddedWatchListMedia(),
+              child: NoAddedWatchlistMedia(),
             );
           }
           return Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: WatchListContent(
-              moviesWatchList: state.moviesWatchList,
-              tvSeriesWatchList: state.tvSeriesWatchList,
+            child: WatchlistContent(
+              moviesWatchlist: state.moviesWatchlist,
+              tvSeriesWatchlist: state.tvSeriesWatchlist,
             ),
           );
         }
 
         return Padding(
           padding: const EdgeInsets.only(left: 10),
-          child: WatchListContent.shimmerLoading(context),
+          child: WatchlistContent.shimmerLoading(context),
         );
       },
     );
   }
 }
 
-class WatchListContent extends StatefulWidget {
-  const WatchListContent({
+class WatchlistContent extends StatefulWidget {
+  const WatchlistContent({
     super.key,
-    required this.moviesWatchList,
-    required this.tvSeriesWatchList,
+    required this.moviesWatchlist,
+    required this.tvSeriesWatchlist,
   });
 
-  final List<MovieModel> moviesWatchList;
-  final List<TVSeriesModel> tvSeriesWatchList;
+  final List<MovieModel> moviesWatchlist;
+  final List<TVSeriesModel> tvSeriesWatchlist;
 
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
@@ -114,10 +114,10 @@ class WatchListContent extends StatefulWidget {
   }
 
   @override
-  State<WatchListContent> createState() => _WatchListContentState();
+  State<WatchlistContent> createState() => _WatchlistContentState();
 }
 
-class _WatchListContentState extends State<WatchListContent> {
+class _WatchlistContentState extends State<WatchlistContent> {
   late final RefreshController _refreshController;
 
   @override
@@ -131,21 +131,24 @@ class _WatchListContentState extends State<WatchListContent> {
     return SmartRefresher(
       enablePullDown: true,
       controller: _refreshController,
-      onRefresh: () => context.read<WatchListBloc>().add(
-          WatchListRefreshWatchListEvent(refreshController: _refreshController)),
+      onRefresh: () => context.read<WatchlistBloc>().add(
+          WatchlistRefreshWatchlistEvent(
+              refreshController: _refreshController)),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           MediaHorizontalListView(
-            models: widget.moviesWatchList,
-            withAllButton: widget.moviesWatchList.length > 10,
+            title: "Your movies",
+            models: widget.moviesWatchlist,
+            withAllButton: widget.moviesWatchlist.length > 10,
             cardHeight: 210,
             cardWidth: 140,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           MediaHorizontalListView(
-            models: widget.tvSeriesWatchList,
-            withAllButton: widget.moviesWatchList.length > 10,
+            title: "Your TV series",
+            models: widget.tvSeriesWatchlist,
+            withAllButton: widget.moviesWatchlist.length > 10,
             cardHeight: 210,
             cardWidth: 140,
           ),

@@ -7,8 +7,12 @@ class MediaDetailsButtons extends StatelessWidget {
     required this.favouriteBtnOnPressed,
     required this.watchListBtnOnPressed,
     required this.shareBtnOnPressed,
+    required this.isFavourite,
+    required this.isInWatchlist,
   });
 
+  final bool isFavourite;
+  final bool isInWatchlist;
   final void Function() favouriteBtnOnPressed;
   final void Function() watchListBtnOnPressed;
   final void Function() shareBtnOnPressed;
@@ -20,18 +24,18 @@ class MediaDetailsButtons extends StatelessWidget {
       children: [
         CustomIconButton(
           onPressed: favouriteBtnOnPressed,
-          icon: Icons.star_border,
+          icon: isFavourite ? Icons.star : Icons.star_border,
           text: "Favourite",
         ),
         const SizedBox(width: 10),
         CustomIconButton(
           onPressed: watchListBtnOnPressed,
-          icon: Icons.bookmark_add_outlined,
+          icon: isInWatchlist ? Icons.bookmark : Icons.bookmark_add_outlined,
           text: "To watch list",
         ),
         const SizedBox(width: 10),
         CustomIconButton(
-          onPressed: shareBtnOnPressed,
+          onPressed: () {},
           icon: Icons.share,
           text: "Share",
         ),

@@ -4,7 +4,7 @@ import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
 import 'package:movies_app/core/presentation/screens/grid_media_screen.dart';
 import 'package:movies_app/features/account/presentation/screens/account_screen.dart';
-import 'package:movies_app/features/watch_list/presentation/screens/watch_list_screen.dart';
+import 'package:movies_app/features/watchlist/presentation/screens/watchlist_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/person_details_screen.dart';
 import 'package:movies_app/core/presentation/screens/screen_loader.dart';
@@ -39,8 +39,8 @@ class AppRouter {
           ),
           StatefulShellBranch(routes: [
             GoRoute(
-              path: AppRoutes.watchList,
-              builder: (context, state) => const WatchListScreen(),
+              path: AppRoutes.watchlist,
+              builder: (context, state) => const WatchlistScreen(),
             ),
           ]),
           StatefulShellBranch(routes: [

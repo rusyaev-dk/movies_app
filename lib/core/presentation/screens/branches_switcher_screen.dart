@@ -79,7 +79,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
             Icons.bookmark,
             color: Theme.of(context).colorScheme.primary,
           ),
-          label: "Watch list",
+          label: "Watchlist",
         ),
         BottomNavigationBarItem(
           icon: Icon(

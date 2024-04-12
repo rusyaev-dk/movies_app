@@ -9,12 +9,16 @@ class HomeLoadedState extends HomeState {
   final List<MovieModel> trendingMovies;
   final List<TVSeriesModel> popularTVSeries;
   final List<TVSeriesModel> trendingTVSeries;
+  final List<TVSeriesModel> onTheAirTVSeries;
+  final List<PersonModel> popularPersons;
 
   HomeLoadedState({
     required this.popularMovies,
     required this.trendingMovies,
     required this.popularTVSeries,
     required this.trendingTVSeries,
+    required this.onTheAirTVSeries,
+    required this.popularPersons,
   });
 }
 

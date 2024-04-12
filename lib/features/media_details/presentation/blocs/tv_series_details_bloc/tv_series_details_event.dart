@@ -11,3 +11,23 @@ class TVSeriesDetailsLoadDetailsEvent extends TvSeriesDetailsEvent {
     required this.tvSeriesId,
   });
 }
+
+class TVSeriesDetailsAddToFavouriteEvent extends TvSeriesDetailsEvent {
+  final int tvSeriesId;
+  final bool isFavorite;
+
+  TVSeriesDetailsAddToFavouriteEvent({
+    required this.tvSeriesId,
+    required this.isFavorite,
+  });
+}
+
+class TVSeriesDetailsAddToWatchlistEvent extends TvSeriesDetailsEvent {
+  final int tvSeriesId;
+  final bool isInWatchlist;
+
+  TVSeriesDetailsAddToWatchlistEvent({
+    required this.tvSeriesId,
+    required this.isInWatchlist,
+  });
+}

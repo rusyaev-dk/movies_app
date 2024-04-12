@@ -5,28 +5,28 @@ import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
-part 'watch_list_event.dart';
-part 'watch_list_state.dart';
+part 'watchlist_event.dart';
+part 'watchlist_state.dart';
 
-class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
+class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
   late final SessionDataRepository _sessionDataRepository;
   late final AccountRepository _accountRepository;
 
-  WatchListBloc({
+  WatchlistBloc({
     required SessionDataRepository sessionDataRepository,
     required AccountRepository accountRepository,
   })  : _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
-        super(WatchListState()) {
-    on<WatchListLoadWatchListEvent>(_onLoadWatchList);
-    on<WatchListRefreshWatchListEvent>(_onRefreshWatchList);
+        super(WatchlistState()) {
+    on<WatchlistloadWatchlistEvent>(_onLoadWatchlist);
+    on<WatchlistRefreshWatchlistEvent>(_onRefreshWatchlist);
   }
 
-  Future<void> _onLoadWatchList(
-    WatchListLoadWatchListEvent event,
-    Emitter<WatchListState> emit,
+  Future<void> _onLoadWatchlist(
+    WatchlistloadWatchlistEvent event,
+    Emitter<WatchlistState> emit,
   ) async {
-    emit(WatchListLoadingState());
+    emit(WatchlistLoadingState());
 
     String? sessionId;
     int? accountId;
@@ -36,7 +36,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
 
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(WatchListFailureState(failure: failure));
+        return emit(WatchlistFailureState(failure: failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
     }
@@ -45,7 +45,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
         await _sessionDataRepository.onGetAccountId();
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(WatchListFailureState(failure: failure));
+        return emit(WatchlistFailureState(failure: failure));
       case (null, final int resAccountId):
         accountId = resAccountId;
     }
@@ -62,7 +62,7 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
 
     switch (accountRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(WatchListFailureState(failure: failure));
+        return emit(WatchlistFailureState(failure: failure));
       case (null, final List<MovieModel> resMovieModels):
         favouriteMovies = resMovieModels;
     }
@@ -78,20 +78,20 @@ class WatchListBloc extends Bloc<WatchListEvent, WatchListState> {
 
     switch (accountRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(WatchListFailureState(failure: failure));
+        return emit(WatchlistFailureState(failure: failure));
       case (null, final List<TVSeriesModel> resTVSeriesModels):
-        return emit(WatchListLoadedState(
-          moviesWatchList: favouriteMovies!,
-          tvSeriesWatchList: resTVSeriesModels,
+        return emit(WatchlistLoadedState(
+          moviesWatchlist: favouriteMovies!,
+          tvSeriesWatchlist: resTVSeriesModels,
         ));
     }
   }
 
-  Future<void> _onRefreshWatchList(
-    WatchListRefreshWatchListEvent event,
-    Emitter<WatchListState> emit,
+  Future<void> _onRefreshWatchlist(
+    WatchlistRefreshWatchlistEvent event,
+    Emitter<WatchlistState> emit,
   ) async {
-    add(WatchListLoadWatchListEvent());
+    add(WatchlistloadWatchlistEvent());
     event.refreshController.refreshCompleted();
   }
 }

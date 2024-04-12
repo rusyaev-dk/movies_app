@@ -4,7 +4,7 @@ abstract class AppRoutes {
 
   static const String home = '/home';
   static const String search = '/search';
-  static const String watchList = '/watch_list';
+  static const String watchlist = '/watchlist';
   static const String account = '/account';
 
   static const String movieDetails = "movie_details";

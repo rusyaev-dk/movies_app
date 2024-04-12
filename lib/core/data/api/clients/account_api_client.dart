@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movies_app/core/data/clients/http_client.dart';
@@ -20,24 +22,65 @@ class AccountApiClient {
     );
   }
 
-  Future<Response> addFavourite({
+  Future<Response> addToFavourite({
     required int accountId,
     required String sessionId,
     required TMDBMediaType mediaType,
     required int mediaId,
-    required bool isFavorite,
+    required bool isFavourite,
   }) async {
-    Map<String, dynamic> uriParameters = {
+    Map<String, dynamic> data = {
       'media_type': mediaType.asString(),
       'media_id': mediaId.toString(),
-      'favorite': isFavorite.toString(),
+      'favorite': isFavourite,
+    };
+
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    Map<String, dynamic> uriParameters = {
       'session_id': sessionId,
       'api_key': _apiKey,
     };
 
     return await _httpClient.post(
-      path: "/accout/$accountId/favorite",
+      path: "/account/$accountId/favorite",
       uriParameters: uriParameters,
+      headers: headers,
+      data: jsonEncode(data),
+    );
+  }
+
+  Future<Response> addToWatchlist({
+    required int accountId,
+    required String sessionId,
+    required TMDBMediaType mediaType,
+    required int mediaId,
+    required bool isInWatchlist,
+  }) async {
+    Map<String, dynamic> data = {
+      'media_type': mediaType.asString(),
+      'media_id': mediaId.toString(),
+      'watchlist': isInWatchlist,
+    };
+
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    Map<String, dynamic> uriParameters = {
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.post(
+      path: "/account/$accountId/watchlist",
+      uriParameters: uriParameters,
+      headers: headers,
+      data: jsonEncode(data),
     );
   }
 
@@ -90,6 +133,37 @@ class AccountApiClient {
 
     return await _httpClient.get(
       path: "${ApiConfig.accountPath}/$accountId/watchlist/tv",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getMovieAccountStates({
+    required int movieId,
+    required String sessionId,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.get(
+      path: "${ApiConfig.moviePath}/$movieId/${ApiConfig.accountStatesPath}",
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getTvSeriesAccountStates({
+    required int tvSeriesId,
+    required String sessionId,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'session_id': sessionId,
+      'api_key': _apiKey,
+    };
+
+    return await _httpClient.get(
+      path:
+          "${ApiConfig.tvSeriesPath}/$tvSeriesId/${ApiConfig.accountStatesPath}",
       uriParameters: uriParameters,
     );
   }

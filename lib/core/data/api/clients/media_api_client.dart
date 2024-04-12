@@ -67,6 +67,36 @@ class MediaApiClient {
     );
   }
 
+  Future<Response> getOnTheAirTVSeries({
+    required String locale,
+    required int page,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: ApiConfig.onTheAirTVSeriesPath,
+      uriParameters: uriParameters,
+    );
+  }
+
+  Future<Response> getPopularPersons({
+    required String locale,
+    required int page,
+  }) async {
+    Map<String, dynamic> uriParameters = {
+      'language': locale,
+      'page': page.toString(),
+      'api_key': _apiKey,
+    };
+    return await _httpClient.get(
+      path: ApiConfig.popularPersonsPath,
+      uriParameters: uriParameters,
+    );
+  }
+
   Future<Response> searchMultiMedia({
     required String query,
     required String locale,

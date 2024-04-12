@@ -8,11 +8,16 @@ abstract class ApiConfig {
   static const String newSessionPath = "/authentication/session/new";
 
   static const String accountPath = "/account";
+  static const String accountStatesPath = "account_states";
 
   static const String popularMoviesPath = "/movie/popular";
   static const String trendingMoviesPath = "/trending/movie/day";
+
   static const String popularTVSeriesPath = "/tv/popular";
   static const String trendingTVSeriesPath = "/trending/tv/day";
+  static const String onTheAirTVSeriesPath = "/tv/on_the_air";
+
+  static const String popularPersonsPath = "/person/popular";
 
   static const String searchMultiMediaPath = "/search/multi";
   static const String searchMoviesPath = "/search/movie";

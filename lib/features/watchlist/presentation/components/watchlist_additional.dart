@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/features/watch_list/presentation/watch_list_bloc/watch_list_bloc.dart';
+import 'package:movies_app/features/watchlist/presentation/watchlist_bloc/watchlist_bloc.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
-class NoAddedWatchListMedia extends StatelessWidget {
-  const NoAddedWatchListMedia({super.key});
+class NoAddedWatchlistMedia extends StatelessWidget {
+  const NoAddedWatchlistMedia({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class NoAddedWatchListMedia extends StatelessWidget {
     return SmartRefresher(
       enablePullDown: true,
       controller: refreshController,
-      onRefresh: () => context.read<WatchListBloc>().add(
-          WatchListRefreshWatchListEvent(refreshController: refreshController)),
+      onRefresh: () => context.read<WatchlistBloc>().add(
+          WatchlistRefreshWatchlistEvent(refreshController: refreshController)),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

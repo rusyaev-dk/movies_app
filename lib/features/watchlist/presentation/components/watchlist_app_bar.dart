@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
-class WatchListAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const WatchListAppBar({super.key});
+class WatchlistAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const WatchlistAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class WatchListAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              "Your watch list",
+              "Your watchlist",
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .extension<ThemeTextStyles>()!

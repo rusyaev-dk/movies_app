@@ -62,6 +62,8 @@ class HomeBody extends StatelessWidget {
               trendingMovies: state.trendingMovies,
               popularTVSeries: state.popularTVSeries,
               trendingTVSeries: state.trendingTVSeries,
+              onTheAirTVSeries: state.onTheAirTVSeries,
+              popularPersons: state.popularPersons,
             ),
           );
         }
@@ -82,12 +84,16 @@ class HomeContent extends StatefulWidget {
     required this.trendingMovies,
     required this.popularTVSeries,
     required this.trendingTVSeries,
+    required this.onTheAirTVSeries,
+    required this.popularPersons,
   });
 
   final List<MovieModel> popularMovies;
   final List<MovieModel> trendingMovies;
   final List<TVSeriesModel> popularTVSeries;
   final List<TVSeriesModel> trendingTVSeries;
+  final List<TVSeriesModel> onTheAirTVSeries;
+  final List<PersonModel> popularPersons;
 
   static Widget shimmerLoading(BuildContext context) {
     return ListView(
@@ -168,6 +174,19 @@ class _HomeContentState extends State<HomeContent> {
           ),
           const SizedBox(height: 20),
           MediaHorizontalListView(
+            title: "On the air",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.onTheAirTVSeries,
+              );
+            },
+            models: widget.onTheAirTVSeries,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
             title: "Trending TV series",
             onAllButtonPressed: () {
               context.push(
@@ -176,6 +195,19 @@ class _HomeContentState extends State<HomeContent> {
               );
             },
             models: widget.trendingTVSeries,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
+          const SizedBox(height: 20),
+          MediaHorizontalListView(
+            title: "Popular persons",
+            onAllButtonPressed: () {
+              context.push(
+                "${AppRoutes.home}/${AppRoutes.allMediaView}",
+                extra: ApiMediaQueryType.popularPersons,
+              );
+            },
+            models: widget.popularPersons,
             cardHeight: 210,
             cardWidth: 140,
           ),

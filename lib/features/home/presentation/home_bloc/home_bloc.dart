@@ -22,6 +22,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ApiMediaQueryType.trendingMovies,
     ApiMediaQueryType.popularTVSeries,
     ApiMediaQueryType.trendingTVSeries,
+    ApiMediaQueryType.onTheAirTVSeries,
+    ApiMediaQueryType.popularPersons,
   ];
 
   HomeBloc({
@@ -68,17 +70,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     for (ApiMediaQueryType type in _searchTypes) {
       MediaRepositoryPattern mediaRepoPattern;
-      if (type == ApiMediaQueryType.popularMovies ||
-          type == ApiMediaQueryType.trendingMovies) {
-        mediaRepoPattern = await _mediaRepository.onGetMediaModels<MovieModel>(
-          type: type,
+      if (type.asString().contains("movies")) {
+        mediaRepoPattern =
+            await _mediaRepository.onGetMediaModelsFromQueryType<MovieModel>(
+          queryType: type,
+          locale: event.locale,
+          page: event.page,
+        );
+      } else if (type.asString().contains("series")) {
+        mediaRepoPattern =
+            await _mediaRepository.onGetMediaModelsFromQueryType<TVSeriesModel>(
+          queryType: type,
           locale: event.locale,
           page: event.page,
         );
       } else {
         mediaRepoPattern =
-            await _mediaRepository.onGetMediaModels<TVSeriesModel>(
-          type: type,
+            await _mediaRepository.onGetMediaModelsFromQueryType<PersonModel>(
+          queryType: type,
           locale: event.locale,
           page: event.page,
         );
@@ -91,14 +100,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           modelsMap[type.asString()] = resModels;
       }
 
-      await Future.delayed(const Duration(milliseconds: 150)); // убрать в релизе
+      await Future.delayed(
+          const Duration(milliseconds: 150)); // убрать в релизе
     }
 
     emit(HomeLoadedState(
-      popularMovies: modelsMap["popularMovies"] as List<MovieModel>,
-      trendingMovies: modelsMap["trendingMovies"] as List<MovieModel>,
-      popularTVSeries: modelsMap["popularTVSeries"] as List<TVSeriesModel>,
-      trendingTVSeries: modelsMap["trendingTVSeries"] as List<TVSeriesModel>,
+      popularMovies: modelsMap["popular_movies"] as List<MovieModel>,
+      trendingMovies: modelsMap["trending_movies"] as List<MovieModel>,
+      popularTVSeries: modelsMap["popular_tv_series"] as List<TVSeriesModel>,
+      trendingTVSeries: modelsMap["trending_tv_series"] as List<TVSeriesModel>,
+      onTheAirTVSeries:
+          modelsMap["on_the_air_tv_series"] as List<TVSeriesModel>,
+      popularPersons: modelsMap["popular_persons"] as List<PersonModel>,
     ));
   }
 

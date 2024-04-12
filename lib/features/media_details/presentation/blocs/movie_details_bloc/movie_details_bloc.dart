@@ -1,26 +1,64 @@
 import 'package:bloc/bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 
 part 'movie_details_event.dart';
 part 'movie_details_state.dart';
 
 class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
+  late final SessionDataRepository _sessionDataRepository;
+  late final AccountRepository _accountRepository;
   late final MediaRepository _mediaRepository;
 
   MovieDetailsBloc({
+    required SessionDataRepository sessionDataRepository,
+    required AccountRepository accountRepository,
     required MediaRepository mediaRepository,
-  })  : _mediaRepository = mediaRepository,
+  })  : _sessionDataRepository = sessionDataRepository,
+        _accountRepository = accountRepository,
+        _mediaRepository = mediaRepository,
         super(MovieDetailsState()) {
     on<MovieDetailsLoadDetailsEvent>(_onLoadMovieDetails);
+    on<MovieDetailsAddToFavouriteEvent>(_onAddToFavourite);
+    on<MovieDetailsAddToWatchlistEvent>(_onAddToWatchlist);
   }
 
   Future<void> _onLoadMovieDetails(
     MovieDetailsLoadDetailsEvent event,
     Emitter<MovieDetailsState> emit,
   ) async {
-    emit(MovieDetailsLoadingState());
+    emit(state.copyWith(isLoading: true));
+
+    String? sessionId;
+    final SessionDataRepositoryPattern sessionDataRepoPattern =
+        await _sessionDataRepository.onGetSessionId();
+
+    switch (sessionDataRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
+    }
+
+    bool? isFavourite;
+    bool? isInWatchlist;
+    final AccountRepositoryPattern accountRepoPattern =
+        await _accountRepository.onGetAccountStates(
+      mediaType: TMDBMediaType.movie,
+      mediaId: event.movieId,
+      sessionId: sessionId!,
+    );
+
+    switch (accountRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final Map<String, bool> resAccountStateMap):
+        isFavourite = resAccountStateMap["favourite"];
+        isInWatchlist = resAccountStateMap["watchlist"];
+    }
 
     MediaRepositoryPattern mediaRepoPattern =
         await _mediaRepository.onGetMediaDetails<MovieModel>(
@@ -32,8 +70,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     MovieModel? movieModel;
     switch (mediaRepoPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(
-            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
       case (null, final MovieModel resMovieModel):
         movieModel = resMovieModel;
     }
@@ -47,8 +84,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     List<PersonModel>? movieCredits;
     switch (mediaRepoPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(
-            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
       case (null, final List<PersonModel> resMovieCredits):
         movieCredits = resMovieCredits;
     }
@@ -62,8 +98,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     List<MediaImageModel>? movieImages;
     switch (mediaRepoPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(
-            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
       case (null, final List<MediaImageModel> resMovieImages):
         movieImages = resMovieImages;
     }
@@ -77,14 +112,105 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
     switch (mediaRepoPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(
-            MovieDetailsFailureState(failure: failure, movieId: event.movieId));
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
       case (null, final List<MovieModel> resSimilarMovies):
-        return emit(MovieDetailsLoadedState(
-            movieModel: movieModel!,
-            movieImages: movieImages!,
-            movieCredits: movieCredits!,
-            similarMovies: resSimilarMovies));
+        return emit(state.copyWith(
+          movieModel: movieModel!,
+          isFavourite: isFavourite!,
+          isInWatchlist: isInWatchlist!,
+          movieImages: movieImages!,
+          movieCredits: movieCredits!,
+          similarMovies: resSimilarMovies,
+          failure: null,
+        ));
+    }
+  }
+
+  Future<void> _onAddToFavourite(
+    MovieDetailsAddToFavouriteEvent event,
+    Emitter<MovieDetailsState> emit,
+  ) async {
+    String? sessionId;
+    SessionDataRepositoryPattern sessionDataRepoPattern =
+        await _sessionDataRepository.onGetSessionId();
+
+    switch (sessionDataRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
+    }
+
+    int? accountId;
+    sessionDataRepoPattern = await _sessionDataRepository.onGetAccountId();
+
+    switch (sessionDataRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final int resAccountId):
+        accountId = resAccountId;
+    }
+
+    final AccountRepositoryPattern accountRepoPattern =
+        await _accountRepository.onAddToFavourite(
+      accountId: accountId!,
+      sessionId: sessionId!,
+      mediaType: TMDBMediaType.movie,
+      mediaId: event.movieId,
+      isFavourite: !(event.isFavorite),
+    );
+
+    switch (accountRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final bool res):
+        if (res) {
+          emit(state.copyWith(isFavourite: !(event.isFavorite)));
+        }
+    }
+  }
+
+  Future<void> _onAddToWatchlist(
+    MovieDetailsAddToWatchlistEvent event,
+    Emitter<MovieDetailsState> emit,
+  ) async {
+    String? sessionId;
+    SessionDataRepositoryPattern sessionDataRepoPattern =
+        await _sessionDataRepository.onGetSessionId();
+
+    switch (sessionDataRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final String resSessionId):
+        sessionId = resSessionId;
+    }
+
+    int? accountId;
+    sessionDataRepoPattern = await _sessionDataRepository.onGetAccountId();
+
+    switch (sessionDataRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final int resAccountId):
+        accountId = resAccountId;
+    }
+
+    final AccountRepositoryPattern accountRepoPattern =
+        await _accountRepository.onAddToWatchlist(
+      accountId: accountId!,
+      sessionId: sessionId!,
+      mediaType: TMDBMediaType.movie,
+      mediaId: event.movieId,
+      isInWatchlist: !(event.isInWatchlist),
+    );
+
+    switch (accountRepoPattern) {
+      case (final ApiRepositoryFailure failure, null):
+        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+      case (null, final bool res):
+        if (res) {
+          return emit(state.copyWith(isInWatchlist: !(event.isInWatchlist)));
+        }
     }
   }
 }

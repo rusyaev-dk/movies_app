@@ -58,13 +58,16 @@ class AppHttpClient {
   Future<Response> post({
     required String path,
     Map<String, dynamic>? uriParameters,
+    Map<String, dynamic>? headers,
+    dynamic data,
   }) async {
     try {
       final uri = _makeUri(path: path, parameters: uriParameters);
       final response = await _dio.postUri(
         uri,
+        data: data,
+        options: Options(headers: headers),
       );
-
       return response;
     } on DioException catch (err, stackStrace) {
       if (err.error is SocketException) {

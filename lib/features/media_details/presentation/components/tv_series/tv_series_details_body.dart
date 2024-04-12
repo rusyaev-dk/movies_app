@@ -25,13 +25,13 @@ class TVSeriesDetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TvSeriesDetailsBloc, TVSeriesDetailsState>(
+    return BlocBuilder<TVSeriesDetailsBloc, TVSeriesDetailsState>(
       builder: (context, state) {
-        if (state is TVSeriesDetailsFailureState) {
-          switch (state.failure.type) {
+        if (state.failure != null) {
+          switch (state.failure!.type) {
             case (ApiClientExceptionType.sessionExpired):
               return FailureWidget(
-                  failure: state.failure,
+                  failure: state.failure!,
                   buttonText: "Login",
                   icon: Icons.exit_to_app_outlined,
                   onPressed: () {
@@ -40,37 +40,35 @@ class TVSeriesDetailsBody extends StatelessWidget {
                   });
             case (ApiClientExceptionType.network):
               return FailureWidget(
-                failure: state.failure,
+                failure: state.failure!,
                 buttonText: "Update",
                 icon: Icons.wifi_off,
                 onPressed: () {
                   context
-                      .read<TvSeriesDetailsBloc>()
+                      .read<TVSeriesDetailsBloc>()
                       .add(TVSeriesDetailsLoadDetailsEvent(
                         tvSeriesId: state.tvSeriesId!,
                       ));
                 },
               );
             default:
-              return FailureWidget(failure: state.failure);
+              return FailureWidget(failure: state.failure!);
           }
         }
-        if (state is TVSeriesDetailsLoadingState) {
+        if (state.isLoading) {
           return TVSeriesDetailsContent.shimmerLoading(context);
         }
 
-        if (state is TVSeriesDetailsLoadedState) {
+        if (!state.isLoading && state.tvSeriesModel != null) {
           return TVSeriesDetailsContent(
-            tvSeries: state.tvSeriesModel,
+            tvSeries: state.tvSeriesModel!,
             tvSeriesImages: state.tvSeriesImages ?? [],
             tvSeriesCredits: state.tvSeriesCredits ?? [],
             similarTVSeries: state.similarTVSeries ?? [],
           );
         }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return TVSeriesDetailsContent.shimmerLoading(context);
       },
     );
   }
@@ -175,10 +173,33 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaDetailsButtons(
-            favouriteBtnOnPressed: () {},
-            watchListBtnOnPressed: () {},
-            shareBtnOnPressed: () {},
+          child: BlocBuilder<TVSeriesDetailsBloc, TVSeriesDetailsState>(
+            buildWhen: (previous, current) =>
+                previous.isFavourite != current.isFavourite ||
+                previous.isInWatchlist != current.isInWatchlist,
+            builder: (context, state) {
+              return MediaDetailsButtons(
+                isFavourite: state.isFavourite!,
+                isInWatchlist: state.isInWatchlist!,
+                favouriteBtnOnPressed: () {
+                  context
+                      .read<TVSeriesDetailsBloc>()
+                      .add(TVSeriesDetailsAddToFavouriteEvent(
+                        tvSeriesId: state.tvSeriesModel!.id!,
+                        isFavorite: state.isFavourite!,
+                      ));
+                },
+                watchListBtnOnPressed: () {
+                  context
+                      .read<TVSeriesDetailsBloc>()
+                      .add(TVSeriesDetailsAddToWatchlistEvent(
+                        tvSeriesId: state.tvSeriesModel!.id!,
+                        isInWatchlist: state.isInWatchlist!,
+                      ));
+                },
+                shareBtnOnPressed: () {},
+              );
+            },
           ),
         ),
         const SizedBox(height: 15),
