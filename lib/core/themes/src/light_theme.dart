@@ -5,6 +5,9 @@ ThemeData createLightTheme() {
     dialogTheme: const DialogTheme(
       backgroundColor: AppColors.lightGrey,
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.lightGrey,
+    ),
     textTheme: createTextTheme(),
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.white,
@@ -18,7 +21,7 @@ ThemeData createLightTheme() {
       primary: AppColors.orange,
       primaryContainer: AppColors.orangeVariant,
       secondary: AppColors.grey,
-      surface: AppColors.darkerGrey,
+      surface: AppColors.lightGrey,
       error: AppColors.red,
       tertiary: AppColors.green,
       onTertiary: AppColors.white,

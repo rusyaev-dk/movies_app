@@ -5,6 +5,11 @@ ThemeData createDarkTheme() {
     dialogTheme: const DialogTheme(
       backgroundColor: AppColors.darkerGrey,
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.darkerGrey,
+      selectedItemColor: AppColors.orange,
+      unselectedItemColor: AppColors.grey,
+    ),
     textTheme: createTextTheme(),
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.black,

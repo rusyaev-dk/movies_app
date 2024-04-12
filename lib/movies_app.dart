@@ -7,6 +7,7 @@ import 'package:movies_app/core/domain/repositories/session_data_repository.dart
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
+import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -49,6 +50,9 @@ class MoviesApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
+            create: (context) => ThemeBloc(),
+          ),
+          BlocProvider(
             create: (context) => NetworkCubit(
               connectivityRepository:
                   RepositoryProvider.of<ConnectivityRepository>(context),
@@ -64,12 +68,16 @@ class MoviesApp extends StatelessWidget {
             ),
           ),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          routerConfig: AppRouter.router,
-          theme: createLightTheme(),
-          darkTheme: createDarkTheme(),
-          themeMode: ThemeMode.dark, // поставить ThemeMode.system
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              routerConfig: AppRouter.router,
+              theme: createLightTheme(),
+              darkTheme: createDarkTheme(),
+              themeMode: state.themeMode, // поставить ThemeMode.system
+            );
+          },
         ),
       ),
     );

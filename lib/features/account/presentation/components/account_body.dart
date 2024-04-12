@@ -184,10 +184,10 @@ class _AccountContentState extends State<AccountContent> {
             ),
           ),
           const SizedBox(
-            height: 250,
+            height: 170,
           ),
           const Padding(
-            padding: EdgeInsets.only(left: 25, right: 25, bottom: 30),
+            padding: EdgeInsets.only(left: 25, right: 25),
             child: AccountSettings(),
           ),
         ],

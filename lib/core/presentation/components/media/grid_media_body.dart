@@ -8,7 +8,7 @@ import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/presentation/grid_media_bloc/grid_media_bloc.dart';
+import 'package:movies_app/core/presentation/blocs/grid_media_bloc/grid_media_bloc.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 

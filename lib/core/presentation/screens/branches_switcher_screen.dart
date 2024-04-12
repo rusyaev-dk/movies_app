@@ -31,9 +31,7 @@ class BranchesSwitcherScreen extends StatelessWidget {
           selectedFontSize: 12.0,
           unselectedFontSize: 12.0,
           showUnselectedLabels: true,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.secondary,
+          
           items: generateNavigationBarItems(context),
           currentIndex: navigationShell.currentIndex,
           onTap: (index) => navigationShell.goBranch(
