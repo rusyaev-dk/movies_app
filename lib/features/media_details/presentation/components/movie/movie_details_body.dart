@@ -55,21 +55,16 @@ class MovieDetailsBody extends StatelessWidget {
             default:
               return FailureWidget(failure: state.failure!);
           }
-        }
-        if (state.isLoading) {
-          return MovieDetailsContent.shimmerLoading(context);
-        }
-
-        if (!state.isLoading && state.movieModel != null) {
+        } else if (!state.isLoading && state.movieModel != null) {
           return MovieDetailsContent(
             movie: state.movieModel!,
             movieImages: state.movieImages ?? [],
             movieCredits: state.movieCredits ?? [],
             similarMovies: state.similarMovies ?? [],
           );
+        } else {
+          return MovieDetailsContent.shimmerLoading(context);
         }
-
-        return MovieDetailsContent.shimmerLoading(context);
       },
     );
   }

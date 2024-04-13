@@ -49,24 +49,17 @@ class PersonDetailsBody extends StatelessWidget {
             default:
               return FailureWidget(failure: state.failure);
           }
-        }
-        if (state is PersonDetailsLoadingState) {
+        } else if (state is PersonDetailsLoadedState) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: PersonDetailsContent(person: state.personModel),
+          );
+        } else {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: PersonDetailsContent.shimmerLoading(context),
           );
         }
-
-        if (state is PersonDetailsLoadedState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: PersonDetailsContent(person: state.personModel),
-          );
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }

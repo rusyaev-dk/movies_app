@@ -49,17 +49,11 @@ class AccountBody extends StatelessWidget {
                     .add(AccountLoadAccountDetailsEvent()),
               );
           }
-        }
-
-        if (state is AccountLoadingState) {
+        } else if (state is AccountLoadedState) {
+          return AccountContent(account: state.account);
+        } else {
           return AccountContent.shimmerLoading(context);
         }
-
-        if (state is AccountLoadedState) {
-          return AccountContent(account: state.account);
-        }
-
-        return AccountContent.shimmerLoading(context);
       },
     );
   }

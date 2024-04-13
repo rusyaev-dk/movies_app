@@ -45,16 +45,7 @@ class HomeBody extends StatelessWidget {
                     context.read<HomeBloc>().add(HomeLoadMediaEvent()),
               );
           }
-        }
-
-        if (state is HomeLoadingState) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: HomeContent.shimmerLoading(context),
-          );
-        }
-
-        if (state is HomeLoadedState) {
+        } else if (state is HomeLoadedState) {
           return Padding(
             padding: const EdgeInsets.only(left: 10),
             child: HomeContent(
@@ -66,12 +57,12 @@ class HomeBody extends StatelessWidget {
               popularPersons: state.popularPersons,
             ),
           );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: HomeContent.shimmerLoading(context),
+          );
         }
-
-        return Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: HomeContent.shimmerLoading(context),
-        );
       },
     );
   }

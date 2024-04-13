@@ -44,16 +44,12 @@ class SearchBody extends StatelessWidget {
                 failure: state.failure,
               );
           }
-        }
-
-        if (state is SearchLoadingState) {
+        } else if (state is SearchLoadingState) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SearchList.shimmerLoading(),
           );
-        }
-
-        if (state is SearchLoadedState) {
+        } else if (state is SearchLoadedState) {
           if (state.searchModels.isEmpty) {
             return const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -65,12 +61,12 @@ class SearchBody extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SearchList(models: state.searchModels),
           );
+        } else {
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: LetsFindSomethingWidget(),
+          );
         }
-
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: LetsFindSomethingWidget(),
-        );
       },
     );
   }

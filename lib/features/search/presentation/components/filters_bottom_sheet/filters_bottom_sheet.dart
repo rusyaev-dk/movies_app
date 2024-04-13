@@ -44,9 +44,7 @@ class FiltersBottomSheetContent extends StatelessWidget {
                   .headingTextStyle,
             ),
           );
-        }
-
-        if (state is SearchFiltersLoadedState) {
+        } else if (state is SearchFiltersLoadedState) {
           return Padding(
             padding:
                 const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
@@ -84,11 +82,9 @@ class FiltersBottomSheetContent extends StatelessWidget {
               ],
             ),
           );
+        } else {
+          return const Center(child: CircularProgressIndicator());
         }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }

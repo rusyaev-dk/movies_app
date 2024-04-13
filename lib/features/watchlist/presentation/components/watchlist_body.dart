@@ -49,16 +49,7 @@ class WatchlistBody extends StatelessWidget {
                     .add(WatchlistloadWatchlistEvent()),
               );
           }
-        }
-
-        if (state is WatchlistLoadingState) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: WatchlistContent.shimmerLoading(context),
-          );
-        }
-
-        if (state is WatchlistLoadedState) {
+        } else if (state is WatchlistLoadedState) {
           if (state.moviesWatchlist.isEmpty &&
               state.tvSeriesWatchlist.isEmpty) {
             return const Padding(
@@ -73,12 +64,12 @@ class WatchlistBody extends StatelessWidget {
               tvSeriesWatchlist: state.tvSeriesWatchlist,
             ),
           );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: WatchlistContent.shimmerLoading(context),
+          );
         }
-
-        return Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: WatchlistContent.shimmerLoading(context),
-        );
       },
     );
   }

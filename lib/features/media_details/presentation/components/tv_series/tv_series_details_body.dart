@@ -54,21 +54,16 @@ class TVSeriesDetailsBody extends StatelessWidget {
             default:
               return FailureWidget(failure: state.failure!);
           }
-        }
-        if (state.isLoading) {
-          return TVSeriesDetailsContent.shimmerLoading(context);
-        }
-
-        if (!state.isLoading && state.tvSeriesModel != null) {
+        } else if (!state.isLoading && state.tvSeriesModel != null) {
           return TVSeriesDetailsContent(
             tvSeries: state.tvSeriesModel!,
             tvSeriesImages: state.tvSeriesImages ?? [],
             tvSeriesCredits: state.tvSeriesCredits ?? [],
             similarTVSeries: state.similarTVSeries ?? [],
           );
+        } else {
+          return TVSeriesDetailsContent.shimmerLoading(context);
         }
-
-        return TVSeriesDetailsContent.shimmerLoading(context);
       },
     );
   }
