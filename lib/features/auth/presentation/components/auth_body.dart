@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 
@@ -24,41 +27,66 @@ class _AuthBodyState extends State<AuthBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 10),
-          child: Column(
-            children: [
-              const Text(
-                "Welcome to Movies App!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 54, fontWeight: FontWeight.w900),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            child: Container(
+              width: 500,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.2), blurRadius: 55)
+                ],
               ),
-              const SizedBox(height: 90),
-              const ErrorMessageWidget(),
-              const SizedBox(height: 10),
-              CustomTextField(
-                controller: _loginController,
-                prefixIcon: Icons.login,
-                hintText: "Enter your login",
-              ),
-              const SizedBox(height: 10),
-              CustomTextField(
-                controller: _passwordController,
-                obscureText: true,
-                prefixIcon: Icons.password,
-                hintText: "Enter your password",
-              ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: CustomLoginButton(
-                  loginController: _loginController,
-                  passwordController: _passwordController,
+              child: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        const Text(
+                          "Welcome to Movies App!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 54,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const ErrorMessageWidget(),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          controller: _loginController,
+                          prefixIcon: Icons.login,
+                          hintText: "Login",
+                        ),
+                        const SizedBox(height: 10),
+                        CustomTextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          prefixIcon: Icons.password,
+                          hintText: "Password",
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: CustomLoginButton(
+                            loginController: _loginController,
+                            passwordController: _passwordController,
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -86,13 +114,31 @@ class ErrorMessageWidget extends StatelessWidget {
             return state is AuthViewErrorState ? state.errorMessage : null;
           },
         );
-        if (errorMessage == null) return const SizedBox.shrink();
-        return Text(
-          errorMessage,
-          style: TextStyle(
-            fontSize: 17,
-            color: Theme.of(context).colorScheme.error,
-          ),
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: errorMessage == null
+              ? const SizedBox.shrink()
+              : Container(
+                  key: ValueKey(errorMessage),
+                  height: 52,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  child: Center(
+                    child: Text(
+                      errorMessage,
+                      style: Theme.of(context)
+                          .extension<ThemeTextStyles>()!
+                          .subtitleTextStyle
+                          .copyWith(
+                            fontSize: 17,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                    ),
+                  ),
+                ),
         );
       },
     );
@@ -128,27 +174,54 @@ class CustomLoginButton extends StatelessWidget {
             : null;
 
         final Widget child = state is AuthViewAuthInProgressState
-            ? SizedBox(
+            ? const SizedBox(
                 width: 15,
                 height: 15,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: AppColors.white,
                 ),
               )
-            : const Text('Login');
+            : Text(
+                "Login",
+                style: Theme.of(context)
+                    .extension<ThemeTextStyles>()!
+                    .subtitleTextStyle
+                    .copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: AppColors.white,
+                    ),
+              );
 
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
-            fixedSize: const Size(90, 50),
+        return SizedBox(
+          width: 110,
+          height: 45,
+          child: FloatingActionButton(
+            onPressed: onPressed,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.transparent,
+            elevation: 0,
+            highlightElevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(16), // Установка радиуса закругления
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.primaryContainer,
+                  ],
+                  stops: const [0.65, 1.0],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Center(child: child),
             ),
           ),
-          onPressed: onPressed,
-          child: child,
         );
       },
     );

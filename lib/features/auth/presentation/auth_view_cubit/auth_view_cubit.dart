@@ -8,7 +8,7 @@ import 'package:movies_app/core/data/api/api_exceptions.dart';
 part 'auth_view_state.dart';
 
 class AuthViewCubit extends Cubit<AuthViewState> {
-  final AuthBloc _authBloc;
+  late final AuthBloc _authBloc;
   late final StreamSubscription<AuthState> _authBlocSubscription;
 
   AuthViewCubit({
@@ -22,9 +22,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
 
   onAuth({required String login, required String password}) {
     if (!_inputDataValidation(login, password)) {
-      final state = AuthViewErrorState('Заполните логин и/или пароль');
-      emit(state);
-      return;
+      return emit(AuthViewErrorState('Fill in your login and/or password'));
     }
     _authBloc.add(AuthLoginEvent(login: login, password: password));
   }
@@ -47,18 +45,17 @@ class AuthViewCubit extends Cubit<AuthViewState> {
 
   String _mapErrorToMessage(Object error) {
     if (error is! ApiRepositoryFailure) {
-      return 'Неизвестная ошибка, поторите попытку...';
+      return 'Unknown error, please try again...';
     }
     switch (error.type) {
       case ApiClientExceptionType.network:
-        return 'Сервер недоступен. Проверьте подключение к интернету';
+        return 'Server is not available. Check your internet connection';
       case ApiClientExceptionType.auth:
-        return 'Неверный логин и/или пароль!';
+        return 'Invalid login and/or password';
       case ApiClientExceptionType.sessionExpired:
       case ApiClientExceptionType.jsonKey:
-        return ""; // ПОДПРАВИТЬ
       case ApiClientExceptionType.unknown:
-        return 'Произошла ошибка. Попробуйте ещё раз...';
+        return 'An undefined error has occurred. Try again...';
     }
   }
 

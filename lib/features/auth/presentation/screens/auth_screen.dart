@@ -37,15 +37,15 @@ class AuthScreen extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(0.8),
+                  Colors.black.withOpacity(0.6),
                   Colors.black.withOpacity(0.75),
                   Colors.black.withOpacity(0.35),
                   Colors.black.withOpacity(0.75),
-                  Colors.black.withOpacity(0.9),
+                  Colors.black.withOpacity(0.6),
                 ],
               ),
             ),
-            child: Scaffold(
+            child: const Scaffold(
               backgroundColor: Colors.transparent,
               // resizeToAvoidBottomInset: false,
               body: AuthBody(),

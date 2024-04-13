@@ -54,8 +54,11 @@ class GridMediaBody extends StatelessWidget {
                 );
             }
           case GridMediaStatus.success:
+            final screenWidth = MediaQuery.of(context).size.width;
+            final totalPadding = screenWidth - (180 * 2);
+
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: totalPadding / 2),
               child: GridMediaContent(
                 models: state.models,
                 page: state.page,
@@ -131,9 +134,9 @@ class _GridMediaContentState extends State<GridMediaContent> {
       padding: EdgeInsets.zero,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 2 / 3,
+        childAspectRatio: 1.8 / 3,
+        mainAxisSpacing: 18,
         crossAxisSpacing: 25,
-        mainAxisSpacing: 15,
       ),
       itemCount: widget.hasReachedMax
           ? widget.models.length

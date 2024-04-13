@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -24,14 +25,20 @@ class CustomTextField extends StatelessWidget {
       obscuringCharacter: '*',
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 15),
-        fillColor: Theme.of(context).colorScheme.secondary,
+        fillColor: Theme.of(context).colorScheme.surface,
         filled: true,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
         ),
         prefixIcon: Icon(prefixIcon),
         hintText: hintText,
+        hintStyle: Theme.of(context)
+            .extension<ThemeTextStyles>()!
+            .subtitleTextStyle
+            .copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
       ),
     );
   }
