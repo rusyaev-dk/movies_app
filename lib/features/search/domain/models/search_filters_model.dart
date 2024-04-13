@@ -11,8 +11,6 @@ extension ShowMediaTypeFilterX on ShowMediaTypeFilter {
         return 'tvs';
       case ShowMediaTypeFilter.persons:
         return 'persons';
-      default:
-        return '';
     }
   }
 
@@ -41,8 +39,6 @@ extension SortByFilterX on SortByFilter {
         return 'rating';
       case SortByFilter.popularity:
         return 'popularity';
-      default:
-        return '';
     }
   }
 

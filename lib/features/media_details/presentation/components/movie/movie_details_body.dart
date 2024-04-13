@@ -6,7 +6,7 @@ import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/movie_details_bloc/movie_details_bloc.dart';
-import 'package:movies_app/core/presentation/components/dark_poster_gradient.dart';
+import 'package:movies_app/features/media_details/presentation/components/dark_poster_gradient.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_details_buttons.dart';

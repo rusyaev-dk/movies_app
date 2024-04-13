@@ -1,5 +1,20 @@
-
 enum ApiClientExceptionType { network, auth, sessionExpired, unknown, jsonKey }
+
+extension ApiClientExceptionTypeX on ApiClientExceptionType {
+  String formatMessage() {
+    switch (this) {
+      case ApiClientExceptionType.network:
+        return "Something is wrong with the Internet. Check your connection and try to update";
+      case ApiClientExceptionType.auth:
+        return "Something is wrong with an authentication";
+      case ApiClientExceptionType.sessionExpired:
+        return "Your account session has expired";
+      case ApiClientExceptionType.jsonKey:
+      case ApiClientExceptionType.unknown:
+        return "Oops... Unknown error. Please try again";
+    }
+  }
+}
 
 abstract class ApiClientException implements Exception {
   final Object error;

@@ -7,8 +7,8 @@ import 'package:movies_app/core/themes/theme.dart';
 class FailureWidget extends StatelessWidget {
   const FailureWidget({
     super.key,
-    this.onPressed,
     required this.failure,
+    this.onPressed,
     this.icon = Icons.error_outline,
     this.buttonText = "Update",
   });
@@ -20,22 +20,7 @@ class FailureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String failureText;
-    switch (failure.type) {
-      case (ApiClientExceptionType.network):
-        failureText =
-            "Something is wrong with the Internet. Check your connection and try to update";
-        break;
-      case (ApiClientExceptionType.sessionExpired):
-        failureText = "Your account session has expired";
-        break;
-      case (ApiClientExceptionType.jsonKey):
-        failureText = "Oops... Something went wrong. Please try again";
-        break;
-      default:
-        failureText = "Oops... Unknown error. Please try again";
-        break;
-    }
+    final String failureText = failure.type.formatMessage();
 
     Widget exceptionButton = CustomGradientButton(
       text: buttonText,
@@ -64,7 +49,9 @@ class FailureWidget extends StatelessWidget {
                   .headingTextStyle
                   .copyWith(
                     fontSize: 18,
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context)
+                        .extension<ThemeColors>()!
+                        .onBackground,
                   ),
             ),
             const SizedBox(height: 20),
