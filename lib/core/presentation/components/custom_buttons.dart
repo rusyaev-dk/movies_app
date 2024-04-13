@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
 class CustomGradientButton extends StatelessWidget {
@@ -52,6 +51,7 @@ class CustomGradientButton extends StatelessWidget {
                   .copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
+                    color: AppColors.white,
                   ),
             ),
           ),

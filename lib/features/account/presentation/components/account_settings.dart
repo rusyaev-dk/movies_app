@@ -56,8 +56,10 @@ class SwitchThemeButtonsRow extends StatelessWidget {
                 color: state.themeMode == ThemeMode.system
                     ? Theme.of(context)
                         .extension<ThemeColors>()!
-                        .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                        .activatedThemeButtonColor
+                    : Theme.of(context)
+                        .extension<ThemeColors>()!
+                        .inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.system
                     ? Theme.of(context).colorScheme.primary
                     : null,
@@ -77,8 +79,10 @@ class SwitchThemeButtonsRow extends StatelessWidget {
                 color: state.themeMode == ThemeMode.dark
                     ? Theme.of(context)
                         .extension<ThemeColors>()!
-                        .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                        .activatedThemeButtonColor
+                    : Theme.of(context)
+                        .extension<ThemeColors>()!
+                        .inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.dark
                     ? Theme.of(context).colorScheme.primary
                     : null,
@@ -97,8 +101,10 @@ class SwitchThemeButtonsRow extends StatelessWidget {
                 color: state.themeMode == ThemeMode.light
                     ? Theme.of(context)
                         .extension<ThemeColors>()!
-                        .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                        .activatedThemeButtonColor
+                    : Theme.of(context)
+                        .extension<ThemeColors>()!
+                        .inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.light
                     ? Theme.of(context).colorScheme.primary
                     : null,

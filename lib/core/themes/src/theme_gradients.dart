@@ -31,18 +31,18 @@ class ThemeGradients extends ThemeExtension<ThemeGradients> {
     );
   }
 
-  static get light => ThemeGradients(
+  static get light => const ThemeGradients(
         shimmerGradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.centerRight,
           colors: [
-            Colors.grey.shade900,
-            Colors.grey.shade900,
-            Colors.grey.shade700,
-            Colors.grey.shade900,
-            Colors.grey.shade900,
+            Color(0xFFa7a7a7),
+            Color(0xFFa7a7a7),
+            Color(0xFFc7c7c7),
+            Color(0xFFa7a7a7),
+            Color(0xFFa7a7a7),
           ],
-          stops: const <double>[0.0, 0.35, 0.5, 0.65, 1.0],
+          stops: <double>[0.0, 0.35, 0.5, 0.65, 1.0],
         ),
       );
 

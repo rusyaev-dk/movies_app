@@ -23,7 +23,7 @@ class MediaTypeFilterRow extends StatelessWidget {
                 ? Theme.of(context)
                     .extension<ThemeColors>()!
                     .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -48,7 +48,7 @@ class MediaTypeFilterRow extends StatelessWidget {
                     ? Theme.of(context)
                         .extension<ThemeColors>()!
                         .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                    : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -72,7 +72,7 @@ class MediaTypeFilterRow extends StatelessWidget {
                 ? Theme.of(context)
                     .extension<ThemeColors>()!
                     .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -97,7 +97,7 @@ class MediaTypeFilterRow extends StatelessWidget {
                     ? Theme.of(context)
                         .extension<ThemeColors>()!
                         .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                    : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -133,7 +133,7 @@ class SortByFilterRow extends StatelessWidget {
                 ? Theme.of(context)
                     .extension<ThemeColors>()!
                     .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetSortByFilterEvent(
@@ -157,7 +157,7 @@ class SortByFilterRow extends StatelessWidget {
                 ? Theme.of(context)
                     .extension<ThemeColors>()!
                     .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetSortByFilterEvent(
@@ -189,7 +189,7 @@ class RatingSlider extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+        color: Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
       ),
       child: Slider(
         value: filtersModel.ratingFilter.toDouble(),

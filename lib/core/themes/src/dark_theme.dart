@@ -3,10 +3,10 @@ part of '../theme.dart';
 ThemeData createDarkTheme() {
   return ThemeData(
     dialogTheme: const DialogTheme(
-      backgroundColor: AppColors.darkerGrey,
+      backgroundColor: AppColors.darkestGrey,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: AppColors.darkerGrey,
+      backgroundColor: AppColors.darkestGrey,
       selectedItemColor: AppColors.orange,
       unselectedItemColor: AppColors.grey,
     ),
@@ -23,7 +23,7 @@ ThemeData createDarkTheme() {
       primary: AppColors.orange,
       primaryContainer: AppColors.orangeVariant,
       secondary: AppColors.grey,
-      surface: AppColors.darkerGrey,
+      surface: AppColors.darkestGrey,
       error: AppColors.red,
       tertiary: AppColors.green,
       onTertiary: AppColors.white,
