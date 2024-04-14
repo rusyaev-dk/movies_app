@@ -56,7 +56,6 @@ class SearchBody extends StatelessWidget {
               child: NothingFoundWidget(),
             );
           }
-
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SearchList(models: state.searchModels),

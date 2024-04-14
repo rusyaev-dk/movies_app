@@ -11,7 +11,7 @@ class KeyValueStorage implements DataBaseInterface {
   @override
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
-    await _prefs.clear();
+    // await _prefs.clear();
   }
 
   @override

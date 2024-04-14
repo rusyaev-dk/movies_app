@@ -84,6 +84,6 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
         activatedFilterButtonColor: const Color(0xFF4d4d4d),
         inActivatedFilterButtonColor: const Color(0xFF151515),
         activatedThemeButtonColor: AppColors.black,
-        inActivatedThemeButtonColor: const Color(0xFF151515),
+        inActivatedThemeButtonColor: AppColors.darkestGrey,
       );
 }

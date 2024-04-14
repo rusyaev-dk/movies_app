@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
 
 class ApiImageFormatter {
@@ -9,6 +10,7 @@ class ApiImageFormatter {
 
   static const _unknownMediaLigthPath = "assets/images/unknown_media_light.png";
   static const _unknownMediaDarkPath = "assets/images/unknown_media_dark.png";
+  static final Logger _logger = Logger("ApiImageFormatter");
 
   static Widget formatImageWidget(
     BuildContext context, {
@@ -58,8 +60,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        // logging...
-        print("Image Exception: $value");
+        _logger.severe("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;
@@ -122,8 +123,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        // logging...
-        print("Image Exception: $value");
+        _logger.severe("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;
@@ -183,8 +183,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        // logging...
-        print("Image Exception: $value");
+        _logger.severe("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;

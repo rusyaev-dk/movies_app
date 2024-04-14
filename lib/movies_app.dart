@@ -50,7 +50,10 @@ class MoviesApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ThemeBloc(),
+            create: (context) => ThemeBloc(
+              keyValueStorageRepository:
+                  RepositoryProvider.of<KeyValueStorageRepository>(context),
+            )..add(ThemeRestoreThemeEvent()),
           ),
           BlocProvider(
             create: (context) => NetworkCubit(
@@ -75,7 +78,7 @@ class MoviesApp extends StatelessWidget {
               routerConfig: AppRouter.router,
               theme: createLightTheme(),
               darkTheme: createDarkTheme(),
-              themeMode: state.themeMode, // поставить ThemeMode.system
+              themeMode: state.themeMode,
             );
           },
         ),

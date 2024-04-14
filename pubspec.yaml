@@ -28,6 +28,8 @@ dependencies:
   pull_to_refresh_flutter3: ^2.0.2
   logging: ^1.2.0
   ansicolor: ^2.0.2
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
   # easy_localization: ^3.0.4
   # flutter_cache_manager: ^3.3.1
 
@@ -42,4 +44,26 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/icons/
     - .env
+
+flutter_launcher_icons:
+  android: true
+  image_path_android: "assets/icons/app_icon.png"
+  background_color_android: "#000000"
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/splash_image.png
+  branding: assets/images/splash_image.png
+  color_dark: "#121212"
+  image_dark: assets/images/splash_image.png
+  branding_dark: assets/images/splash_image.png
+
+  android_12:
+    image: assets/images/splash_image.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/images/splash_image.png
+    icon_background_color_dark: "#121212"
+
+  web: false
