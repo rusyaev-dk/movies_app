@@ -17,10 +17,10 @@ import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.
 class MoviesApp extends StatelessWidget {
   const MoviesApp({
     super.key,
-    required this.sharedPrefsStorage,
+    required this.keyValueStorage,
   });
 
-  final KeyValueStorage sharedPrefsStorage;
+  final KeyValueStorage keyValueStorage;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class MoviesApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) =>
-              KeyValueStorageRepository(storage: sharedPrefsStorage),
+              KeyValueStorageRepository(storage: keyValueStorage),
         ),
         RepositoryProvider(
           create: (context) =>

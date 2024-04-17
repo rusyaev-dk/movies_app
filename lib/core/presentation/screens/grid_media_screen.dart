@@ -6,10 +6,10 @@ import 'package:movies_app/core/presentation/components/media/grid_media_body.da
 import 'package:movies_app/core/presentation/blocs/grid_media_bloc/grid_media_bloc.dart';
 
 class GridMediaScreen extends StatelessWidget {
-  const GridMediaScreen({
+  GridMediaScreen({
     super.key,
-    required this.queryType,
-  });
+    required String queryTypeStr,
+  }) : queryType = ApiMediaQueryTypeX.fromString(queryTypeStr);
 
   final ApiMediaQueryType queryType;
 

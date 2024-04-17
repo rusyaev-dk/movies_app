@@ -129,8 +129,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "Popular movies for you",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.popularMovies,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.popularMovies.asString(),
               );
             },
             models: widget.popularMovies,
@@ -142,8 +142,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "Popular TV series",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.popularTVSeries,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.popularTVSeries.asString(),
               );
             },
             models: widget.popularTVSeries,
@@ -155,8 +155,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "Trending movies",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.trendingMovies,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.trendingMovies.asString(),
               );
             },
             models: widget.trendingMovies,
@@ -168,8 +168,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "On the air",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.onTheAirTVSeries,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.onTheAirTVSeries.asString(),
               );
             },
             models: widget.onTheAirTVSeries,
@@ -181,8 +181,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "Trending TV series",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.trendingTVSeries,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.trendingTVSeries.asString(),
               );
             },
             models: widget.trendingTVSeries,
@@ -194,8 +194,8 @@ class _HomeContentState extends State<HomeContent> {
             title: "Popular persons",
             onAllButtonPressed: () {
               context.push(
-                "${AppRoutes.home}/${AppRoutes.allMediaView}",
-                extra: ApiMediaQueryType.popularPersons,
+                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                extra: ApiMediaQueryType.popularPersons.asString(),
               );
             },
             models: widget.popularPersons,

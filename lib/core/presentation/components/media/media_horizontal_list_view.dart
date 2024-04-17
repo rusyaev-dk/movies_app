@@ -175,11 +175,25 @@ class MediaListView extends StatelessWidget {
       },
       itemBuilder: (context, i) {
         final model = models[i];
+
+        final curUri =
+            GoRouter.of(context).routeInformationProvider.value.uri.toString();
+        final String initialPath;
+        if (curUri.contains("home")) {
+          initialPath = AppRoutes.home;
+        } else if (curUri.contains("search")) {
+          initialPath = AppRoutes.search;
+        } else {
+          initialPath = AppRoutes.watchlist;
+        }
+
         if (model is MovieModel) {
           return GestureDetector(
             onTap: () {
-              context
-                  .push("/home/movie_details", extra: [model.id, model.title]);
+              context.push(
+                "$initialPath/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.title],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),
@@ -192,8 +206,10 @@ class MediaListView extends StatelessWidget {
         } else if (model is TVSeriesModel) {
           return GestureDetector(
             onTap: () {
-              context.push("/home/tv_series_details",
-                  extra: [model.id, model.name]);
+              context.push(
+                "$initialPath/${AppRoutes.tvSeriesDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.name],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),
@@ -206,32 +222,10 @@ class MediaListView extends StatelessWidget {
         } else if (model is PersonModel) {
           return GestureDetector(
             onTap: () {
-              final currentRoute = GoRouter.of(context)
-                  .routeInformationProvider
-                  .value
-                  .uri
-                  .toString();
-
-              if (currentRoute ==
-                  "${AppRoutes.home}/${AppRoutes.movieDetails}") {
-                context.push(
-                    "${AppRoutes.home}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else if (currentRoute ==
-                  "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}") {
-                context.push(
-                    "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else if (currentRoute ==
-                  "${AppRoutes.search}/${AppRoutes.movieDetails}") {
-                context.push(
-                    "${AppRoutes.search}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else {
-                context.push(
-                    "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              }
+              context.push(
+                "$initialPath/${AppRoutes.personDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.name],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),

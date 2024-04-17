@@ -32,6 +32,8 @@ class TVSeriesProductionInfo extends StatelessWidget {
     if (firstAirDate != null) {
       DateTime date = DateTime.parse(firstAirDate!);
       productionInfoString += "${date.year}, ";
+    } else {
+      productionInfoString += "Unknown date, ";
     }
 
     if (productionCountries.isEmpty) {

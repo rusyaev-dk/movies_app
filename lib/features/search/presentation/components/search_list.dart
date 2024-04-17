@@ -25,50 +25,53 @@ class SearchList extends StatelessWidget {
       separatorBuilder: (context, i) => const SizedBox(height: 20),
       itemBuilder: (context, i) {
         final model = models[i];
-        switch (model) {
-          case MovieModel():
-            return InkWell(
-              onTap: () => context.go(
-                  "${AppRoutes.search}/${AppRoutes.movieDetails}",
-                  extra: [model.id, model.title]),
-              child: SearchListTile(
-                imagePath: model.posterPath,
-                title: model.title ?? "Unknown",
-                originalTitle: model.originalTitle ?? "Unknown",
-                firstAirDate: model.releaseDate,
-                voteAverage: model.voteAverage ?? 0,
-                genreIds: model.genreIds ?? [],
-              ),
-            );
-          case TVSeriesModel():
-            return InkWell(
-              onTap: () => context.go(
-                  "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}",
-                  extra: [model.id, model.name]),
-              child: SearchListTile(
-                imagePath: model.posterPath,
-                title: model.name ?? "Unknown",
-                originalTitle: model.originalName ?? "Unknown",
-                firstAirDate: model.firstAirDate,
-                lastAirDate: model.lastAirDate,
-                voteAverage: model.voteAverage ?? 0,
-                genreIds: model.genreIds ?? [],
-              ),
-            );
-          case PersonModel():
-            return InkWell(
-              onTap: () => context.go(
-                  "${AppRoutes.search}/${AppRoutes.personDetails}",
-                  extra: [model.id, model.name]),
-              child: SearchListTile(
-                imagePath: model.profilePath,
-                title: model.name ?? "Unknonwn",
-                originalTitle: model.originalName ?? "Unknown",
-                isPerson: true,
-              ),
-            );
-          default:
-            return null;
+        if (model is MovieModel) {
+          
+          return InkWell(
+            onTap: () => context.push(
+              "${AppRoutes.search}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+              extra: [model.id, model.title],
+            ),
+            child: SearchListTile(
+              imagePath: model.posterPath,
+              title: model.title ?? "Unknown",
+              originalTitle: model.originalTitle ?? "Unknown",
+              firstAirDate: model.releaseDate,
+              voteAverage: model.voteAverage ?? 0,
+              genreIds: model.genreIds ?? [],
+            ),
+          );
+        } else if (model is TVSeriesModel) {
+          return InkWell(
+            onTap: () => context.push(
+              "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${(model.id ?? 0).toString()}",
+              extra: [model.id, model.name],
+            ),
+            child: SearchListTile(
+              imagePath: model.posterPath,
+              title: model.name ?? "Unknown",
+              originalTitle: model.originalName ?? "Unknown",
+              firstAirDate: model.firstAirDate,
+              lastAirDate: model.lastAirDate,
+              voteAverage: model.voteAverage ?? 0,
+              genreIds: model.genreIds ?? [],
+            ),
+          );
+        } else if (model is PersonModel) {
+          return InkWell(
+            onTap: () => context.push(
+              "${AppRoutes.search}/${AppRoutes.personDetails}/${(model.id ?? 0).toString()}",
+              extra: [model.id, model.name],
+            ),
+            child: SearchListTile(
+              imagePath: model.profilePath,
+              title: model.name ?? "Unknonwn",
+              originalTitle: model.originalName ?? "Unknown",
+              isPerson: true,
+            ),
+          );
+        } else {
+          return null;
         }
       },
       itemCount: models.length,

@@ -9,9 +9,9 @@ import 'package:movies_app/movies_app.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  
+
   setupLogger();
-  
+
   await dotenv.load(fileName: ".env");
 
   final KeyValueStorage sharedPrefsStorage = KeyValueStorage();
@@ -20,5 +20,5 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
-  runApp(MoviesApp(sharedPrefsStorage: sharedPrefsStorage));
+  runApp(MoviesApp(keyValueStorage: sharedPrefsStorage));
 }

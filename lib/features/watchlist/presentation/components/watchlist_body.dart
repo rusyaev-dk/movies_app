@@ -131,7 +131,7 @@ class _WatchlistContentState extends State<WatchlistContent> {
           MediaHorizontalListView(
             title: "Your movies",
             models: widget.moviesWatchlist,
-            withAllButton: widget.moviesWatchlist.length > 10,
+            withAllButton: false,
             cardHeight: 210,
             cardWidth: 140,
           ),
@@ -139,7 +139,7 @@ class _WatchlistContentState extends State<WatchlistContent> {
           MediaHorizontalListView(
             title: "Your TV series",
             models: widget.tvSeriesWatchlist,
-            withAllButton: widget.moviesWatchlist.length > 10,
+            withAllButton: false,
             cardHeight: 210,
             cardWidth: 140,
           ),

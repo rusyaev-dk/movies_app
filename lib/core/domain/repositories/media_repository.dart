@@ -51,6 +51,25 @@ extension ApiMediaQueryTypeX on ApiMediaQueryType {
         return 'Popular persons';
     }
   }
+
+  static ApiMediaQueryType fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'popular_movies':
+        return ApiMediaQueryType.popularMovies;
+      case 'trending_movies':
+        return ApiMediaQueryType.trendingMovies;
+      case 'popular_tv_series':
+        return ApiMediaQueryType.popularTVSeries;
+      case 'trending_tv_series':
+        return ApiMediaQueryType.trendingTVSeries;
+      case 'on_the_air_tv_series':
+        return ApiMediaQueryType.onTheAirTVSeries;
+      case 'popular_persons':
+        return ApiMediaQueryType.popularPersons;
+      default:
+        return ApiMediaQueryType.popularMovies;
+    }
+  }
 }
 
 typedef MediaRepositoryPattern<T> = (ApiRepositoryFailure?, T?);

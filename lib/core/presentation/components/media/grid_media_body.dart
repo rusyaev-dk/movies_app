@@ -7,7 +7,6 @@ import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
-import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
 import 'package:movies_app/core/presentation/blocs/grid_media_bloc/grid_media_bloc.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -152,11 +151,22 @@ class _GridMediaContentState extends State<GridMediaContent> {
           );
         }
         final model = widget.models[i];
+        final curUri =
+            GoRouter.of(context).routeInformationProvider.value.uri.toString();
+        final String initialPath;
+        if (curUri.contains("home")) {
+          initialPath = AppRoutes.home;
+        } else {
+          initialPath = AppRoutes.watchlist;
+        }
+
         if (model is MovieModel) {
           return GestureDetector(
             onTap: () {
-              context
-                  .push("/home/movie_details", extra: [model.id, model.title]);
+              context.push(
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.title],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),
@@ -169,8 +179,10 @@ class _GridMediaContentState extends State<GridMediaContent> {
         } else if (model is TVSeriesModel) {
           return GestureDetector(
             onTap: () {
-              context.push("/home/tv_series_details",
-                  extra: [model.id, model.name]);
+              context.push(
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.name],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),
@@ -183,32 +195,10 @@ class _GridMediaContentState extends State<GridMediaContent> {
         } else if (model is PersonModel) {
           return GestureDetector(
             onTap: () {
-              final currentRoute = GoRouter.of(context)
-                  .routeInformationProvider
-                  .value
-                  .uri
-                  .toString();
-
-              if (currentRoute ==
-                  "${AppRoutes.home}/${AppRoutes.movieDetails}") {
-                context.push(
-                    "${AppRoutes.home}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else if (currentRoute ==
-                  "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}") {
-                context.push(
-                    "${AppRoutes.home}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else if (currentRoute ==
-                  "${AppRoutes.search}/${AppRoutes.movieDetails}") {
-                context.push(
-                    "${AppRoutes.search}/${AppRoutes.movieDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              } else {
-                context.push(
-                    "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${AppRoutes.personDetails}",
-                    extra: [model.id, model.name]);
-              }
+              context.push(
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                extra: [model.id, model.name],
+              );
             },
             child: MediaCard(
               key: ValueKey(model.id),
@@ -216,14 +206,6 @@ class _GridMediaContentState extends State<GridMediaContent> {
               imagePath: model.profilePath,
               cardText: model.name ?? "Unknown person",
             ),
-          );
-        } else if (model is MediaImageModel) {
-          return ApiImageFormatter.formatImageWidgetWithAspectRatio(
-            context,
-            imagePath: model.filePath,
-            aspectRatio: model.aspectRatio ?? 1.778,
-            width: 240,
-            height: 180,
           );
         } else {
           return const MediaCard(

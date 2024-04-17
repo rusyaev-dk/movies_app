@@ -72,7 +72,7 @@ class TVSeriesDetailsHead extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 TVSeriesProductionInfo(
-                  firstAirDate: tvSeries.firstAirDate ?? "Unknown date",
+                  firstAirDate: tvSeries.firstAirDate,
                   productionCountries: tvSeries.productionCountries ?? [],
                   numberOfSeasons: tvSeries.numberOfSeasons ?? 0,
                   numberOfEpisodes: tvSeries.numberOfEpisodes ?? 0,
