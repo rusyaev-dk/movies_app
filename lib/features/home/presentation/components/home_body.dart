@@ -19,16 +19,13 @@ class HomeBody extends StatelessWidget {
         if (state is HomeFailureState) {
           return HomeFailureWidget(failure: state.failure);
         } else if (state is HomeLoadedState) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: HomeContent(
-              popularMovies: state.popularMovies,
-              trendingMovies: state.trendingMovies,
-              popularTVSeries: state.popularTVSeries,
-              trendingTVSeries: state.trendingTVSeries,
-              onTheAirTVSeries: state.onTheAirTVSeries,
-              popularPersons: state.popularPersons,
-            ),
+          return HomeContent(
+            popularMovies: state.popularMovies,
+            trendingMovies: state.trendingMovies,
+            popularTVSeries: state.popularTVSeries,
+            trendingTVSeries: state.trendingTVSeries,
+            onTheAirTVSeries: state.onTheAirTVSeries,
+            popularPersons: state.popularPersons,
           );
         } else {
           return Padding(

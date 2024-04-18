@@ -192,13 +192,10 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
           ),
         if (widget.movieImages.isNotEmpty) const SizedBox(height: 20),
         if (widget.movieImages.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Images",
-              withAllButton: false,
-              models: widget.movieImages,
-            ),
+          MediaHorizontalListView(
+            title: "Images",
+            withAllButton: false,
+            models: widget.movieImages,
           ),
         const SizedBox(height: 20),
         Padding(
@@ -218,23 +215,17 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
         ),
         if (widget.movieCredits.isNotEmpty) const SizedBox(height: 20),
         if (widget.movieCredits.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Credits",
-              withAllButton: false,
-              models: widget.movieCredits,
-            ),
+          MediaHorizontalListView(
+            title: "Credits",
+            withAllButton: false,
+            models: widget.movieCredits,
           ),
         if (widget.similarMovies.isNotEmpty) const SizedBox(height: 20),
         if (widget.similarMovies.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Similar movies",
-              withAllButton: false,
-              models: widget.similarMovies,
-            ),
+          MediaHorizontalListView(
+            title: "Similar movies",
+            withAllButton: false,
+            models: widget.similarMovies,
           ),
         const SizedBox(height: 15),
       ],

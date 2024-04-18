@@ -60,10 +60,13 @@ class MediaHorizontalListView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (title != null)
-          ListTitle(
-            withAllButton: withAllButton,
-            onAllButtonPressed: onAllButtonPressed,
-            title: title!,
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: ListTitle(
+              withAllButton: withAllButton,
+              onAllButtonPressed: onAllButtonPressed,
+              title: title!,
+            ),
           ),
         const SizedBox(height: 10),
         SizedBox(
@@ -141,7 +144,7 @@ class ListTitle extends StatelessWidget {
   }
 }
 
-class MediaListView extends StatelessWidget {
+class MediaListView extends StatefulWidget {
   const MediaListView({
     super.key,
     required this.models,
@@ -167,89 +170,119 @@ class MediaListView extends StatelessWidget {
   }
 
   @override
+  State<MediaListView> createState() => _MediaListViewState();
+}
+
+class _MediaListViewState extends State<MediaListView> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (context, index) {
-        return const SizedBox(width: 10);
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (OverscrollIndicatorNotification overscroll) {
+        overscroll.disallowIndicator();
+        return false;
       },
-      itemBuilder: (context, i) {
-        final model = models[i];
-
-        final curUri =
-            GoRouter.of(context).routeInformationProvider.value.uri.toString();
-        final String initialPath;
-        if (curUri.contains("home")) {
-          initialPath = AppRoutes.home;
-        } else if (curUri.contains("search")) {
-          initialPath = AppRoutes.search;
-        } else {
-          initialPath = AppRoutes.watchlist;
-        }
-
-        if (model is MovieModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.movieDetails}/${model.id}",
-                extra: [model.id, model.title],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
-              width: cardWidth,
-              voteAverage: model.voteAverage,
-              imagePath: model.posterPath,
-              cardText: model.title ?? "Unknown movie",
-            ),
-          );
-        } else if (model is TVSeriesModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.tvSeriesDetails}/${model.id}",
-                extra: [model.id, model.name],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
-              width: cardWidth,
-              voteAverage: model.voteAverage,
-              imagePath: model.posterPath,
-              cardText: model.name ?? "Unknown tv series",
-            ),
-          );
-        } else if (model is PersonModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.personDetails}/${model.id}",
-                extra: [model.id, model.name],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
-              width: cardWidth,
-              imagePath: model.profilePath,
-              cardText: model.name ?? "Unknown person",
-            ),
-          );
-        } else if (model is MediaImageModel) {
-          return ApiImageFormatter.formatImageWidgetWithAspectRatio(
-            context,
-            imagePath: model.filePath,
-            aspectRatio: model.aspectRatio ?? 1.778,
-            width: 240,
-            height: 180,
-          );
-        } else {
-          return MediaCard(
-            width: cardWidth,
-            voteAverage: 0,
-          );
-        }
-      },
-      itemCount: models.length,
+      child: ListView.separated(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.only(
+            left: (_scrollController.hasClients && _scrollController.offset > 0)
+                ? 0
+                : 10),
+        separatorBuilder: (context, index) {
+          return const SizedBox(width: 10);
+        },
+        itemBuilder: (context, i) {
+          final model = widget.models[i];
+      
+          final curUri =
+              GoRouter.of(context).routeInformationProvider.value.uri.toString();
+          final String initialPath;
+          if (curUri.contains("home")) {
+            initialPath = AppRoutes.home;
+          } else if (curUri.contains("search")) {
+            initialPath = AppRoutes.search;
+          } else {
+            initialPath = AppRoutes.watchlist;
+          }
+      
+          if (model is MovieModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.movieDetails}/${model.id}",
+                  extra: [model.id, model.title],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: widget.cardWidth,
+                voteAverage: model.voteAverage,
+                imagePath: model.posterPath,
+                cardText: model.title ?? "Unknown movie",
+              ),
+            );
+          } else if (model is TVSeriesModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.tvSeriesDetails}/${model.id}",
+                  extra: [model.id, model.name],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: widget.cardWidth,
+                voteAverage: model.voteAverage,
+                imagePath: model.posterPath,
+                cardText: model.name ?? "Unknown tv series",
+              ),
+            );
+          } else if (model is PersonModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.personDetails}/${model.id}",
+                  extra: [model.id, model.name],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: widget.cardWidth,
+                imagePath: model.profilePath,
+                cardText: model.name ?? "Unknown person",
+              ),
+            );
+          } else if (model is MediaImageModel) {
+            return ApiImageFormatter.formatImageWidgetWithAspectRatio(
+              context,
+              imagePath: model.filePath,
+              aspectRatio: model.aspectRatio ?? 1.778,
+              width: 240,
+              height: 180,
+            );
+          } else {
+            return MediaCard(
+              width: widget.cardWidth,
+              voteAverage: 0,
+            );
+          }
+        },
+        itemCount: widget.models.length,
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

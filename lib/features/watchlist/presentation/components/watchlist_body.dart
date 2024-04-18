@@ -26,12 +26,9 @@ class WatchlistBody extends StatelessWidget {
               child: NoAddedWatchlistMedia(),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: WatchlistContent(
-              moviesWatchlist: state.moviesWatchlist,
-              tvSeriesWatchlist: state.tvSeriesWatchlist,
-            ),
+          return WatchlistContent(
+            moviesWatchlist: state.moviesWatchlist,
+            tvSeriesWatchlist: state.tvSeriesWatchlist,
           );
         } else {
           return Padding(

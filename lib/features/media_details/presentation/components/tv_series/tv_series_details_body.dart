@@ -187,13 +187,10 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
           ),
         if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 20),
         if (widget.tvSeriesImages.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Images",
-              withAllButton: false,
-              models: widget.tvSeriesImages,
-            ),
+          MediaHorizontalListView(
+            title: "Images",
+            withAllButton: false,
+            models: widget.tvSeriesImages,
           ),
         const SizedBox(height: 20),
         Padding(
@@ -205,23 +202,17 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
         ),
         if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 20),
         if (widget.tvSeriesCredits.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Credits",
-              withAllButton: false,
-              models: widget.tvSeriesCredits,
-            ),
+          MediaHorizontalListView(
+            title: "Credits",
+            withAllButton: false,
+            models: widget.tvSeriesCredits,
           ),
         if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 20),
         if (widget.similarTVSeries.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: MediaHorizontalListView(
-              title: "Similar TV series",
-              withAllButton: false,
-              models: widget.similarTVSeries,
-            ),
+          MediaHorizontalListView(
+            title: "Similar TV series",
+            withAllButton: false,
+            models: widget.similarTVSeries,
           ),
         const SizedBox(height: 15),
       ],
