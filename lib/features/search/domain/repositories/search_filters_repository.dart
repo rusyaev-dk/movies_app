@@ -17,7 +17,9 @@ class SearchFiltersRepository {
 
   SearchFiltersRepository(
       {required KeyValueStorageRepository keyValueStorageRepository})
-      : _keyValueStorageRepository = keyValueStorageRepository;
+      : _keyValueStorageRepository = keyValueStorageRepository {
+    _keyValueStorageRepository.delete(key: KeyValueStorageKeys.searchQueryKey);
+  }
 
   Future<SearchFiltersModel> loadFiltersModel() async {
     KeyValueStorageRepositoryPattern keyValueStorageRepoPattern =

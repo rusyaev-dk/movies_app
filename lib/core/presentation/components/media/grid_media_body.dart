@@ -57,8 +57,10 @@ class GridMediaContent extends StatefulWidget {
   });
 
   static Widget loading(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return const RepaintBoundary(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
@@ -116,11 +118,13 @@ class _GridMediaContentState extends State<GridMediaContent> {
           : widget.models.length + 1,
       itemBuilder: (context, i) {
         if (i >= widget.models.length) {
-          return const Center(
-            child: SizedBox(
-              height: 24,
-              width: 24,
-              child: CircularProgressIndicator(),
+          return const RepaintBoundary(
+            child: Center(
+              child: SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(),
+              ),
             ),
           );
         }

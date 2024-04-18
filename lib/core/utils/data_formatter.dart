@@ -18,7 +18,7 @@ class DataFormatter {
   static int countSentences(String text) {
     if (text.isEmpty) return 0;
     
-    final RegExp sentenceEndPattern = RegExp(r'[.!?]');
+    final RegExp sentenceEndPattern = RegExp(r'[.]');
     final List<String> sentences = text.split(sentenceEndPattern);
     sentences.removeWhere((sentence) => sentence.trim().isEmpty);
     return sentences.length;

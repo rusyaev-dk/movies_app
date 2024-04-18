@@ -65,9 +65,12 @@ class WatchlistContent extends StatefulWidget {
             cardHeight: 210,
             cardWidth: 140,
           ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView.shimmerLoading(context,
-              cardHeight: 210, cardWidth: 140),
+          const SizedBox(height: 30),
+          MediaHorizontalListView.shimmerLoading(
+            context,
+            cardHeight: 210,
+            cardWidth: 140,
+          ),
         ],
       ),
     );

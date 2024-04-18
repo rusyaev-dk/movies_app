@@ -74,11 +74,11 @@ class AccountContent extends StatefulWidget {
               ),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 170),
           Padding(
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
             child: Container(
-              height: 100,
+              height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -112,6 +112,24 @@ class _AccountContentState extends State<AccountContent> {
       diameter: 200,
     );
 
+    final String accountName;
+    if (widget.account.name != null) {
+      accountName = widget.account.name!.trim().isEmpty
+          ? "Unknown name"
+          : widget.account.name!;
+    } else {
+      accountName = "Unknown name";
+    }
+
+    final String accountUsername;
+    if (widget.account.username != null) {
+      accountUsername = widget.account.username!.trim().isEmpty
+          ? "Unknown username"
+          : widget.account.username!;
+    } else {
+      accountUsername = "Unknown username";
+    }
+
     return SmartRefresher(
       enablePullDown: true,
       controller: _refreshController,
@@ -134,21 +152,30 @@ class _AccountContentState extends State<AccountContent> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   avatarWidget,
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 25),
                   Text(
-                    widget.account.username ?? "Unknown username",
+                    accountName,
                     style: Theme.of(context)
                         .extension<ThemeTextStyles>()!
                         .headingTextStyle
                         .copyWith(fontSize: 24),
                   ),
+                  const SizedBox(height: 20),
+                  Text(
+                    accountUsername,
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .headingTextStyle
+                        .copyWith(
+                          fontSize: 21,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
                 ],
               ),
             ),
           ),
-          const SizedBox(
-            height: 170,
-          ),
+          const SizedBox(height: 170),
           const Padding(
             padding: EdgeInsets.only(left: 25, right: 25),
             child: AccountSettings(),

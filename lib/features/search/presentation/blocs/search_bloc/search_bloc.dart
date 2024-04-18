@@ -71,7 +71,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchMediaEvent event,
     Emitter<SearchState> emit,
   ) async {
-    if (event.query.isEmpty) return emit(SearchState());
+    if (event.query.isEmpty) {
+      await _keyValueStorageRepository.delete(
+        key: KeyValueStorageKeys.searchQueryKey,
+      );
+      return emit(SearchState());
+    }
 
     emit(SearchLoadingState(query: event.query));
 

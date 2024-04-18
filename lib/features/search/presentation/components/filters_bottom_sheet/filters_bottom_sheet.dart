@@ -83,7 +83,11 @@ class FiltersBottomSheetContent extends StatelessWidget {
             ),
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const RepaintBoundary(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );

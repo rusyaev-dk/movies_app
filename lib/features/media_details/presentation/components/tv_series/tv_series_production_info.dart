@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/data_formatter.dart';
 
 class TVSeriesProductionInfo extends StatelessWidget {
   const TVSeriesProductionInfo({
@@ -29,11 +30,9 @@ class TVSeriesProductionInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String productionInfoString = "";
-    if (firstAirDate != null) {
-      DateTime date = DateTime.parse(firstAirDate!);
-      productionInfoString += "${date.year}, ";
-    } else {
-      productionInfoString += "Unknown date, ";
+    if (DataFormatter.isCorrectDateString(firstAirDate)) {
+      productionInfoString +=
+          "${DataFormatter.getYearFromDate(firstAirDate!)}, ";
     }
 
     if (productionCountries.isEmpty) {
