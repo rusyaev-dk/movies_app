@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 
 class AppHttpClient {
   static final _dio = Dio();
@@ -40,13 +40,17 @@ class AppHttpClient {
           stackTrace,
         );
       } else {
+        _validateResponse(response: exception.response!);
         Error.throwWithStackTrace(
           ApiUnknownException(exception, message: exception.message),
           stackTrace,
         );
       }
-    } on ApiClientException {
-      rethrow;
+    } on ApiClientException catch (exception) {
+      Error.throwWithStackTrace(
+        exception,
+        StackTrace.current,
+      );
     } catch (exception, stackTrace) {
       Error.throwWithStackTrace(
         ApiUnknownException(exception),
@@ -82,8 +86,11 @@ class AppHttpClient {
           stackTrace,
         );
       }
-    } on ApiClientException {
-      rethrow;
+    } on ApiClientException catch (exception) {
+      Error.throwWithStackTrace(
+        exception,
+        StackTrace.current,
+      );
     } catch (exception, stackTrace) {
       Error.throwWithStackTrace(
         ApiUnknownException(exception),
@@ -94,14 +101,35 @@ class AppHttpClient {
 
   void _validateResponse({required Response response}) {
     if (response.statusCode == 401) {
-      final dynamic status = response.data['status_code'];
-      final code = status is int ? status : 0;
-      if (code == 30) {
-        throw ApiAuthException(1, message: response.statusMessage);
-      } else if (code == 3) {
-        throw ApiSessionExpiredException(1, message: response.statusMessage);
+      final int statusCode = response.data['status_code'];
+      if (statusCode == 30) {
+        throw ApiAuthException(
+          statusCode,
+          message: response.data["status_message"],
+        );
+      } else if (statusCode == 3) {
+        throw ApiSessionExpiredException(
+          statusCode,
+          message: response.data["status_message"],
+        );
       } else {
-        throw ApiUnknownException(1, message: "Unknown Exception");
+        throw ApiUnknownException(
+          0,
+          message: response.data["status_message"],
+        );
+      }
+    } else if (response.statusCode == 404) {
+      final int statusCode = response.data['status_code'];
+      if (statusCode == 6 || statusCode == 34) {
+        throw ApiInvalidIdException(
+          statusCode,
+          message: response.data["status_message"],
+        );
+      } else {
+        throw ApiUnknownException(
+          0,
+          message: response.data["status_message"],
+        );
       }
     }
   }

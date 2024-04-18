@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/presentation/components/failure_widget.dart';
+import 'package:movies_app/core/presentation/components/media/grid_media_failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
 import 'package:movies_app/core/presentation/blocs/grid_media_bloc/grid_media_bloc.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 class GridMediaBody extends StatelessWidget {
   const GridMediaBody({
@@ -25,33 +22,10 @@ class GridMediaBody extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case GridMediaStatus.failure:
-            switch (state.failure!.type) {
-              case (ApiClientExceptionType.sessionExpired):
-                return FailureWidget(
-                    failure: state.failure!,
-                    buttonText: "Login",
-                    icon: Icons.exit_to_app_outlined,
-                    onPressed: () {
-                      context.read<AuthBloc>().add(AuthLogoutEvent());
-                      context.go(AppRoutes.screenLoader);
-                    });
-              case (ApiClientExceptionType.network):
-                return FailureWidget(
-                  failure: state.failure!,
-                  buttonText: "Update",
-                  icon: Icons.wifi_off,
-                  onPressed: () => context
-                      .read<GridMediaBloc>()
-                      .add(GridMediaLoadNewMediaEvent(queryType: queryType)),
-                );
-              default:
-                return FailureWidget(
-                  failure: state.failure!,
-                  onPressed: () => context
-                      .read<GridMediaBloc>()
-                      .add(GridMediaLoadNewMediaEvent(queryType: queryType)),
-                );
-            }
+            return GridMediaFailureWidget(
+              failure: state.failure!,
+              queryType: queryType,
+            );
           case GridMediaStatus.success:
             final screenWidth = MediaQuery.of(context).size.width;
             final totalPadding = screenWidth - (180 * 2);
@@ -164,7 +138,7 @@ class _GridMediaContentState extends State<GridMediaContent> {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${model.id}",
                 extra: [model.id, model.title],
               );
             },
@@ -180,7 +154,7 @@ class _GridMediaContentState extends State<GridMediaContent> {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.tvSeriesDetails}/${model.id}",
                 extra: [model.id, model.name],
               );
             },
@@ -196,7 +170,7 @@ class _GridMediaContentState extends State<GridMediaContent> {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.personDetails}/${model.id}",
                 extra: [model.id, model.name],
               );
             },

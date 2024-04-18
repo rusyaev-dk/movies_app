@@ -1,5 +1,5 @@
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/data/storage/key_value_storage.dart';
-import 'package:movies_app/core/data/storage/storage_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
 typedef KeyValueStorageRepositoryPattern<T> = (StorageRepositoryFailure?, T?);
@@ -13,6 +13,8 @@ extension KeyValueStorageRepositoryPatternX<T>
 
 class KeyValueStorageRepository {
   late final KeyValueStorage _storage;
+  final RepositoryFailureFormatter _failureFormatter =
+      RepositoryFailureFormatter();
 
   KeyValueStorageRepository({required KeyValueStorage storage})
       : _storage = storage;
@@ -24,14 +26,8 @@ class KeyValueStorageRepository {
       return (null, value);
     } on StorageException catch (exception, stackTrace) {
       final error = exception.error;
-
-      final errorParams = switch (error) {
-        TypeError _ => (
-            StorageExceptionType.incorrectDataType,
-            (error).toString(),
-          ),
-        _ => (StorageExceptionType.unknown, exception.message),
-      };
+      final errorParams =
+          _failureFormatter.getStorageErrorParams(error, exception);
 
       StorageRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
@@ -50,14 +46,8 @@ class KeyValueStorageRepository {
       return (null, res);
     } on StorageException catch (exception, stackTrace) {
       final error = exception.error;
-
-      final errorParams = switch (error) {
-        TypeError _ => (
-            StorageExceptionType.incorrectDataType,
-            (error).toString(),
-          ),
-        _ => (StorageExceptionType.unknown, exception.message),
-      };
+      final errorParams =
+          _failureFormatter.getStorageErrorParams(error, exception);
 
       StorageRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
@@ -74,14 +64,8 @@ class KeyValueStorageRepository {
       return (null, res);
     } on StorageException catch (exception, stackTrace) {
       final error = exception.error;
-
-      final errorParams = switch (error) {
-        TypeError _ => (
-            StorageExceptionType.incorrectDataType,
-            (error).toString(),
-          ),
-        _ => (StorageExceptionType.unknown, exception.message),
-      };
+      final errorParams =
+          _failureFormatter.getStorageErrorParams(error, exception);
 
       StorageRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);

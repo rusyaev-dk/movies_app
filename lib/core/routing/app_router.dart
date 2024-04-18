@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/screens/error_screens.dart';
 import 'package:movies_app/core/presentation/screens/grid_media_screen.dart';
 import 'package:movies_app/features/account/presentation/screens/account_screen.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/features/media_details/presentation/screens/unknown_media_screen.dart';
 import 'package:movies_app/features/watchlist/presentation/screens/watchlist_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/movie_details_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/person_details_screen.dart';
@@ -35,12 +39,14 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes.home,
+                redirect: _authorizationRedirect,
                 builder: (context, state) => const HomeScreen(),
                 routes: [
                   _movieDetailsRoute,
                   _tvSeriesDetailsRoute,
                   _personDetailsRoute,
                   _gridMediaViewRoute,
+                  _unknwonMediaRoute,
                 ],
               ),
             ],
@@ -49,11 +55,13 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes.search,
+                redirect: _authorizationRedirect,
                 builder: (context, state) => const SearchScreen(),
                 routes: [
                   _movieDetailsRoute,
                   _tvSeriesDetailsRoute,
                   _personDetailsRoute,
+                  _unknwonMediaRoute,
                 ],
               ),
             ],
@@ -62,10 +70,12 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes.watchlist,
+                redirect: _authorizationRedirect,
                 builder: (context, state) => const WatchlistScreen(),
                 routes: [
                   _movieDetailsRoute,
                   _tvSeriesDetailsRoute,
+                  _unknwonMediaRoute,
                 ],
               ),
             ],
@@ -74,6 +84,7 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: AppRoutes.account,
+                redirect: _authorizationRedirect,
                 builder: (context, state) => const AccountScreen(),
               ),
             ],
@@ -85,6 +96,16 @@ class AppRouter {
 
   static final GoRoute _movieDetailsRoute = GoRoute(
     path: "${AppRoutes.movieDetails}/:movie_id",
+    redirect: (context, state) {
+      final extra = state.extra as List;
+
+      String? redirect;
+      if (extra[0] == null || extra[0] <= 0) {
+        final String initialPath = _getInitialPath();
+        redirect = "$initialPath/${AppRoutes.unknownMedia}";
+      }
+      return redirect;
+    },
     builder: (context, state) {
       final extra = state.extra as List;
       return MovieDetailsScreen(
@@ -99,6 +120,16 @@ class AppRouter {
 
   static final GoRoute _tvSeriesDetailsRoute = GoRoute(
     path: "${AppRoutes.tvSeriesDetails}/:tv_series_id",
+    redirect: (context, state) {
+      final extra = state.extra as List;
+
+      String? redirect;
+      if (extra[0] == null || extra[0] <= 0) {
+        final String initialPath = _getInitialPath();
+        redirect = "$initialPath/${AppRoutes.unknownMedia}";
+      }
+      return redirect;
+    },
     builder: (context, state) {
       final extra = state.extra as List;
       return TVSeriesDetailsScreen(
@@ -113,6 +144,16 @@ class AppRouter {
 
   static final GoRoute _personDetailsRoute = GoRoute(
     path: "${AppRoutes.personDetails}/:person_id",
+    redirect: (context, state) {
+      final extra = state.extra as List;
+
+      String? redirect;
+      if (extra[0] == null || extra[0] <= 0) {
+        final String initialPath = _getInitialPath();
+        redirect = "$initialPath/${AppRoutes.unknownMedia}";
+      }
+      return redirect;
+    },
     builder: (context, state) {
       final extra = state.extra as List;
       return PersonDetailsScreen(
@@ -136,6 +177,40 @@ class AppRouter {
       _personDetailsRoute,
     ],
   );
+
+  static final GoRoute _unknwonMediaRoute = GoRoute(
+    path: AppRoutes.unknownMedia,
+    builder: (context, state) => const UnknownMediaScreen(),
+  );
+
+  static String _getInitialPath() {
+    final String curUri = _router.routeInformationProvider.value.uri.toString();
+    final String initialPath;
+    if (curUri.contains("home")) {
+      initialPath = AppRoutes.home;
+    } else if (curUri.contains("search")) {
+      initialPath = AppRoutes.search;
+    } else {
+      initialPath = AppRoutes.watchlist;
+    }
+    return initialPath;
+  }
+
+  static bool _isAuthorized(BuildContext context) {
+    final state = context.read<AuthBloc>().state;
+    return state is AuthAuthorizedState;
+  }
+
+  static String? _authorizationRedirect(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    String? redirect;
+    if (!_isAuthorized(context)) {
+      redirect = AppRoutes.screenLoader;
+    }
+    return redirect;
+  }
 
   static GoRouter get router => _router;
 }

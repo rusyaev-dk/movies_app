@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/person_details_bloc/person_details_bloc.dart';
-import 'package:movies_app/core/presentation/components/failure_widget.dart';
+import 'package:movies_app/features/media_details/presentation/components/person/person_details_failure_widget.dart';
 import 'package:movies_app/features/media_details/presentation/components/person/person_info_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,32 +18,10 @@ class PersonDetailsBody extends StatelessWidget {
     return BlocBuilder<PersonDetailsBloc, PersonDetailsState>(
       builder: (context, state) {
         if (state is PersonDetailsFailureState) {
-          switch (state.failure.type) {
-            case (ApiClientExceptionType.sessionExpired):
-              return FailureWidget(
-                  failure: state.failure,
-                  buttonText: "Login",
-                  icon: Icons.exit_to_app_outlined,
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutEvent());
-                    context.go(AppRoutes.screenLoader);
-                  });
-            case (ApiClientExceptionType.network):
-              return FailureWidget(
-                failure: state.failure,
-                buttonText: "Update",
-                icon: Icons.wifi_off,
-                onPressed: () {
-                  context
-                      .read<PersonDetailsBloc>()
-                      .add(PersonDetailsLoadDetailsEvent(
-                        personId: state.personId!,
-                      ));
-                },
-              );
-            default:
-              return FailureWidget(failure: state.failure);
-          }
+          return PersonDetailsFailureWidget(
+            failure: state.failure,
+            personId: state.personId,
+          );
         } else if (state is PersonDetailsLoadedState) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),

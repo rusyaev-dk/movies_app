@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/api/clients/auth_api_client.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
 typedef AuthRepositoryPattern = (ApiRepositoryFailure?, String?);
@@ -17,6 +15,8 @@ extension AuthRepositoryX on AuthRepositoryPattern {
 
 class AuthRepository {
   static final _authApiClient = AuthApiClient();
+  static final RepositoryFailureFormatter _failureFormatter =
+      RepositoryFailureFormatter();
   final Logger _logger = Logger("AuthRepo");
 
   Future<AuthRepositoryPattern> onAuth({
@@ -42,29 +42,12 @@ class AuthRepository {
       return (null, sessionId);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");

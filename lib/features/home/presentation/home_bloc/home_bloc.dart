@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';

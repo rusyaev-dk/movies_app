@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 
 part 'auth_view_state.dart';
 
@@ -55,6 +55,7 @@ class AuthViewCubit extends Cubit<AuthViewState> {
       case ApiClientExceptionType.sessionExpired:
       case ApiClientExceptionType.jsonKey:
       case ApiClientExceptionType.unknown:
+      case ApiClientExceptionType.invalidId:
         return 'An undefined error has occurred. Try again...';
     }
   }

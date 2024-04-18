@@ -1,4 +1,23 @@
-enum ApiClientExceptionType { network, auth, sessionExpired, unknown, jsonKey }
+abstract class AppException implements Exception {
+  final Object error;
+  final String? message;
+  const AppException(this.error, {this.message});
+}
+
+enum StorageExceptionType {
+  incorrectDataType,
+  key,
+  unknown,
+}
+
+enum ApiClientExceptionType {
+  network,
+  auth,
+  sessionExpired,
+  invalidId,
+  jsonKey,
+  unknown,
+}
 
 extension ApiClientExceptionTypeX on ApiClientExceptionType {
   String formatMessage() {
@@ -9,6 +28,8 @@ extension ApiClientExceptionTypeX on ApiClientExceptionType {
         return "Something is wrong with an authentication";
       case ApiClientExceptionType.sessionExpired:
         return "Your account session has expired";
+      case ApiClientExceptionType.invalidId:
+        return "It seems we can't get information about this media. Please try again later...";
       case ApiClientExceptionType.jsonKey:
       case ApiClientExceptionType.unknown:
         return "Oops... Unknown error. Please try again";
@@ -16,10 +37,20 @@ extension ApiClientExceptionTypeX on ApiClientExceptionType {
   }
 }
 
-abstract class ApiClientException implements Exception {
-  final Object error;
-  final String? message;
-  const ApiClientException(this.error, {this.message});
+abstract class StorageException extends AppException {
+  const StorageException(super.error, {super.message});
+}
+
+class StorageDataTypeException extends StorageException {
+  StorageDataTypeException(super.error, {super.message});
+}
+
+class StorageUnknownException extends StorageException {
+  StorageUnknownException(super.error, {super.message});
+}
+
+abstract class ApiClientException extends AppException {
+  const ApiClientException(super.error, {super.message});
 }
 
 class ApiNetworkException extends ApiClientException {
@@ -40,4 +71,8 @@ class ApiJsonKeyException extends ApiClientException {
 
 class ApiUnknownException extends ApiClientException {
   ApiUnknownException(super.error, {super.message});
+}
+
+class ApiInvalidIdException extends ApiClientException {
+  ApiInvalidIdException(super.error, {super.message});
 }

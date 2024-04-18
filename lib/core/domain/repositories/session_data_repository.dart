@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/data/storage/secure_storage.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 

@@ -191,7 +191,7 @@ class MediaListView extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.movieDetails}/${model.id}",
                 extra: [model.id, model.title],
               );
             },
@@ -207,7 +207,7 @@ class MediaListView extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.tvSeriesDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.tvSeriesDetails}/${model.id}",
                 extra: [model.id, model.name],
               );
             },
@@ -223,7 +223,7 @@ class MediaListView extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               context.push(
-                "$initialPath/${AppRoutes.personDetails}/${(model.id ?? 0).toString()}",
+                "$initialPath/${AppRoutes.personDetails}/${model.id}",
                 extra: [model.id, model.name],
               );
             },

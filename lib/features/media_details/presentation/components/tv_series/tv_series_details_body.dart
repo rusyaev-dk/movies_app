@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/tv_series_details_bloc/tv_series_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/dark_poster_gradient.dart';
-import 'package:movies_app/core/presentation/components/failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_details_buttons.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_details_rating.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_overview_text.dart';
+import 'package:movies_app/features/media_details/presentation/components/tv_series/tv_series_details_failure_widget.dart';
 import 'package:movies_app/features/media_details/presentation/components/tv_series/tv_series_details_head.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -28,32 +23,10 @@ class TVSeriesDetailsBody extends StatelessWidget {
     return BlocBuilder<TVSeriesDetailsBloc, TVSeriesDetailsState>(
       builder: (context, state) {
         if (state.failure != null) {
-          switch (state.failure!.type) {
-            case (ApiClientExceptionType.sessionExpired):
-              return FailureWidget(
-                  failure: state.failure!,
-                  buttonText: "Login",
-                  icon: Icons.exit_to_app_outlined,
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutEvent());
-                    context.go(AppRoutes.screenLoader);
-                  });
-            case (ApiClientExceptionType.network):
-              return FailureWidget(
-                failure: state.failure!,
-                buttonText: "Update",
-                icon: Icons.wifi_off,
-                onPressed: () {
-                  context
-                      .read<TVSeriesDetailsBloc>()
-                      .add(TVSeriesDetailsLoadDetailsEvent(
-                        tvSeriesId: state.tvSeriesId!,
-                      ));
-                },
-              );
-            default:
-              return FailureWidget(failure: state.failure!);
-          }
+          return TvSeriesDetailsFailureWidget(
+            failure: state.failure!,
+            tvSeriesId: state.tvSeriesId,
+          );
         } else if (!state.isLoading && state.tvSeriesModel != null) {
           return TVSeriesDetailsContent(
             tvSeries: state.tvSeriesModel!,

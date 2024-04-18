@@ -23,15 +23,17 @@ class SearchList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, i) => const SizedBox(height: 20),
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemBuilder: (context, i) {
         final model = models[i];
         if (model is MovieModel) {
-          
           return InkWell(
-            onTap: () => context.push(
-              "${AppRoutes.search}/${AppRoutes.movieDetails}/${(model.id ?? 0).toString()}",
-              extra: [model.id, model.title],
-            ),
+            onTap: () {
+              context.push(
+                "${AppRoutes.search}/${AppRoutes.movieDetails}/${model.id}",
+                extra: [model.id, model.title],
+              );
+            },
             child: SearchListTile(
               imagePath: model.posterPath,
               title: model.title ?? "Unknown",
@@ -43,10 +45,12 @@ class SearchList extends StatelessWidget {
           );
         } else if (model is TVSeriesModel) {
           return InkWell(
-            onTap: () => context.push(
-              "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${(model.id ?? 0).toString()}",
-              extra: [model.id, model.name],
-            ),
+            onTap: () {
+              context.push(
+                "${AppRoutes.search}/${AppRoutes.tvSeriesDetails}/${model.id}",
+                extra: [model.id, model.name],
+              );
+            },
             child: SearchListTile(
               imagePath: model.posterPath,
               title: model.name ?? "Unknown",
@@ -59,10 +63,12 @@ class SearchList extends StatelessWidget {
           );
         } else if (model is PersonModel) {
           return InkWell(
-            onTap: () => context.push(
-              "${AppRoutes.search}/${AppRoutes.personDetails}/${(model.id ?? 0).toString()}",
-              extra: [model.id, model.name],
-            ),
+            onTap: () {
+              context.push(
+                "${AppRoutes.search}/${AppRoutes.personDetails}/${model.id}",
+                extra: [model.id, model.name],
+              );
+            },
             child: SearchListTile(
               imagePath: model.profilePath,
               title: model.name ?? "Unknonwn",

@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/data/storage/db_interface.dart';
-import 'package:movies_app/core/data/storage/storage_exceptions.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 
 class SecureStorage implements DataBaseInterface {

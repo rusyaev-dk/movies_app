@@ -1,5 +1,5 @@
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/data/storage/db_interface.dart';
-import 'package:movies_app/core/data/storage/storage_exceptions.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

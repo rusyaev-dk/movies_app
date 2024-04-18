@@ -12,4 +12,6 @@ abstract class AppRoutes {
   static const String personDetails = "person_details";
 
   static const String gridMediaView = "grid_media_view";
+
+  static const String unknownMedia = "unknown_media";
 }

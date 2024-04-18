@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
-import 'package:movies_app/core/data/api/api_exceptions.dart';
 import 'package:movies_app/core/data/api/clients/account_api_client.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 
@@ -18,6 +17,7 @@ extension AuthRepositoryX<T> on AccountRepositoryPattern {
 
 class AccountRepository {
   static final AccountApiClient _accountApiClient = AccountApiClient();
+  static final RepositoryFailureFormatter _failureFormatter = RepositoryFailureFormatter();
   final Logger _logger = Logger("AccountRepo");
 
   Future<AccountRepositoryPattern<int>> onGetAccountId(
@@ -28,29 +28,12 @@ class AccountRepository {
       return (null, response.data["id"] as int);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
@@ -80,29 +63,12 @@ class AccountRepository {
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
@@ -132,29 +98,12 @@ class AccountRepository {
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
@@ -179,30 +128,13 @@ class AccountRepository {
           AccountModel.fromJson(response.data as Map<String, dynamic>);
       return (null, account);
     } on ApiClientException catch (exception, stackTrace) {
-       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
+      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
@@ -248,29 +180,12 @@ class AccountRepository {
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
@@ -304,29 +219,12 @@ class AccountRepository {
       return (null, accountStateMap);
     } on ApiClientException catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      final error = exception.error;
-      final errorParams = switch (error) {
-        DioException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        FormatException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        HttpException _ => (
-            ApiClientExceptionType.network,
-            (error).message,
-          ),
-        TimeoutException _ => (
-            ApiClientExceptionType.network,
-            (error).message ?? exception.message,
-          ),
-        _ => (ApiClientExceptionType.unknown, exception.message),
-      };
 
+      final error = exception.error;
+      final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
           (error, stackTrace, errorParams.$1, errorParams.$2);
+
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
