@@ -9,34 +9,32 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        child: SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 6,
-                child: SearchTextField(
-                  onChanged: (query) {
-                    context
-                        .read<SearchBloc>()
-                        .add(SearchMediaEvent(query: query));
-                  },
-                  hintText: "Movies, series, persons",
-                  prefixIcon: Icons.search,
-                  suffixIcon: Icons.tune,
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 40),
+      child: SizedBox(
+        height: 50,
+        width: double.infinity,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 6,
+              child: SearchTextField(
+                onChanged: (query) {
+                  context
+                      .read<SearchBloc>()
+                      .add(SearchMediaEvent(query: query));
+                },
+                hintText: "Movies, series, persons",
+                prefixIcon: Icons.search,
+                suffixIcon: Icons.tune,
               ),
-              const SizedBox(width: 10),
-              const Expanded(
-                flex: 1,
-                child: FiltersButton(),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(width: 10),
+            const Expanded(
+              flex: 1,
+              child: FiltersButton(),
+            )
+          ],
         ),
       ),
     );

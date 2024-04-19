@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DarkPosterGradient extends StatelessWidget {
-  const DarkPosterGradient({super.key});
+class DarkPosterGradientContainer extends StatelessWidget {
+  const DarkPosterGradientContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

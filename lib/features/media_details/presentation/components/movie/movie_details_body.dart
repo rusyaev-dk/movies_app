@@ -144,7 +144,8 @@ class _MovieDetailsContentState extends State<MovieDetailsContent> {
                     width: double.infinity,
                     child: imageWidget,
                   ),
-                  if (widget.movie.posterPath != null) const DarkPosterGradient(),
+                  if (widget.movie.posterPath != null)
+                    const DarkPosterGradientContainer(),
                 ],
               ),
             ),

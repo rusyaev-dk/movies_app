@@ -1,25 +1,58 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 part 'watchlist_event.dart';
 part 'watchlist_state.dart';
 
 class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
+  late final NetworkCubit _networkCubit;
+  late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final SessionDataRepository _sessionDataRepository;
   late final AccountRepository _accountRepository;
 
   WatchlistBloc({
+    required NetworkCubit networkCubit,
     required SessionDataRepository sessionDataRepository,
     required AccountRepository accountRepository,
-  })  : _sessionDataRepository = sessionDataRepository,
+  })  : _networkCubit = networkCubit,
+        _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
         super(WatchlistState()) {
+    Future.microtask(
+      () {
+        _networkCubitSubscription =
+            _networkCubit.stream.listen(_onNetworkStateChanged);
+      },
+    );
+
+    on<WatchlisrNetworkErrorEvent>(_onNetworkError);
     on<WatchlistloadWatchlistEvent>(_onLoadWatchlist);
     on<WatchlistRefreshWatchlistEvent>(_onRefreshWatchlist);
+  }
+
+  void _onNetworkStateChanged(NetworkState state) {
+    if (state.type == NetworkStateType.offline ||
+        state.type == NetworkStateType.unknown) {
+      add(WatchlisrNetworkErrorEvent());
+    } else if (state.type == NetworkStateType.connected) {
+      add(WatchlistloadWatchlistEvent());
+    }
+  }
+
+  void _onNetworkError(
+    WatchlisrNetworkErrorEvent event,
+    Emitter<WatchlistState> emit,
+  ) {
+    emit(WatchlistFailureState(
+        failure: (1, StackTrace.current, ApiClientExceptionType.network, "")));
   }
 
   Future<void> _onLoadWatchlist(
@@ -93,5 +126,11 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
   ) async {
     add(WatchlistloadWatchlistEvent());
     event.refreshController.refreshCompleted();
+  }
+
+  @override
+  Future<void> close() {
+    _networkCubitSubscription.cancel();
+    return super.close();
   }
 }

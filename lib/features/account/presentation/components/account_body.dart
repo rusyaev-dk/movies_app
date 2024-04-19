@@ -74,7 +74,7 @@ class AccountContent extends StatefulWidget {
               ),
             ),
           ),
-          const SizedBox(height: 170),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
             child: Container(

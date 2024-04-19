@@ -15,7 +15,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchBloc(
-        networkCubit: RepositoryProvider.of<NetworkCubit>(context),
+        networkCubit: BlocProvider.of<NetworkCubit>(context),
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
         keyValueStorageRepository:
             RepositoryProvider.of<KeyValueStorageRepository>(context),

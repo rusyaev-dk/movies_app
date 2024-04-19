@@ -9,3 +9,5 @@ class AccountRefreshAccountDetailsEvent extends AccountEvent {
 
   AccountRefreshAccountDetailsEvent({required this.refreshController});
 }
+
+class AccountNetworkErrorEvent extends AccountEvent {}

@@ -20,7 +20,7 @@ class AuthScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthViewCubit(
         initialState: AuthViewFormFillInProgressState(),
-        authBloc: RepositoryProvider.of<AuthBloc>(context),
+        authBloc: BlocProvider.of<AuthBloc>(context),
       ),
       child: BlocListener<AuthViewCubit, AuthViewState>(
         listener: _onAuthViewCubitStateChange,

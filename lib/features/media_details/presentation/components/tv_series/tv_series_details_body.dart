@@ -140,7 +140,7 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
                     child: imageWidget,
                   ),
                   if (widget.tvSeries.posterPath != null)
-                    const DarkPosterGradient(),
+                    const DarkPosterGradientContainer(),
                 ],
               ),
             ),

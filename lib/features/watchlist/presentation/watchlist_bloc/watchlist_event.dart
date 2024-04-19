@@ -17,3 +17,5 @@ class WatchlistRefreshWatchlistEvent extends WatchlistEvent {
 
   WatchlistRefreshWatchlistEvent({required this.refreshController});
 }
+
+class WatchlisrNetworkErrorEvent extends WatchlistEvent {}

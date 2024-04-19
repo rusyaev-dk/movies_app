@@ -1,25 +1,58 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
 
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
+  late final NetworkCubit _networkCubit;
+  late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final SessionDataRepository _sessionDataRepository;
   late final AccountRepository _accountRepository;
 
   AccountBloc({
+    required NetworkCubit networkCubit,
     required SessionDataRepository sessionDataRepository,
     required AccountRepository accountRepository,
-  })  : _sessionDataRepository = sessionDataRepository,
+  })  : _networkCubit = networkCubit,
+        _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
         super(AccountState()) {
+    Future.microtask(
+      () {
+        _networkCubitSubscription =
+            _networkCubit.stream.listen(_onNetworkStateChanged);
+      },
+    );
+
+    on<AccountNetworkErrorEvent>(_onNetworkError);
     on<AccountLoadAccountDetailsEvent>(_onLoadProfileInfo);
     on<AccountRefreshAccountDetailsEvent>(_onRefreshAccountDetails);
+  }
+
+  void _onNetworkStateChanged(NetworkState state) {
+    if (state.type == NetworkStateType.offline ||
+        state.type == NetworkStateType.unknown) {
+      add(AccountNetworkErrorEvent());
+    } else if (state.type == NetworkStateType.connected) {
+      add(AccountLoadAccountDetailsEvent());
+    }
+  }
+
+  void _onNetworkError(
+    AccountNetworkErrorEvent event,
+    Emitter<AccountState> emit,
+  ) {
+    emit(AccountFailureState(
+        failure: (1, StackTrace.current, ApiClientExceptionType.network, "")));
   }
 
   Future<void> _onLoadProfileInfo(
@@ -70,5 +103,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   ) async {
     add(AccountLoadAccountDetailsEvent());
     event.refreshController.refreshCompleted();
+  }
+
+  @override
+  Future<void> close() {
+    _networkCubitSubscription.cancel();
+    return super.close();
   }
 }

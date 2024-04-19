@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
-        networkCubit: RepositoryProvider.of<NetworkCubit>(context),
+        networkCubit: BlocProvider.of<NetworkCubit>(context),
         mediaRepository: RepositoryProvider.of<MediaRepository>(context),
       )..add(HomeLoadMediaEvent()), // ..add(HomeLoadAllMediaEvent()) добавить
       child: const Scaffold(
