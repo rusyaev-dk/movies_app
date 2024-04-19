@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
@@ -48,38 +49,42 @@ class FiltersBottomSheetContent extends StatelessWidget {
           return Padding(
             padding:
                 const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    height: 4,
-                    width: 55,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .extension<ThemeColors>()!
-                          .activatedFilterButtonColor,
-                      borderRadius: BorderRadius.circular(12),
+            child: Animate(
+              effects: const [FadeEffect()],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      height: 4,
+                      width: 55,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .extension<ThemeColors>()!
+                            .activatedFilterButtonColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                MediaTypeFilterSection(filtersModel: state.searchFiltersModel),
-                const SizedBox(height: 10),
-                SortByFilterSection(filtersModel: state.searchFiltersModel),
-                const SizedBox(height: 10),
-                AnimatedOpacity(
-                  opacity: state.searchFiltersModel.showMediaTypeFilter !=
-                          ShowMediaTypeFilter.persons
-                      ? 1
-                      : 0,
-                  duration: const Duration(milliseconds: 250),
-                  child: RatingFilterSection(
+                  const SizedBox(height: 10),
+                  MediaTypeFilterSection(
                       filtersModel: state.searchFiltersModel),
-                ),
-                const Spacer(),
-                const BottomButtonsSection(),
-              ],
+                  const SizedBox(height: 10),
+                  SortByFilterSection(filtersModel: state.searchFiltersModel),
+                  const SizedBox(height: 10),
+                  AnimatedOpacity(
+                    opacity: state.searchFiltersModel.showMediaTypeFilter !=
+                            ShowMediaTypeFilter.persons
+                        ? 1
+                        : 0,
+                    duration: const Duration(milliseconds: 250),
+                    child: RatingFilterSection(
+                        filtersModel: state.searchFiltersModel),
+                  ),
+                  const Spacer(),
+                  const BottomButtonsSection(),
+                ],
+              ),
             ),
           );
         } else {
@@ -166,16 +171,35 @@ class RatingFilterSection extends StatelessWidget {
                   .extension<ThemeTextStyles>()!
                   .headingTextStyle,
             ),
-            Text(
-              "from ${filtersModel.ratingFilter}",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .subtitleTextStyle
-                  .copyWith(
-                    fontSize: 17,
-                    color: Theme.of(context).colorScheme.secondary,
+            Row(
+              children: [
+                Text(
+                  "from",
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .subtitleTextStyle
+                      .copyWith(
+                        fontSize: 17,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+                const SizedBox(width: 6),
+                Animate(
+                  key: ValueKey(filtersModel.ratingFilter),
+                  effects: const [FadeEffect()],
+                  child: Text(
+                    "${filtersModel.ratingFilter}",
+                    style: Theme.of(context)
+                        .extension<ThemeTextStyles>()!
+                        .subtitleTextStyle
+                        .copyWith(
+                          fontSize: 17,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                   ),
-            ),
+                ),
+              ],
+            )
           ],
         ),
         const SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -93,86 +94,94 @@ class _HomeContentState extends State<HomeContent> {
       onRefresh: () => context
           .read<HomeBloc>()
           .add(HomeRefreshMediaEvent(refreshController: _refreshController)),
-      child: ListView(
-        children: [
-          MediaHorizontalListView(
-            title: "Popular movies for you",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.popularMovies.asString(),
-              );
-            },
-            models: widget.popularMovies,
-            cardHeight: 270,
-            cardWidth: 180,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "Popular TV series",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.popularTVSeries.asString(),
-              );
-            },
-            models: widget.popularTVSeries,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "Trending movies",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.trendingMovies.asString(),
-              );
-            },
-            models: widget.trendingMovies,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "On the air",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.onTheAirTVSeries.asString(),
-              );
-            },
-            models: widget.onTheAirTVSeries,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "Trending TV series",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.trendingTVSeries.asString(),
-              );
-            },
-            models: widget.trendingTVSeries,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "Popular persons",
-            onAllButtonPressed: () {
-              context.push(
-                "${AppRoutes.home}/${AppRoutes.gridMediaView}",
-                extra: ApiMediaQueryType.popularPersons.asString(),
-              );
-            },
-            models: widget.popularPersons,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-        ],
+      child: ListView.builder(
+        itemCount: 1,
+        itemBuilder: (context, _) {
+          return Animate(
+            effects: const [FadeEffect()],
+            child: Column(
+              children: [
+                MediaHorizontalListView(
+                  title: "Popular movies for you",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.popularMovies.asString(),
+                    );
+                  },
+                  models: widget.popularMovies,
+                  cardHeight: 270,
+                  cardWidth: 180,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "Popular TV series",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.popularTVSeries.asString(),
+                    );
+                  },
+                  models: widget.popularTVSeries,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "Trending movies",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.trendingMovies.asString(),
+                    );
+                  },
+                  models: widget.trendingMovies,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "On the air",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.onTheAirTVSeries.asString(),
+                    );
+                  },
+                  models: widget.onTheAirTVSeries,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "Trending TV series",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.trendingTVSeries.asString(),
+                    );
+                  },
+                  models: widget.trendingTVSeries,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "Popular persons",
+                  onAllButtonPressed: () {
+                    context.push(
+                      "${AppRoutes.home}/${AppRoutes.gridMediaView}",
+                      extra: ApiMediaQueryType.popularPersons.asString(),
+                    );
+                  },
+                  models: widget.popularPersons,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

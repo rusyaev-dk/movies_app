@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/person_details_bloc/person_details_bloc.dart';
@@ -164,39 +165,47 @@ class _PersonDetailsContentState extends State<PersonDetailsContent> {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
         imagePath: widget.person.profilePath, width: 100);
 
-    return ListView(
+    return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.zero,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 210,
-              width: 140,
-              child: imageWidget,
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: PersonInfoText(
-                name: widget.person.name,
-                knownForDepartment: widget.person.knownForDepartment,
-                birthday: widget.person.birthday,
-                deathday: widget.person.deathday,
+      itemCount: 1,
+      itemBuilder: (context, _) {
+        return Animate(
+          effects: const [FadeEffect()],
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 210,
+                    width: 140,
+                    child: imageWidget,
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: PersonInfoText(
+                      name: widget.person.name,
+                      knownForDepartment: widget.person.knownForDepartment,
+                      birthday: widget.person.birthday,
+                      deathday: widget.person.deathday,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Text(
-          widget.person.biography ?? "No additional info",
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .subtitleTextStyle
-              .copyWith(fontSize: 16),
-        ),
-        const SizedBox(height: 15),
-      ],
+              const SizedBox(height: 20),
+              Text(
+                widget.person.biography ?? "No additional info",
+                style: Theme.of(context)
+                    .extension<ThemeTextStyles>()!
+                    .subtitleTextStyle
+                    .copyWith(fontSize: 16),
+              ),
+              const SizedBox(height: 15),
+            ],
+          ),
+        );
+      },
     );
   }
 

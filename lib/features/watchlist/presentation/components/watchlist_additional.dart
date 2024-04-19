@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/watchlist/presentation/watchlist_bloc/watchlist_bloc.dart';
@@ -21,10 +22,13 @@ class NoAddedWatchlistMedia extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.bookmark_border,
-              size: 160,
-              color: Theme.of(context).colorScheme.secondary,
+            Animate(
+              effects: const [ShakeEffect()],
+              child: Icon(
+                Icons.bookmark_border,
+                size: 160,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
             const SizedBox(height: 20),
             Text(

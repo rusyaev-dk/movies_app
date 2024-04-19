@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -103,95 +104,98 @@ class _GridMediaContentState extends State<GridMediaContent> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      key: ValueKey(widget.queryType),
-      controller: _scrollController,
-      padding: EdgeInsets.zero,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.8 / 3,
-        mainAxisSpacing: 18,
-        crossAxisSpacing: 25,
-      ),
-      itemCount: widget.hasReachedMax
-          ? widget.models.length
-          : widget.models.length + 1,
-      itemBuilder: (context, i) {
-        if (i >= widget.models.length) {
-          return const RepaintBoundary(
-            child: Center(
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(),
+    return Animate(
+      effects: const [FadeEffect()],
+      child: GridView.builder(
+        key: ValueKey(widget.queryType),
+        controller: _scrollController,
+        padding: EdgeInsets.zero,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.8 / 3,
+          mainAxisSpacing: 18,
+          crossAxisSpacing: 25,
+        ),
+        itemCount: widget.hasReachedMax
+            ? widget.models.length
+            : widget.models.length + 1,
+        itemBuilder: (context, i) {
+          if (i >= widget.models.length) {
+            return const RepaintBoundary(
+              child: Center(
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            ),
-          );
-        }
-        final model = widget.models[i];
-        final curUri =
-            GoRouter.of(context).routeInformationProvider.value.uri.toString();
-        final String initialPath;
-        if (curUri.contains("home")) {
-          initialPath = AppRoutes.home;
-        } else {
-          initialPath = AppRoutes.watchlist;
-        }
-
-        if (model is MovieModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${model.id}",
-                extra: [model.id, model.title],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
+            );
+          }
+          final model = widget.models[i];
+          final curUri =
+              GoRouter.of(context).routeInformationProvider.value.uri.toString();
+          final String initialPath;
+          if (curUri.contains("home")) {
+            initialPath = AppRoutes.home;
+          } else {
+            initialPath = AppRoutes.watchlist;
+          }
+      
+          if (model is MovieModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.movieDetails}/${model.id}",
+                  extra: [model.id, model.title],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: 180,
+                voteAverage: model.voteAverage,
+                imagePath: model.posterPath,
+                cardText: model.title ?? "Unknown movie",
+              ),
+            );
+          } else if (model is TVSeriesModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.tvSeriesDetails}/${model.id}",
+                  extra: [model.id, model.name],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: 180,
+                voteAverage: model.voteAverage,
+                imagePath: model.posterPath,
+                cardText: model.name ?? "Unknown tv series",
+              ),
+            );
+          } else if (model is PersonModel) {
+            return GestureDetector(
+              onTap: () {
+                context.push(
+                  "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.personDetails}/${model.id}",
+                  extra: [model.id, model.name],
+                );
+              },
+              child: MediaCard(
+                key: ValueKey(model.id),
+                width: 180,
+                imagePath: model.profilePath,
+                cardText: model.name ?? "Unknown person",
+              ),
+            );
+          } else {
+            return const MediaCard(
               width: 180,
-              voteAverage: model.voteAverage,
-              imagePath: model.posterPath,
-              cardText: model.title ?? "Unknown movie",
-            ),
-          );
-        } else if (model is TVSeriesModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.tvSeriesDetails}/${model.id}",
-                extra: [model.id, model.name],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
-              width: 180,
-              voteAverage: model.voteAverage,
-              imagePath: model.posterPath,
-              cardText: model.name ?? "Unknown tv series",
-            ),
-          );
-        } else if (model is PersonModel) {
-          return GestureDetector(
-            onTap: () {
-              context.push(
-                "$initialPath/${AppRoutes.gridMediaView}/${AppRoutes.personDetails}/${model.id}",
-                extra: [model.id, model.name],
-              );
-            },
-            child: MediaCard(
-              key: ValueKey(model.id),
-              width: 180,
-              imagePath: model.profilePath,
-              cardText: model.name ?? "Unknown person",
-            ),
-          );
-        } else {
-          return const MediaCard(
-            width: 180,
-            voteAverage: 0,
-          );
-        }
-      },
+              voteAverage: 0,
+            );
+          }
+        },
+      ),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/tv_series_details_bloc/tv_series_details_bloc.dart';
@@ -121,101 +122,113 @@ class _TVSeriesDetailsContentState extends State<TVSeriesDetailsContent> {
     Widget imageWidget = ApiImageFormatter.formatImageWidget(context,
         imagePath: widget.tvSeries.posterPath, width: 100);
 
-    return ListView(
+    return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.zero,
-      children: [
-        Stack(
-          alignment: Alignment.topLeft,
+      itemCount: 1,
+      itemBuilder: (context, _) {
+        return Column(
           children: [
-            SizedBox(
-              height: 600,
-              width: double.infinity,
-              child: imageWidget,
+            Animate(
+              effects: const [FadeEffect()],
+              child: Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  SizedBox(
+                    height: 600,
+                    width: double.infinity,
+                    child: imageWidget,
+                  ),
+                  if (widget.tvSeries.posterPath != null)
+                    const DarkPosterGradient(),
+                ],
+              ),
             ),
-            const DarkPosterGradient(),
+            const SizedBox(height: 10),
+            Animate(
+              effects: const [FadeEffect()],
+              child: TVSeriesDetailsHead(tvSeries: widget.tvSeries),
+            ),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: BlocBuilder<TVSeriesDetailsBloc, TVSeriesDetailsState>(
+                buildWhen: (previous, current) =>
+                    previous.isFavourite != current.isFavourite ||
+                    previous.isInWatchlist != current.isInWatchlist,
+                builder: (context, state) {
+                  return MediaDetailsButtons(
+                    isFavourite: state.isFavourite!,
+                    isInWatchlist: state.isInWatchlist!,
+                    favouriteBtnOnPressed: () {
+                      context
+                          .read<TVSeriesDetailsBloc>()
+                          .add(TVSeriesDetailsAddToFavouriteEvent(
+                            tvSeriesId: state.tvSeriesModel!.id!,
+                            isFavorite: state.isFavourite!,
+                          ));
+                    },
+                    watchListBtnOnPressed: () {
+                      context
+                          .read<TVSeriesDetailsBloc>()
+                          .add(TVSeriesDetailsAddToWatchlistEvent(
+                            tvSeriesId: state.tvSeriesModel!.id!,
+                            isInWatchlist: state.isInWatchlist!,
+                          ));
+                    },
+                    shareBtnOnPressed: () {},
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 15),
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            if (widget.tvSeries.overview != null &&
+                widget.tvSeries.overview!.trim().isNotEmpty)
+              const SizedBox(height: 15),
+            if (widget.tvSeries.overview != null &&
+                widget.tvSeries.overview!.trim().isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: MediaOverviewText(overview: widget.tvSeries.overview!),
+              ),
+            if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 20),
+            if (widget.tvSeriesImages.isNotEmpty)
+              MediaHorizontalListView(
+                title: "Images",
+                withAllButton: false,
+                models: widget.tvSeriesImages,
+              ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: MediaDetailsRating(
+                voteAverage: widget.tvSeries.voteAverage ?? 0,
+                voteCount: widget.tvSeries.voteCount ?? 0,
+              ),
+            ),
+            if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 20),
+            if (widget.tvSeriesCredits.isNotEmpty)
+              MediaHorizontalListView(
+                title: "Credits",
+                withAllButton: false,
+                models: widget.tvSeriesCredits,
+              ),
+            if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 20),
+            if (widget.similarTVSeries.isNotEmpty)
+              MediaHorizontalListView(
+                title: "Similar TV series",
+                withAllButton: false,
+                models: widget.similarTVSeries,
+              ),
+            const SizedBox(height: 15),
           ],
-        ),
-        const SizedBox(height: 10),
-        TVSeriesDetailsHead(tvSeries: widget.tvSeries),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: BlocBuilder<TVSeriesDetailsBloc, TVSeriesDetailsState>(
-            buildWhen: (previous, current) =>
-                previous.isFavourite != current.isFavourite ||
-                previous.isInWatchlist != current.isInWatchlist,
-            builder: (context, state) {
-              return MediaDetailsButtons(
-                isFavourite: state.isFavourite!,
-                isInWatchlist: state.isInWatchlist!,
-                favouriteBtnOnPressed: () {
-                  context
-                      .read<TVSeriesDetailsBloc>()
-                      .add(TVSeriesDetailsAddToFavouriteEvent(
-                        tvSeriesId: state.tvSeriesModel!.id!,
-                        isFavorite: state.isFavourite!,
-                      ));
-                },
-                watchListBtnOnPressed: () {
-                  context
-                      .read<TVSeriesDetailsBloc>()
-                      .add(TVSeriesDetailsAddToWatchlistEvent(
-                        tvSeriesId: state.tvSeriesModel!.id!,
-                        isInWatchlist: state.isInWatchlist!,
-                      ));
-                },
-                shareBtnOnPressed: () {},
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 15),
-        Divider(
-          height: 1,
-          thickness: 1,
-          color: Theme.of(context).colorScheme.surface,
-        ),
-        if (widget.tvSeries.overview != null &&
-            widget.tvSeries.overview!.trim().isNotEmpty)
-          const SizedBox(height: 15),
-        if (widget.tvSeries.overview != null &&
-            widget.tvSeries.overview!.trim().isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: MediaOverviewText(overview: widget.tvSeries.overview!),
-          ),
-        if (widget.tvSeriesImages.isNotEmpty) const SizedBox(height: 20),
-        if (widget.tvSeriesImages.isNotEmpty)
-          MediaHorizontalListView(
-            title: "Images",
-            withAllButton: false,
-            models: widget.tvSeriesImages,
-          ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MediaDetailsRating(
-            voteAverage: widget.tvSeries.voteAverage ?? 0,
-            voteCount: widget.tvSeries.voteCount ?? 0,
-          ),
-        ),
-        if (widget.tvSeriesCredits.isNotEmpty) const SizedBox(height: 20),
-        if (widget.tvSeriesCredits.isNotEmpty)
-          MediaHorizontalListView(
-            title: "Credits",
-            withAllButton: false,
-            models: widget.tvSeriesCredits,
-          ),
-        if (widget.similarTVSeries.isNotEmpty) const SizedBox(height: 20),
-        if (widget.similarTVSeries.isNotEmpty)
-          MediaHorizontalListView(
-            title: "Similar TV series",
-            withAllButton: false,
-            models: widget.similarTVSeries,
-          ),
-        const SizedBox(height: 15),
-      ],
+        );
+      },
     );
   }
 

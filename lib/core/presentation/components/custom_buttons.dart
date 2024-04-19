@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:movies_app/core/themes/theme.dart';
 
 class CustomGradientButton extends StatelessWidget {
@@ -232,8 +233,8 @@ class CustomFilterButton extends StatelessWidget {
   }
 }
 
-class CustomIconButton extends StatelessWidget {
-  const CustomIconButton({
+class MediaDetailsIconButton extends StatelessWidget {
+  const MediaDetailsIconButton({
     super.key,
     required this.onPressed,
     required this.icon,
@@ -251,10 +252,14 @@ class CustomIconButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 30,
+          Animate(
+            key: ValueKey(icon),
+            effects: const [FadeEffect()],
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 30,
+            ),
           ),
           const SizedBox(height: 10),
           Text(

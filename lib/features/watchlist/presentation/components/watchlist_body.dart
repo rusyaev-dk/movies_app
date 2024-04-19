@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
@@ -94,25 +95,33 @@ class _WatchlistContentState extends State<WatchlistContent> {
       onRefresh: () => context.read<WatchlistBloc>().add(
           WatchlistRefreshWatchlistEvent(
               refreshController: _refreshController)),
-      child: ListView(
+      child: ListView.builder(
         padding: EdgeInsets.zero,
-        children: [
-          MediaHorizontalListView(
-            title: "Your movies",
-            models: widget.moviesWatchlist,
-            withAllButton: false,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-          const SizedBox(height: 20),
-          MediaHorizontalListView(
-            title: "Your TV series",
-            models: widget.tvSeriesWatchlist,
-            withAllButton: false,
-            cardHeight: 210,
-            cardWidth: 140,
-          ),
-        ],
+        itemCount: 1,
+        itemBuilder: (context, _) {
+          return Animate(
+            effects: const [FadeEffect()],
+            child: Column(
+              children: [
+                MediaHorizontalListView(
+                  title: "Your movies",
+                  models: widget.moviesWatchlist,
+                  withAllButton: false,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+                const SizedBox(height: 20),
+                MediaHorizontalListView(
+                  title: "Your TV series",
+                  models: widget.tvSeriesWatchlist,
+                  withAllButton: false,
+                  cardHeight: 210,
+                  cardWidth: 140,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

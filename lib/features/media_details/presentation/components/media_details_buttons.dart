@@ -22,19 +22,19 @@ class MediaDetailsButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomIconButton(
+        MediaDetailsIconButton(
           onPressed: favouriteBtnOnPressed,
           icon: isFavourite ? Icons.star : Icons.star_border,
           text: "Favourite",
         ),
         const SizedBox(width: 10),
-        CustomIconButton(
+        MediaDetailsIconButton(
           onPressed: watchListBtnOnPressed,
           icon: isInWatchlist ? Icons.bookmark : Icons.bookmark_add_outlined,
           text: "To watch list",
         ),
         const SizedBox(width: 10),
-        CustomIconButton(
+        MediaDetailsIconButton(
           onPressed: () {},
           icon: Icons.share,
           text: "Share",
