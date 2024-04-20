@@ -12,6 +12,7 @@ class SearchList extends StatelessWidget {
 
   static Widget shimmerLoading() {
     return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       separatorBuilder: (context, i) => const SizedBox(height: 20),
       itemBuilder: (context, i) {
         return SearchListTile.shimmerLoading(context);
@@ -25,6 +26,7 @@ class SearchList extends StatelessWidget {
     return Animate(
       effects: const [FadeEffect()],
       child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         separatorBuilder: (context, i) => const SizedBox(height: 20),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         itemBuilder: (context, i) {

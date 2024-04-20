@@ -18,10 +18,7 @@ class SearchBody extends StatelessWidget {
             query: state.query,
           );
         } else if (state is SearchLoadingState) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SearchList.shimmerLoading(),
-          );
+          return SearchList.shimmerLoading();
         } else if (state is SearchLoadedState) {
           if (state.searchModels.isEmpty) {
             return const Padding(
@@ -29,10 +26,7 @@ class SearchBody extends StatelessWidget {
               child: NothingFoundWidget(),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SearchList(models: state.searchModels),
-          );
+          return SearchList(models: state.searchModels);
         } else {
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),

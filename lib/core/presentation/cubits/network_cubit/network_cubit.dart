@@ -19,11 +19,10 @@ class NetworkCubit extends Cubit<NetworkState> {
         .listen(_onConnectivityStateChanged);
   }
 
-  void _onConnectivityStateChanged(List<ConnectivityResult> resList) {
-    if (resList.contains(ConnectivityResult.mobile) ||
-        resList.contains(ConnectivityResult.wifi)) {
+  void _onConnectivityStateChanged(ConnectivityResult res) {
+    if (res == ConnectivityResult.wifi || res == ConnectivityResult.mobile) {
       emit(NetworkState(type: NetworkStateType.connected));
-    } else if (resList.contains(ConnectivityResult.none)) {
+    } else if (res == ConnectivityResult.none) {
       emit(NetworkState(type: NetworkStateType.offline));
     } else {
       emit(NetworkState(type: NetworkStateType.unknown));

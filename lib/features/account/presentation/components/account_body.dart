@@ -180,6 +180,7 @@ class _AccountContentState extends State<AccountContent> {
             padding: EdgeInsets.only(left: 25, right: 25),
             child: AccountSettings(),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );

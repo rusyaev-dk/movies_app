@@ -178,6 +178,7 @@ class _HomeContentState extends State<HomeContent> {
                   cardHeight: 210,
                   cardWidth: 140,
                 ),
+                const SizedBox(height: 15),
               ],
             ),
           );

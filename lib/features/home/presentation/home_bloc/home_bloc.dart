@@ -99,9 +99,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         case (null, final List<TMDBModel> resModels):
           modelsMap[type.asString()] = resModels;
       }
-
-      await Future.delayed(
-          const Duration(milliseconds: 150)); // убрать в релизе
     }
 
     emit(HomeLoadedState(

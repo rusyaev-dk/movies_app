@@ -10,7 +10,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 40),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 40, bottom: 10),
       child: SizedBox(
         height: 50,
         width: double.infinity,
@@ -67,7 +67,7 @@ class FiltersButton extends StatelessWidget {
         );
       },
       child: Container(
-        height: 55,
+        height: 48,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Theme.of(context).colorScheme.surface,
