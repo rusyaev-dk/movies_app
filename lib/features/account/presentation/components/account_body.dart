@@ -48,7 +48,10 @@ class AccountContent extends StatefulWidget {
             width: double.infinity,
             height: 400,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
               color: Theme.of(context).colorScheme.surface,
             ),
             child: Center(
@@ -143,7 +146,10 @@ class _AccountContentState extends State<AccountContent> {
             width: double.infinity,
             height: 400,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
               color: Theme.of(context).colorScheme.surface,
             ),
             child: Center(
