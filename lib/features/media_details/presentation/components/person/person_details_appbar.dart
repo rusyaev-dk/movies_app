@@ -22,14 +22,13 @@ class PersonDetailsAppBar extends StatelessWidget
             showTitle = true;
             break;
           case (MediaDetailsAppbarState.transparent):
-            break;
         }
 
         return AppBar(
           forceMaterialTransparency: true,
           title: AnimatedOpacity(
             opacity: showTitle ? 1 : 0,
-            duration: const Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 200),
             child: Text(
               appBarTitle,
               style: Theme.of(context)

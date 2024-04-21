@@ -73,11 +73,11 @@ class FiltersBottomSheetContent extends StatelessWidget {
                   SortByFilterSection(filtersModel: state.searchFiltersModel),
                   const SizedBox(height: 10),
                   AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
                     opacity: state.searchFiltersModel.showMediaTypeFilter !=
                             ShowMediaTypeFilter.persons
                         ? 1
                         : 0,
-                    duration: const Duration(milliseconds: 250),
                     child: RatingFilterSection(
                         filtersModel: state.searchFiltersModel),
                   ),

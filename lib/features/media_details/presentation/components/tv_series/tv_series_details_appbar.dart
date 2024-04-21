@@ -26,11 +26,10 @@ class TVSeriesDetailsAppBar extends StatelessWidget
             break;
           case (MediaDetailsAppbarState.transparent):
             appBarColor = Colors.transparent;
-            break;
         }
 
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 200),
           width: double.infinity,
           padding: appBarTitle.length >= 25
               ? const EdgeInsets.only(left: 5, right: 5, top: 35, bottom: 5)
