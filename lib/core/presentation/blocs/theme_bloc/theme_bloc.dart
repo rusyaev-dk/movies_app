@@ -58,13 +58,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     switch (keyValueStorageRepoPattern) {
       case (final StorageRepositoryFailure _, null):
         themeMode = ThemeMode.system;
-
         break;
       case (null, final String resThemeMode):
         themeMode = ThemeModeX.fromString(resThemeMode);
     }
     emit(ThemeState(themeMode: themeMode!));
-    await Future.delayed(const Duration(seconds: 5));
     FlutterNativeSplash.remove();
   }
 
@@ -77,7 +75,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       value: ThemeMode.dark.asString(),
     );
 
-    emit(state.copyWith(themeMode: ThemeMode.dark));
+    emit(ThemeState(themeMode: ThemeMode.dark));
   }
 
   Future<void> _onToggleLightTheme(
@@ -88,7 +86,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       key: themeModeKey,
       value: ThemeMode.light.asString(),
     );
-    emit(state.copyWith(themeMode: ThemeMode.light));
+    emit(ThemeState(themeMode: ThemeMode.light));
   }
 
   Future<void> _onToggleSystemTheme(
@@ -99,6 +97,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       key: themeModeKey,
       value: ThemeMode.system.asString(),
     );
-    emit(state.copyWith(themeMode: ThemeMode.system));
+    emit(ThemeState(themeMode: ThemeMode.system));
   }
 }

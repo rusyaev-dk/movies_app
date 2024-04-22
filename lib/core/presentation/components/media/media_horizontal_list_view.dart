@@ -184,6 +184,21 @@ class _MediaListViewState extends State<MediaListView> {
 
   @override
   Widget build(BuildContext context) {
+    final curUri =
+        GoRouter.of(context).routeInformationProvider.value.uri.toString();
+    
+    String initialPath;
+    if (curUri.contains("home")) {
+      initialPath = AppRoutes.home;
+      if (curUri.contains("grid")) {
+        initialPath += "/${AppRoutes.gridMediaView}";
+      }
+    } else if (curUri.contains("search")) {
+      initialPath = AppRoutes.search;
+    } else {
+      initialPath = AppRoutes.watchlist;
+    }
+
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (OverscrollIndicatorNotification overscroll) {
         overscroll.disallowIndicator();
@@ -193,26 +208,16 @@ class _MediaListViewState extends State<MediaListView> {
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(
-            left: (_scrollController.hasClients && _scrollController.offset > 0)
-                ? 0
-                : 10),
+          left: (_scrollController.hasClients && _scrollController.offset > 0)
+              ? 0
+              : 10,
+        ),
         separatorBuilder: (context, index) {
           return const SizedBox(width: 10);
         },
         itemBuilder: (context, i) {
           final model = widget.models[i];
-      
-          final curUri =
-              GoRouter.of(context).routeInformationProvider.value.uri.toString();
-          final String initialPath;
-          if (curUri.contains("home")) {
-            initialPath = AppRoutes.home;
-          } else if (curUri.contains("search")) {
-            initialPath = AppRoutes.search;
-          } else {
-            initialPath = AppRoutes.watchlist;
-          }
-      
+
           if (model is MovieModel) {
             return GestureDetector(
               onTap: () {

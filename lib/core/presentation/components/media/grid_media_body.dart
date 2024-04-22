@@ -104,6 +104,15 @@ class _GridMediaContentState extends State<GridMediaContent> {
 
   @override
   Widget build(BuildContext context) {
+    final curUri =
+        GoRouter.of(context).routeInformationProvider.value.uri.toString();
+    final String initialPath;
+    if (curUri.contains("home")) {
+      initialPath = AppRoutes.home;
+    } else {
+      initialPath = AppRoutes.watchlist;
+    }
+
     return Animate(
       effects: const [FadeEffect()],
       child: GridView.builder(
@@ -132,15 +141,7 @@ class _GridMediaContentState extends State<GridMediaContent> {
             );
           }
           final model = widget.models[i];
-          final curUri =
-              GoRouter.of(context).routeInformationProvider.value.uri.toString();
-          final String initialPath;
-          if (curUri.contains("home")) {
-            initialPath = AppRoutes.home;
-          } else {
-            initialPath = AppRoutes.watchlist;
-          }
-      
+
           if (model is MovieModel) {
             return GestureDetector(
               onTap: () {

@@ -46,7 +46,7 @@ class AppRouter {
                   _tvSeriesDetailsRoute,
                   _personDetailsRoute,
                   _gridMediaViewRoute,
-                  _unknwonMediaRoute,
+                  _unknownMediaRoute,
                 ],
               ),
             ],
@@ -61,7 +61,7 @@ class AppRouter {
                   _movieDetailsRoute,
                   _tvSeriesDetailsRoute,
                   _personDetailsRoute,
-                  _unknwonMediaRoute,
+                  _unknownMediaRoute,
                 ],
               ),
             ],
@@ -75,7 +75,8 @@ class AppRouter {
                 routes: [
                   _movieDetailsRoute,
                   _tvSeriesDetailsRoute,
-                  _unknwonMediaRoute,
+                  _personDetailsRoute,
+                  _unknownMediaRoute,
                 ],
               ),
             ],
@@ -96,16 +97,7 @@ class AppRouter {
 
   static final GoRoute _movieDetailsRoute = GoRoute(
     path: "${AppRoutes.movieDetails}/:movie_id",
-    redirect: (context, state) {
-      final extra = state.extra as List;
-
-      String? redirect;
-      if (extra[0] == null || extra[0] <= 0) {
-        final String initialPath = _getInitialPath();
-        redirect = "$initialPath/${AppRoutes.unknownMedia}";
-      }
-      return redirect;
-    },
+    redirect: _unknownMediaRedirect,
     builder: (context, state) {
       final extra = state.extra as List;
       return MovieDetailsScreen(
@@ -120,16 +112,7 @@ class AppRouter {
 
   static final GoRoute _tvSeriesDetailsRoute = GoRoute(
     path: "${AppRoutes.tvSeriesDetails}/:tv_series_id",
-    redirect: (context, state) {
-      final extra = state.extra as List;
-
-      String? redirect;
-      if (extra[0] == null || extra[0] <= 0) {
-        final String initialPath = _getInitialPath();
-        redirect = "$initialPath/${AppRoutes.unknownMedia}";
-      }
-      return redirect;
-    },
+    redirect: _unknownMediaRedirect,
     builder: (context, state) {
       final extra = state.extra as List;
       return TVSeriesDetailsScreen(
@@ -144,16 +127,7 @@ class AppRouter {
 
   static final GoRoute _personDetailsRoute = GoRoute(
     path: "${AppRoutes.personDetails}/:person_id",
-    redirect: (context, state) {
-      final extra = state.extra as List;
-
-      String? redirect;
-      if (extra[0] == null || extra[0] <= 0) {
-        final String initialPath = _getInitialPath();
-        redirect = "$initialPath/${AppRoutes.unknownMedia}";
-      }
-      return redirect;
-    },
+    redirect: _unknownMediaRedirect,
     builder: (context, state) {
       final extra = state.extra as List;
       return PersonDetailsScreen(
@@ -175,25 +149,17 @@ class AppRouter {
       _movieDetailsRoute,
       _tvSeriesDetailsRoute,
       _personDetailsRoute,
+      _unknownMediaRoute,
     ],
   );
 
-  static final GoRoute _unknwonMediaRoute = GoRoute(
+  static final GoRoute _unknownMediaRoute = GoRoute(
     path: AppRoutes.unknownMedia,
     builder: (context, state) => const UnknownMediaScreen(),
   );
 
-  static String _getInitialPath() {
-    final String curUri = _router.routeInformationProvider.value.uri.toString();
-    final String initialPath;
-    if (curUri.contains("home")) {
-      initialPath = AppRoutes.home;
-    } else if (curUri.contains("search")) {
-      initialPath = AppRoutes.search;
-    } else {
-      initialPath = AppRoutes.watchlist;
-    }
-    return initialPath;
+  static String _getCurrentUriStr() {
+    return _router.routeInformationProvider.value.uri.toString();
   }
 
   static bool _isAuthorized(BuildContext context) {
@@ -208,6 +174,20 @@ class AppRouter {
     String? redirect;
     if (!_isAuthorized(context)) {
       redirect = AppRoutes.screenLoader;
+    }
+    return redirect;
+  }
+
+  static String? _unknownMediaRedirect(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    final extra = state.extra as List;
+
+    String? redirect;
+    if (extra[0] == null || extra[0] <= 0) {
+      final String curUri = _getCurrentUriStr();
+      redirect = "$curUri/${AppRoutes.unknownMedia}";
     }
     return redirect;
   }

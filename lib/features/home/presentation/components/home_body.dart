@@ -104,7 +104,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "Popular movies for you",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.popularMovies.asString(),
                     );
@@ -117,7 +117,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "Popular TV series",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.popularTVSeries.asString(),
                     );
@@ -130,7 +130,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "Trending movies",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.trendingMovies.asString(),
                     );
@@ -143,7 +143,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "On the air",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.onTheAirTVSeries.asString(),
                     );
@@ -156,7 +156,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "Trending TV series",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.trendingTVSeries.asString(),
                     );
@@ -169,7 +169,7 @@ class _HomeContentState extends State<HomeContent> {
                 MediaHorizontalListView(
                   title: "Popular persons",
                   onAllButtonPressed: () {
-                    context.push(
+                    context.go(
                       "${AppRoutes.home}/${AppRoutes.gridMediaView}",
                       extra: ApiMediaQueryType.popularPersons.asString(),
                     );
