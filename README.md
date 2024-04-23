@@ -6,9 +6,9 @@ This Flutter application serves as a film encyclopedia, fetching data from The M
 
 The application architecture is divided into three layers: **data**, **domain**, and **presentation**.
 
-- **Data Layer**: Responsible for interacting with external data sources, such as APIs or databases. Repositories in this layer handle data retrieval and storage.
+- **Data Layer**: Responsible for interacting with external data sources, such as APIs or databases and making http requests. Clients in this layer handle data retrieval and storage.
 
-- **Domain Layer**: Contains business logic and use cases. Repositories in this layer follow patterns that define their behavior, allowing for flexible and clean logic inside the BLoC handlers.
+- **Domain Layer**: Repositories in this layer follow patterns that define their behavior, allowing for flexible and clean logic inside the BLoC handlers.
 
 - **Presentation Layer**: Handles the user interface and user interaction. It includes widgets, screens, and BLoC components.
 
