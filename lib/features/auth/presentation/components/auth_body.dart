@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
 

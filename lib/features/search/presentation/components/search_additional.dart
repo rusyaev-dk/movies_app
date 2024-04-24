@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 
 class LetsFindSomethingWidget extends StatelessWidget {
   const LetsFindSomethingWidget({super.key});

@@ -25,7 +25,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _eventHandlerSwitcher,
       transformer: sequential(),
     );
-    // add(AuthLogoutEvent()); // убрать в финалке!!!
     add(AuthCheckStatusEvent());
   }
 

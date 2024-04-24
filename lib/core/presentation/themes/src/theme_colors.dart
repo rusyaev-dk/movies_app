@@ -20,14 +20,15 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
   });
 
   @override
-  ThemeExtension<ThemeColors> copyWith(
-      {Color? background,
-      Color? onBackground,
-      Color? surfaceDarker,
-      Color? activatedFilterButtonColor,
-      Color? inActivatedFilterButtonColor,
-      Color? activatedThemeButtonColor,
-      Color? inActivatedThemeButtonColor}) {
+  ThemeExtension<ThemeColors> copyWith({
+    Color? background,
+    Color? onBackground,
+    Color? surfaceDarker,
+    Color? activatedFilterButtonColor,
+    Color? inActivatedFilterButtonColor,
+    Color? activatedThemeButtonColor,
+    Color? inActivatedThemeButtonColor,
+  }) {
     return ThemeColors(
       background: background ?? this.background,
       onBackground: onBackground ?? this.onBackground,

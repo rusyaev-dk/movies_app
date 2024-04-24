@@ -7,7 +7,7 @@ import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/presentation/components/media/grid_media_failure_widget.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
 import 'package:movies_app/core/presentation/blocs/grid_media_bloc/grid_media_bloc.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/presentation/routing/app_routes.dart';
 
 class GridMediaBody extends StatelessWidget {
   const GridMediaBody({

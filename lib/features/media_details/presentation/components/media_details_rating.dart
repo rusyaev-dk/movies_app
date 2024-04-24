@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 import 'package:movies_app/core/presentation/components/media/media_vote.dart';
 
 class MediaDetailsRating extends StatelessWidget {

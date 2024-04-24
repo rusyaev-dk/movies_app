@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 import 'package:movies_app/features/watchlist/presentation/watchlist_bloc/watchlist_bloc.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 

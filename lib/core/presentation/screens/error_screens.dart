@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/routing/app_routes.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 
 class RouterErrorScreen extends StatelessWidget {
   const RouterErrorScreen({super.key});

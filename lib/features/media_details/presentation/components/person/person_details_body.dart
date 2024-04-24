@@ -7,7 +7,7 @@ import 'package:movies_app/features/media_details/presentation/blocs/person_deta
 import 'package:movies_app/features/media_details/presentation/components/person/person_details_failure_widget.dart';
 import 'package:movies_app/features/media_details/presentation/components/person/person_info_text.dart';
 import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 

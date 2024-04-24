@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/presentation/themes/theme.dart';
 
 class MediaGenresText extends StatelessWidget {
   const MediaGenresText({
