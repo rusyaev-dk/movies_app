@@ -7,7 +7,9 @@ import 'package:movies_app/core/data/api/api_config.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 
 class AccountApiClient {
-  static final _httpClient = AppHttpClient();
+  AccountApiClient({required AppHttpClient httpClient}) : _httpClient = httpClient;
+
+  final AppHttpClient _httpClient;
   static final _apiKey = dotenv.get('API_KEY');
 
   Future<Response> getAccountId({required String sessionId}) async {

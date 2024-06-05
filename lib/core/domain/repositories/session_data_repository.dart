@@ -17,11 +17,11 @@ abstract class SessionDataKeys {
 }
 
 class SessionDataRepository {
-  late final SecureStorage _secureStorage;
-  final Logger _logger = Logger("SessionDataRepo");
-
   SessionDataRepository({required SecureStorage secureStorage})
       : _secureStorage = secureStorage;
+
+  late final SecureStorage _secureStorage;
+  final Logger _logger = Logger("SessionDataRepo");
 
   Future<SessionDataRepositoryPattern<String>> onGetSessionId() async {
     String? sessionId =

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
@@ -24,11 +25,9 @@ class TVSeriesDetailsScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => TVSeriesDetailsBloc(
-            sessionDataRepository:
-                RepositoryProvider.of<SessionDataRepository>(context),
-            accountRepository:
-                RepositoryProvider.of<AccountRepository>(context),
-            mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+            sessionDataRepository: GetIt.I<SessionDataRepository>(),
+            accountRepository: GetIt.I<AccountRepository>(),
+            mediaRepository: GetIt.I<MediaRepository>(),
           )..add(TVSeriesDetailsLoadDetailsEvent(tvSeriesId: tvSeriesId)),
         ),
         BlocProvider(

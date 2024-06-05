@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'auth_view_state.dart';
 
@@ -67,5 +69,11 @@ class AuthViewCubit extends Cubit<AuthViewState> {
   Future<void> close() {
     _authBlocSubscription.cancel();
     return super.close();
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

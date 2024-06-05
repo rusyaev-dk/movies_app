@@ -7,9 +7,6 @@ import 'package:movies_app/core/domain/repositories/connectivity_repository.dart
 part 'network_state.dart';
 
 class NetworkCubit extends Cubit<NetworkState> {
-  late final ConnectivityRepository _connectivityRepository;
-  late final StreamSubscription _connectivityStream;
-
   NetworkCubit({
     required ConnectivityRepository connectivityRepository,
   })  : _connectivityRepository = connectivityRepository,
@@ -18,6 +15,9 @@ class NetworkCubit extends Cubit<NetworkState> {
         .connectivity.onConnectivityChanged
         .listen(_onConnectivityStateChanged);
   }
+
+  late final ConnectivityRepository _connectivityRepository;
+  late final StreamSubscription _connectivityStream;
 
   void _onConnectivityStateChanged(ConnectivityResult res) {
     if (res == ConnectivityResult.wifi || res == ConnectivityResult.mobile) {

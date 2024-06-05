@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
@@ -8,6 +9,7 @@ import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
@@ -109,5 +111,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Future<void> close() {
     _networkCubitSubscription.cancel();
     return super.close();
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

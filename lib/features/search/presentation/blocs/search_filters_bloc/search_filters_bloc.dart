@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'search_filters_event.dart';
 part 'search_filters_state.dart';
@@ -146,5 +148,11 @@ class SearchFiltersBloc extends Bloc<SearchFiltersEvent, SearchFiltersState> {
     final SearchFiltersModel cleanFiltersModel =
         await _searchFiltersRepository.resetFiltersModel();
     emit(SearchFiltersLoadedState(searchFiltersModel: cleanFiltersModel));
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

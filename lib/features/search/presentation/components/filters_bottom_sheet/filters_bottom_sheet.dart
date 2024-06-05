@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
@@ -18,11 +19,9 @@ class FiltersBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchFiltersBloc(
-        keyValueStorageRepository:
-            RepositoryProvider.of<KeyValueStorageRepository>(context),
-        searchFiltersRepository:
-            RepositoryProvider.of<SearchFiltersRepository>(context),
-        searchBloc: RepositoryProvider.of<SearchBloc>(context),
+        keyValueStorageRepository: GetIt.I<KeyValueStorageRepository>(),
+        searchFiltersRepository: GetIt.I<SearchFiltersRepository>(),
+        searchBloc: BlocProvider.of<SearchBloc>(context),
       ),
       child: const FiltersBottomSheetContent(),
     );

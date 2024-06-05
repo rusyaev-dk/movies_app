@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -99,5 +101,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _sessionDataRepository.onDeleteSessionId();
     await _sessionDataRepository.onDeleteAccountId();
     emit(AuthUnauthorizedState());
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/person_details_bloc/person_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/person/person_details_appbar.dart';
@@ -22,7 +23,7 @@ class PersonDetailsScreen extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => PersonDetailsBloc(
-            mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+            mediaRepository: GetIt.I<MediaRepository>(),
           )..add(PersonDetailsLoadDetailsEvent(personId: personId)),
         ),
         BlocProvider(

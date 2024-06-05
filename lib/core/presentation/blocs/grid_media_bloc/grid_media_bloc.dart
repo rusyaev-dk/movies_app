@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'grid_media_event.dart';
 part 'grid_media_state.dart';
@@ -88,5 +90,11 @@ class GridMediaBloc extends Bloc<GridMediaEvent, GridMediaState> {
               page: event.page + 1,
             ),
           );
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

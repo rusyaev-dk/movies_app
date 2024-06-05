@@ -5,7 +5,9 @@ import 'package:movies_app/core/data/api/api_config.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 
 class AppHttpClient {
-  static final _dio = Dio();
+  AppHttpClient({required Dio dio}) : _dio = dio;
+  
+  final Dio _dio;
 
   Uri _makeUri({
     required String path,

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
-import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 
 class BranchesSwitcherScreen extends StatelessWidget {
   const BranchesSwitcherScreen({super.key, required this.navigationShell});
@@ -12,32 +8,19 @@ class BranchesSwitcherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (context) => MediaRepository(),
-        ),
-        RepositoryProvider(
-          create: (context) => SearchFiltersRepository(
-            keyValueStorageRepository:
-                RepositoryProvider.of<KeyValueStorageRepository>(context),
-          ),
-        ),
-      ],
-      child: Scaffold(
-        body: navigationShell,
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 12.0,
-          unselectedFontSize: 12.0,
-          showUnselectedLabels: true,
-          
-          items: generateNavigationBarItems(context),
-          currentIndex: navigationShell.currentIndex,
-          onTap: (index) => navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          ),
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12.0,
+        unselectedFontSize: 12.0,
+        showUnselectedLabels: true,
+        
+        items: generateNavigationBarItems(context),
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
         ),
       ),
     );

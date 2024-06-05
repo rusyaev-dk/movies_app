@@ -12,12 +12,12 @@ extension KeyValueStorageRepositoryPatternX<T>
 }
 
 class KeyValueStorageRepository {
+  KeyValueStorageRepository({required KeyValueStorage storage})
+      : _storage = storage;
+
   late final KeyValueStorage _storage;
   final RepositoryFailureFormatter _failureFormatter =
       RepositoryFailureFormatter();
-
-  KeyValueStorageRepository({required KeyValueStorage storage})
-      : _storage = storage;
 
   Future<KeyValueStorageRepositoryPattern<T>> get<T>(
       {required String key}) async {

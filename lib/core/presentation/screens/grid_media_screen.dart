@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/presentation/components/media/grid_media_appbar.dart';
 import 'package:movies_app/core/presentation/components/media/grid_media_body.dart';
@@ -17,7 +18,7 @@ class GridMediaScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GridMediaBloc(
-        mediaRepository: RepositoryProvider.of<MediaRepository>(context),
+        mediaRepository: GetIt.I<MediaRepository>(),
       )..add(GridMediaLoadNewMediaEvent(queryType: queryType)),
       child: Scaffold(
         appBar: GridMediaAppBar(queryType: queryType),

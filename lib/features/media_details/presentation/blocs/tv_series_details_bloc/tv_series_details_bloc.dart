@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'tv_series_details_event.dart';
 part 'tv_series_details_state.dart';
@@ -224,5 +226,11 @@ class TVSeriesDetailsBloc
           return emit(state.copyWith(isInWatchlist: !(event.isInWatchlist)));
         }
     }
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

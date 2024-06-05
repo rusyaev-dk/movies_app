@@ -31,8 +31,10 @@ dependencies:
   flutter_native_splash: ^2.4.0
   flutter_launcher_icons: ^0.13.1
   flutter_animate: ^4.5.0
-  # easy_localization: ^3.0.4
-  # flutter_cache_manager: ^3.3.1
+  get_it: ^7.7.0
+  talker_flutter: ^4.2.3
+  talker_dio_logger: ^4.2.3
+  talker_bloc_logger: ^4.2.3
 
 dev_dependencies:
   flutter_test:

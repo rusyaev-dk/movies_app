@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -10,6 +11,7 @@ import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
@@ -206,5 +208,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Future<void> close() {
     _networkCubitSubscription.cancel();
     return super.close();
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

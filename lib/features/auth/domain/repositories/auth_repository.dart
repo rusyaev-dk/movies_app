@@ -14,7 +14,9 @@ extension AuthRepositoryX on AuthRepositoryPattern {
 }
 
 class AuthRepository {
-  static final _authApiClient = AuthApiClient();
+  AuthRepository({required AuthApiClient authApiClient}) : _authApiClient = authApiClient;
+
+  final AuthApiClient _authApiClient;
   static final RepositoryFailureFormatter _failureFormatter =
       RepositoryFailureFormatter();
   final Logger _logger = Logger("AuthRepo");

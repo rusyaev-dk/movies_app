@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
@@ -98,5 +100,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       value: ThemeMode.system.asString(),
     );
     emit(ThemeState(themeMode: ThemeMode.system));
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

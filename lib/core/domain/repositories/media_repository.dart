@@ -80,7 +80,10 @@ extension MediaRepositoryPatternX<T> on MediaRepositoryPattern<T> {
 }
 
 class MediaRepository {
-  static final MediaApiClient _mediaApiClient = MediaApiClient();
+  MediaRepository({required MediaApiClient mediaApiClient})
+      : _mediaApiClient = mediaApiClient;
+
+  final MediaApiClient _mediaApiClient;
   static final RepositoryFailureFormatter _failureFormatter =
       RepositoryFailureFormatter();
   final Logger _logger = Logger("MediaRepo");

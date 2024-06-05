@@ -16,8 +16,12 @@ extension AuthRepositoryX<T> on AccountRepositoryPattern {
 }
 
 class AccountRepository {
-  static final AccountApiClient _accountApiClient = AccountApiClient();
-  static final RepositoryFailureFormatter _failureFormatter = RepositoryFailureFormatter();
+  AccountRepository({required AccountApiClient accountApiClient})
+      : _accountApiClient = accountApiClient;
+
+  final AccountApiClient _accountApiClient;
+  static final RepositoryFailureFormatter _failureFormatter =
+      RepositoryFailureFormatter();
   final Logger _logger = Logger("AccountRepo");
 
   Future<AccountRepositoryPattern<int>> onGetAccountId(
@@ -138,7 +142,10 @@ class AccountRepository {
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -189,7 +196,10 @@ class AccountRepository {
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 
@@ -228,7 +238,10 @@ class AccountRepository {
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
       _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
-      return ((exception, stackTrace, ApiClientExceptionType.unknown, null), null);
+      return (
+        (exception, stackTrace, ApiClientExceptionType.unknown, null),
+        null
+      );
     }
   }
 }

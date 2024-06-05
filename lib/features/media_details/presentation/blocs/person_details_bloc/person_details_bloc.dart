@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'person_details_event.dart';
 part 'person_details_state.dart';
@@ -36,5 +38,11 @@ class PersonDetailsBloc extends Bloc<PersonDetailsEvent, PersonDetailsState> {
       case (null, final PersonModel resPersonModel):
         return emit(PersonDetailsLoadedState(personModel: resPersonModel));
     }
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }
