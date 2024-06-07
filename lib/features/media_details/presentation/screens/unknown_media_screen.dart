@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class UnknownMediaScreen extends StatelessWidget {
   const UnknownMediaScreen({super.key});

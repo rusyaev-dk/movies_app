@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -8,7 +9,6 @@ import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'account_event.dart';
@@ -27,7 +27,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   })  : _networkCubit = networkCubit,
         _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
-        super(AccountState()) {
+        super(AccountLoadingState()) {
     Future.microtask(
       () {
         _networkCubitSubscription =
@@ -37,7 +37,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     on<AccountNetworkErrorEvent>(_onNetworkError);
     on<AccountLoadAccountDetailsEvent>(_onLoadProfileInfo);
-    on<AccountRefreshAccountDetailsEvent>(_onRefreshAccountDetails);
   }
 
   void _onNetworkStateChanged(NetworkState state) {
@@ -61,7 +60,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     AccountLoadAccountDetailsEvent event,
     Emitter<AccountState> emit,
   ) async {
-    emit(AccountLoadingState());
+    if (state is! AccountLoadedState) {
+      emit(AccountLoadingState());
+    }
 
     String? sessionId;
     int? accountId;
@@ -71,6 +72,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
+        event.completer?.complete();
         return emit(AccountFailureState(failure: failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
@@ -80,6 +82,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         await _sessionDataRepository.onGetAccountId();
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
+        event.completer?.complete();
         return emit(AccountFailureState(failure: failure));
       case (null, final int resAccountId):
         accountId = resAccountId;
@@ -91,20 +94,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       sessionId: sessionId!,
     );
 
+    event.completer?.complete();
     switch (accountRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
         return emit(AccountFailureState(failure: failure));
       case (null, final AccountModel resAccountModel):
         return emit(AccountLoadedState(account: resAccountModel));
     }
-  }
-
-  Future<void> _onRefreshAccountDetails(
-    AccountRefreshAccountDetailsEvent event,
-    Emitter<AccountState> emit,
-  ) async {
-    add(AccountLoadAccountDetailsEvent());
-    event.refreshController.refreshCompleted();
   }
 
   @override

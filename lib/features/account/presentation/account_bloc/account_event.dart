@@ -1,13 +1,17 @@
 part of 'account_bloc.dart';
 
-class AccountEvent {}
+abstract class AccountEvent extends Equatable {}
 
-class AccountLoadAccountDetailsEvent extends AccountEvent {}
+class AccountLoadAccountDetailsEvent extends AccountEvent {
+  AccountLoadAccountDetailsEvent({this.completer});
 
-class AccountRefreshAccountDetailsEvent extends AccountEvent {
-  final RefreshController refreshController;
+  final Completer? completer;
 
-  AccountRefreshAccountDetailsEvent({required this.refreshController});
+  @override
+  List<Object?> get props => [completer];
 }
 
-class AccountNetworkErrorEvent extends AccountEvent {}
+class AccountNetworkErrorEvent extends AccountEvent {
+  @override
+  List<Object?> get props => [];
+}

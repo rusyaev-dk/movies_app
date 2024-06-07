@@ -1,12 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_failure_widget.dart';
 import 'package:movies_app/features/account/presentation/components/account_settings.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AccountBody extends StatelessWidget {
@@ -14,21 +15,29 @@ class AccountBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AccountBloc, AccountState>(
-      builder: (context, state) {
-        if (state is AccountFailureState) {
-          return AccountFailureWidget(failure: state.failure);
-        } else if (state is AccountLoadedState) {
-          return AccountContent(account: state.account);
-        } else {
-          return AccountContent.shimmerLoading(context);
-        }
+    return RefreshIndicator(
+      onRefresh: () async {
+        final completer = Completer();
+        BlocProvider.of<AccountBloc>(context)
+            .add(AccountLoadAccountDetailsEvent(completer: completer));
+        return completer.future;
       },
+      child: BlocBuilder<AccountBloc, AccountState>(
+        builder: (context, state) {
+          if (state is AccountFailureState) {
+            return AccountFailureWidget(failure: state.failure);
+          } else if (state is AccountLoadedState) {
+            return AccountContent(account: state.account);
+          } else {
+            return AccountContent.shimmerLoading(context);
+          }
+        },
+      ),
     );
   }
 }
 
-class AccountContent extends StatefulWidget {
+class AccountContent extends StatelessWidget {
   const AccountContent({
     super.key,
     required this.account,
@@ -95,106 +104,79 @@ class AccountContent extends StatefulWidget {
   }
 
   @override
-  State<AccountContent> createState() => _AccountContentState();
-}
-
-class _AccountContentState extends State<AccountContent> {
-  late final RefreshController _refreshController;
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshController = RefreshController(initialRefresh: false);
-  }
-
-  @override
   Widget build(BuildContext context) {
     Widget avatarWidget = ApiImageFormatter.formatAvatarImageWidget(
       context,
-      imagePath: widget.account.avatarPath,
+      imagePath: account.avatarPath,
       diameter: 200,
     );
 
     final String accountName;
-    if (widget.account.name != null) {
-      accountName = widget.account.name!.trim().isEmpty
-          ? "Unknown name"
-          : widget.account.name!;
+    if (account.name != null) {
+      accountName =
+          account.name!.trim().isEmpty ? "Unknown name" : account.name!;
     } else {
       accountName = "Unknown name";
     }
 
     final String accountUsername;
-    if (widget.account.username != null) {
-      accountUsername = widget.account.username!.trim().isEmpty
+    if (account.username != null) {
+      accountUsername = account.username!.trim().isEmpty
           ? "Unknown username"
-          : widget.account.username!;
+          : account.username!;
     } else {
       accountUsername = "Unknown username";
     }
 
-    return SmartRefresher(
-      enablePullDown: true,
-      controller: _refreshController,
-      onRefresh: () => context.read<AccountBloc>().add(
-          AccountRefreshAccountDetailsEvent(
-              refreshController: _refreshController)),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 400,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              color: Theme.of(context).colorScheme.surface,
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        Container(
+          width: double.infinity,
+          height: 400,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
             ),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  avatarWidget,
-                  const SizedBox(height: 25),
-                  Text(
-                    accountName,
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle
-                        .copyWith(fontSize: 24),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    accountUsername,
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle
-                        .copyWith(
-                          fontSize: 21,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                ],
-              ),
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                avatarWidget,
+                const SizedBox(height: 25),
+                Text(
+                  accountName,
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .headingTextStyle
+                      .copyWith(fontSize: 24),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  accountUsername,
+                  style: Theme.of(context)
+                      .extension<ThemeTextStyles>()!
+                      .headingTextStyle
+                      .copyWith(
+                        fontSize: 21,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 170),
-          const Padding(
-            padding: EdgeInsets.only(left: 25, right: 25),
-            child: AccountSettings(),
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
+        ),
+        const SizedBox(height: 170),
+        const Padding(
+          padding: EdgeInsets.only(left: 25, right: 25),
+          child: AccountSettings(),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
-  }
-
-  @override
-  void dispose() {
-    _refreshController.dispose();
-    super.dispose();
   }
 }

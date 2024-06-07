@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/presentation/formatters/media_genres_formatter.dart';
-import 'package:movies_app/core/presentation/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
-import 'package:movies_app/core/utils/data_formatter.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/core/utils/formatters/media_genres_formatter.dart';
+import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/formatters/data_formatter.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:shimmer/shimmer.dart';
 

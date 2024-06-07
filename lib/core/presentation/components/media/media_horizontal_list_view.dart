@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
-import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/presentation/routing/app_routes.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MediaHorizontalListView extends StatelessWidget {

@@ -7,9 +7,9 @@ import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
-import 'package:movies_app/core/presentation/routing/app_router.dart';
+import 'package:movies_app/core/routing/app_router.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 
 class MoviesApp extends StatelessWidget {

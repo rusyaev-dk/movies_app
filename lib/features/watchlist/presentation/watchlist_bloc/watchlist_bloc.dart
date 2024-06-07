@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
@@ -8,7 +9,6 @@ import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'watchlist_event.dart';
@@ -27,7 +27,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
   })  : _networkCubit = networkCubit,
         _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
-        super(WatchlistState()) {
+        super(WatchlistLoadingState()) {
     Future.microtask(
       () {
         _networkCubitSubscription =
@@ -37,7 +37,6 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
 
     on<WatchlisrNetworkErrorEvent>(_onNetworkError);
     on<WatchlistloadWatchlistEvent>(_onLoadWatchlist);
-    on<WatchlistRefreshWatchlistEvent>(_onRefreshWatchlist);
   }
 
   void _onNetworkStateChanged(NetworkState state) {
@@ -61,7 +60,9 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
     WatchlistloadWatchlistEvent event,
     Emitter<WatchlistState> emit,
   ) async {
-    emit(WatchlistLoadingState());
+    if (state is! WatchlistLoadedState) {
+      emit(WatchlistLoadingState());
+    }
 
     String? sessionId;
     int? accountId;
@@ -71,6 +72,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
 
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
+        event.completer?.complete();
         return emit(WatchlistFailureState(failure: failure));
       case (null, final String resSessionId):
         sessionId = resSessionId;
@@ -80,6 +82,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
         await _sessionDataRepository.onGetAccountId();
     switch (sessionDataRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
+        event.completer?.complete();
         return emit(WatchlistFailureState(failure: failure));
       case (null, final int resAccountId):
         accountId = resAccountId;
@@ -97,6 +100,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
 
     switch (accountRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
+        event.completer?.complete();
         return emit(WatchlistFailureState(failure: failure));
       case (null, final List<MovieModel> resMovieModels):
         favouriteMovies = resMovieModels;
@@ -111,6 +115,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
       sessionId: sessionId,
     );
 
+    event.completer?.complete();
     switch (accountRepositoryPattern) {
       case (final ApiRepositoryFailure failure, null):
         return emit(WatchlistFailureState(failure: failure));
@@ -120,14 +125,6 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
           tvSeriesWatchlist: resTVSeriesModels,
         ));
     }
-  }
-
-  Future<void> _onRefreshWatchlist(
-    WatchlistRefreshWatchlistEvent event,
-    Emitter<WatchlistState> emit,
-  ) async {
-    add(WatchlistloadWatchlistEvent());
-    event.refreshController.refreshCompleted();
   }
 
   @override

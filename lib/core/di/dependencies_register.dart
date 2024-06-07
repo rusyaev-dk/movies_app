@@ -1,6 +1,6 @@
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/api/clients/account_api_client.dart';
@@ -24,17 +24,19 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 Future<void> registerDependencies() async {
   final Dio dio = Dio();
-  dio.interceptors.add(
-    TalkerDioLogger(
-      talker: GetIt.I<Talker>(),
-      settings: const TalkerDioLoggerSettings(
-        printRequestData: false,
-        printRequestHeaders: false,
-        printResponseData: false,
-        printResponseHeaders: false,
+  if (kDebugMode) {
+    dio.interceptors.add(
+      TalkerDioLogger(
+        talker: GetIt.I<Talker>(),
+        settings: const TalkerDioLoggerSettings(
+          printRequestData: false,
+          printRequestHeaders: false,
+          printResponseData: false,
+          printResponseHeaders: false,
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   final httpClient = AppHttpClient(dio: dio);
   final accountApiClient = AccountApiClient(httpClient: httpClient);

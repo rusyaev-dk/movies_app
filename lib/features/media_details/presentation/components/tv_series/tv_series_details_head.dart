@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_title_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/tv_series/tv_series_production_info.dart';

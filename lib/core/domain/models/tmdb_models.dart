@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum TMDBMediaType { movie, tv, person }
 
 extension TMDBMediaTypeAsString on TMDBMediaType {
@@ -13,8 +15,8 @@ extension TMDBMediaTypeAsString on TMDBMediaType {
   }
 }
 
-abstract class TMDBModel {
-  TMDBModel._();
+abstract class TMDBModel extends Equatable {
+  const TMDBModel._();
 
   factory TMDBModel.fromJson(Map<String, dynamic> json) {
     throw UnimplementedError(
@@ -43,7 +45,7 @@ class MovieModel extends TMDBModel {
   final dynamic revenue;
   final dynamic runtime;
 
-  MovieModel({
+  const MovieModel({
     this.adult,
     this.id,
     this.originalTitle,
@@ -97,6 +99,28 @@ class MovieModel extends TMDBModel {
       productionCountries: productionCountries,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        adult,
+        id,
+        originalTitle,
+        originalLanguage,
+        overview,
+        popularity,
+        title,
+        voteAverage,
+        voteCount,
+        posterPath,
+        backdropPath,
+        releaseDate,
+        budget,
+        revenue,
+        runtime,
+        genreIds,
+        genres,
+        productionCountries,
+      ];
 }
 
 class TVSeriesModel extends TMDBModel {
@@ -128,7 +152,7 @@ class TVSeriesModel extends TMDBModel {
   final String? tagline;
   final String? type;
 
-  TVSeriesModel({
+  const TVSeriesModel({
     this.adult,
     this.backdropPath,
     this.firstAirDate,
@@ -196,6 +220,35 @@ class TVSeriesModel extends TMDBModel {
       productionCountries: productionCountries,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        firstAirDate,
+        id,
+        name,
+        originalLanguage,
+        originalName,
+        overview,
+        popularity,
+        posterPath,
+        voteAverage,
+        voteCount,
+        homepage,
+        languages,
+        lastAirDate,
+        inProduction,
+        status,
+        tagline,
+        type,
+        numberOfEpisodes,
+        numberOfSeasons,
+        episodeRunTime,
+        genreIds,
+        genres,
+        productionCountries,
+      ];
 }
 
 class PersonModel extends TMDBModel {
@@ -210,7 +263,7 @@ class PersonModel extends TMDBModel {
   final String? knownForDepartment;
   final String? profilePath;
 
-  PersonModel({
+  const PersonModel({
     this.id,
     this.gender,
     this.name,
@@ -238,6 +291,20 @@ class PersonModel extends TMDBModel {
       profilePath: json["profile_path"],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        gender,
+        name,
+        originalName,
+        birthday,
+        deathday,
+        biography,
+        popularity,
+        knownForDepartment,
+        profilePath,
+      ];
 }
 
 class MediaGenre {
@@ -297,7 +364,7 @@ class MediaImageModel extends TMDBModel {
   final dynamic width;
   final String? filePath;
 
-  MediaImageModel({
+  const MediaImageModel({
     this.aspectRatio,
     this.height,
     this.width,
@@ -313,6 +380,14 @@ class MediaImageModel extends TMDBModel {
       filePath: json["file_path"],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        aspectRatio,
+        height,
+        width,
+        filePath,
+      ];
 }
 
 class AccountModel extends TMDBModel {
@@ -321,7 +396,7 @@ class AccountModel extends TMDBModel {
   final String? username;
   final String? avatarPath;
 
-  AccountModel({
+  const AccountModel({
     this.id,
     this.name,
     this.username,
@@ -337,4 +412,12 @@ class AccountModel extends TMDBModel {
       avatarPath: json["avatar"]["tmdb"]["avatar_path"],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        username,
+        avatarPath,
+      ];
 }

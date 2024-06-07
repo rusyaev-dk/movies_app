@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/presentation/routing/app_routes.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 class FailureWidget extends StatelessWidget {

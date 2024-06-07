@@ -1,21 +1,26 @@
 part of 'watchlist_bloc.dart';
 
-class WatchlistEvent {}
+abstract class WatchlistEvent extends Equatable {}
 
 class WatchlistloadWatchlistEvent extends WatchlistEvent {
-  final String locale;
-  final int page;
-
   WatchlistloadWatchlistEvent({
     this.locale = "en-US",
     this.page = 1,
+    this.completer,
   });
+
+  final String locale;
+  final int page;
+  final Completer? completer;
+
+  @override
+  List<Object?> get props => [
+        page,
+        locale,
+      ];
 }
 
-class WatchlistRefreshWatchlistEvent extends WatchlistEvent {
-  final RefreshController refreshController;
-
-  WatchlistRefreshWatchlistEvent({required this.refreshController});
+class WatchlisrNetworkErrorEvent extends WatchlistEvent {
+  @override
+  List<Object?> get props => [];
 }
-
-class WatchlisrNetworkErrorEvent extends WatchlistEvent {}

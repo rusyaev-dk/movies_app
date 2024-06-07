@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
-import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'home_event.dart';
@@ -33,7 +33,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required MediaRepository mediaRepository,
   })  : _networkCubit = networkCubit,
         _mediaRepository = mediaRepository,
-        super(HomeState()) {
+        super(HomeLoadingState()) {
     Future.microtask(
       () {
         _networkCubitSubscription =
@@ -43,7 +43,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<HomeNetworkErrorEvent>(_onNetworkError);
     on<HomeLoadMediaEvent>(_onLoadMedia, transformer: sequential());
-    on<HomeRefreshMediaEvent>(_onRefreshMedia);
   }
 
   void _onNetworkStateChanged(NetworkState state) {
@@ -67,7 +66,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeLoadMediaEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(HomeLoadingState());
+    if (state is! HomeLoadedState) {
+      emit(HomeLoadingState());
+    }
     Map<String, List<dynamic>> modelsMap = {};
 
     for (ApiMediaQueryType type in _searchTypes) {
@@ -97,27 +98,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       switch (mediaRepoPattern) {
         case (final ApiRepositoryFailure failure, null):
+          event.completer?.complete();
           return emit(HomeFailureState(failure: failure));
         case (null, final List<TMDBModel> resModels):
           modelsMap[type.asString()] = resModels;
       }
     }
 
-    emit(HomeLoadedState(
-      popularMovies: modelsMap["popular_movies"] as List<MovieModel>,
-      trendingMovies: modelsMap["trending_movies"] as List<MovieModel>,
-      popularTVSeries: modelsMap["popular_tv_series"] as List<TVSeriesModel>,
-      trendingTVSeries: modelsMap["trending_tv_series"] as List<TVSeriesModel>,
-      onTheAirTVSeries:
-          modelsMap["on_the_air_tv_series"] as List<TVSeriesModel>,
-      popularPersons: modelsMap["popular_persons"] as List<PersonModel>,
-    ));
-  }
-
-  Future<void> _onRefreshMedia(
-      HomeRefreshMediaEvent event, Emitter<HomeState> emit) async {
-    add(HomeLoadMediaEvent(locale: event.locale, page: event.page));
-    event.refreshController.refreshCompleted();
+    event.completer?.complete();
+    emit(
+      HomeLoadedState(
+        popularMovies: modelsMap["popular_movies"] as List<MovieModel>,
+        trendingMovies: modelsMap["trending_movies"] as List<MovieModel>,
+        popularTVSeries: modelsMap["popular_tv_series"] as List<TVSeriesModel>,
+        trendingTVSeries:
+            modelsMap["trending_tv_series"] as List<TVSeriesModel>,
+        onTheAirTVSeries:
+            modelsMap["on_the_air_tv_series"] as List<TVSeriesModel>,
+        popularPersons: modelsMap["popular_persons"] as List<PersonModel>,
+      ),
+    );
   }
 
   @override

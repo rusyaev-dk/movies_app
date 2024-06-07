@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/presentation/components/media/media_vote.dart';
-import 'package:movies_app/core/presentation/formatters/image_formatter.dart';
-import 'package:movies_app/core/presentation/themes/theme.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/core/themes/theme.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({

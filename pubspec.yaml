@@ -25,7 +25,6 @@ dependencies:
   connectivity_plus: 5.0.2
   cached_network_image: ^3.3.1
 
-  pull_to_refresh_flutter3: ^2.0.2
   logging: ^1.2.0
   ansicolor: ^2.0.2
   flutter_native_splash: ^2.4.0
@@ -35,6 +34,7 @@ dependencies:
   talker_flutter: ^4.2.3
   talker_dio_logger: ^4.2.3
   talker_bloc_logger: ^4.2.3
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

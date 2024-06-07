@@ -12,7 +12,7 @@ import 'package:movies_app/features/media_details/presentation/screens/person_de
 import 'package:movies_app/core/presentation/screens/screen_loader.dart';
 import 'package:movies_app/core/presentation/screens/branches_switcher_screen.dart';
 import 'package:movies_app/features/media_details/presentation/screens/tv_series_details_screen.dart';
-import 'package:movies_app/core/presentation/routing/app_routes.dart';
+import 'package:movies_app/core/routing/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:movies_app/features/home/presentation/screens/home_screen.dart';
 import 'package:movies_app/features/search/presentation/screens/search_screen.dart';

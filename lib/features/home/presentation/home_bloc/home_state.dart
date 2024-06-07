@@ -1,8 +1,11 @@
 part of 'home_bloc.dart';
 
-class HomeState {}
+abstract class HomeState extends Equatable {}
 
-class HomeLoadingState extends HomeState {}
+class HomeLoadingState extends HomeState {
+  @override
+  List<Object?> get props => [];
+}
 
 class HomeLoadedState extends HomeState {
   final List<MovieModel> popularMovies;
@@ -20,6 +23,16 @@ class HomeLoadedState extends HomeState {
     required this.onTheAirTVSeries,
     required this.popularPersons,
   });
+
+  @override
+  List<Object?> get props => [
+        popularMovies,
+        trendingMovies,
+        popularTVSeries,
+        trendingTVSeries,
+        popularPersons,
+        onTheAirTVSeries,
+      ];
 }
 
 class HomeFailureState extends HomeState {
@@ -28,4 +41,7 @@ class HomeFailureState extends HomeState {
   HomeFailureState({
     required this.failure,
   });
+  
+  @override
+  List<Object?> get props => [failure];
 }
