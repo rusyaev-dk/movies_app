@@ -1,8 +1,8 @@
 part of 'search_filters_bloc.dart';
 
-class SearchFiltersEvent {}
+sealed class SearchFiltersEvent extends Equatable {}
 
-class SearchFiltersSetShowMediaTypeFilterEvent extends SearchFiltersEvent {
+final class SearchFiltersSetShowMediaTypeFilterEvent extends SearchFiltersEvent {
   final ShowMediaTypeFilter showMediaTypeFilter;
   final SearchFiltersModel prevFiltersModel;
 
@@ -10,9 +10,15 @@ class SearchFiltersSetShowMediaTypeFilterEvent extends SearchFiltersEvent {
     required this.showMediaTypeFilter,
     required this.prevFiltersModel,
   });
+
+  @override
+  List<Object?> get props => [
+        showMediaTypeFilter,
+        prevFiltersModel,
+      ];
 }
 
-class SearchFiltersSetSortByFilterEvent extends SearchFiltersEvent {
+final class SearchFiltersSetSortByFilterEvent extends SearchFiltersEvent {
   final SortByFilter sortByFilter;
   final SearchFiltersModel prevFiltersModel;
 
@@ -20,9 +26,15 @@ class SearchFiltersSetSortByFilterEvent extends SearchFiltersEvent {
     required this.sortByFilter,
     required this.prevFiltersModel,
   });
+
+  @override
+  List<Object?> get props => [
+        sortByFilter,
+        prevFiltersModel,
+      ];
 }
 
-class SearchFiltersSetRatingFilterEvent extends SearchFiltersEvent {
+final class SearchFiltersSetRatingFilterEvent extends SearchFiltersEvent {
   final int ratingFilter;
   final SearchFiltersModel prevFiltersModel;
 
@@ -30,10 +42,25 @@ class SearchFiltersSetRatingFilterEvent extends SearchFiltersEvent {
     required this.ratingFilter,
     required this.prevFiltersModel,
   });
+
+  @override
+  List<Object?> get props => [
+        ratingFilter,
+        prevFiltersModel,
+      ];
 }
 
-class SearchFiltersApplyFiltersEvent extends SearchFiltersEvent {}
+final class SearchFiltersApplyFiltersEvent extends SearchFiltersEvent {
+  @override
+  List<Object?> get props => [];
+}
 
-class SearchFiltersResetFiltersEvent extends SearchFiltersEvent {}
+final class SearchFiltersResetFiltersEvent extends SearchFiltersEvent {
+  @override
+  List<Object?> get props => [];
+}
 
-class SearchFiltersRestoreFiltersEvent extends SearchFiltersEvent {}
+final class SearchFiltersRestoreFiltersEvent extends SearchFiltersEvent {
+  @override
+  List<Object?> get props => [];
+}

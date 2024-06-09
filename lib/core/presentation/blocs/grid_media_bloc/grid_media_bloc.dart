@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
@@ -21,7 +22,7 @@ class GridMediaBloc extends Bloc<GridMediaEvent, GridMediaState> {
 
   GridMediaBloc({required MediaRepository mediaRepository})
       : _mediaRepository = mediaRepository,
-        super(GridMediaState()) {
+        super(const GridMediaState()) {
     on<GridMediaLoadNewMediaEvent>(
       _onLoadNewMedia,
       transformer: throttleDroppable(

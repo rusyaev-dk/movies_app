@@ -1,8 +1,8 @@
 part of 'person_details_bloc.dart';
 
-class PersonDetailsEvent {}
+sealed class PersonDetailsEvent extends Equatable {}
 
-class PersonDetailsLoadDetailsEvent extends PersonDetailsEvent {
+final class PersonDetailsLoadDetailsEvent extends PersonDetailsEvent {
   final String locale;
   final int personId;
 
@@ -10,5 +10,10 @@ class PersonDetailsLoadDetailsEvent extends PersonDetailsEvent {
     this.locale = "en-US",
     required this.personId,
   });
-}
 
+  @override
+  List<Object?> get props => [
+        locale,
+        personId,
+      ];
+}

@@ -1,10 +1,12 @@
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/db_interface.dart';
+import 'package:movies_app/core/data/storage/storage_interface.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class KeyValueStorage implements DataBaseInterface {
-  KeyValueStorage({required SharedPreferences prefs}) : _prefs = prefs;
+class SharedPrefsStorage implements KeyValueStorage {
+  SharedPrefsStorage({
+    required SharedPreferences prefs,
+  }) : _prefs = prefs;
 
   final SharedPreferences _prefs;
 
@@ -14,7 +16,7 @@ class KeyValueStorage implements DataBaseInterface {
   }
 
   @override
-  Future<T?> get<T>(String key) async {
+  Future<T?> get<T>({required String key}) async {
     Object? value;
     try {
       if (sameTypes<T, List<String>>()) {
@@ -38,7 +40,7 @@ class KeyValueStorage implements DataBaseInterface {
   }
 
   @override
-  Future<bool> set<T>(String key, T value) async {
+  Future<bool> set<T>({required String key, required T value}) async {
     if (sameTypes<T, bool>()) {
       return await _prefs.setBool(key, value as bool);
     }
@@ -70,7 +72,7 @@ class KeyValueStorage implements DataBaseInterface {
   }
 
   @override
-  Future<bool> delete<T>(String key) async {
+  Future<bool> delete<T>({required String key}) async {
     try {
       return await _prefs.remove(key);
     } on TypeError catch (exception, stackTrace) {

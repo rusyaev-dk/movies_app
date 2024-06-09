@@ -1,8 +1,8 @@
 part of 'tv_series_details_bloc.dart';
 
-class TvSeriesDetailsEvent {}
+sealed class TvSeriesDetailsEvent extends Equatable {}
 
-class TVSeriesDetailsLoadDetailsEvent extends TvSeriesDetailsEvent {
+final class TVSeriesDetailsLoadDetailsEvent extends TvSeriesDetailsEvent {
   final String locale;
   final int tvSeriesId;
 
@@ -10,9 +10,15 @@ class TVSeriesDetailsLoadDetailsEvent extends TvSeriesDetailsEvent {
     this.locale = "en-US",
     required this.tvSeriesId,
   });
+
+  @override
+  List<Object?> get props => [
+        locale,
+        tvSeriesId,
+      ];
 }
 
-class TVSeriesDetailsAddToFavouriteEvent extends TvSeriesDetailsEvent {
+final class TVSeriesDetailsAddToFavouriteEvent extends TvSeriesDetailsEvent {
   final int tvSeriesId;
   final bool isFavorite;
 
@@ -20,9 +26,15 @@ class TVSeriesDetailsAddToFavouriteEvent extends TvSeriesDetailsEvent {
     required this.tvSeriesId,
     required this.isFavorite,
   });
+
+  @override
+  List<Object?> get props => [
+        tvSeriesId,
+        isFavorite,
+      ];
 }
 
-class TVSeriesDetailsAddToWatchlistEvent extends TvSeriesDetailsEvent {
+final class TVSeriesDetailsAddToWatchlistEvent extends TvSeriesDetailsEvent {
   final int tvSeriesId;
   final bool isInWatchlist;
 
@@ -30,4 +42,10 @@ class TVSeriesDetailsAddToWatchlistEvent extends TvSeriesDetailsEvent {
     required this.tvSeriesId,
     required this.isInWatchlist,
   });
+
+  @override
+  List<Object?> get props => [
+        tvSeriesId,
+        isInWatchlist,
+      ];
 }

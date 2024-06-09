@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum ShowMediaTypeFilter { all, movies, tvs, persons }
 
 extension ShowMediaTypeFilterX on ShowMediaTypeFilter {
@@ -14,7 +16,11 @@ extension ShowMediaTypeFilterX on ShowMediaTypeFilter {
     }
   }
 
-  static ShowMediaTypeFilter fromString(String value) {
+  static ShowMediaTypeFilter fromString(String? value) {
+    if (value == null || value.isEmpty) {
+      return ShowMediaTypeFilter.all;
+    }
+
     switch (value.toLowerCase()) {
       case 'all':
         return ShowMediaTypeFilter.all;
@@ -42,7 +48,11 @@ extension SortByFilterX on SortByFilter {
     }
   }
 
-  static SortByFilter fromString(String value) {
+  static SortByFilter fromString(String? value) {
+    if (value == null || value.isEmpty) {
+      return SortByFilter.rating;
+    }
+
     switch (value.toLowerCase()) {
       case 'rating':
         return SortByFilter.rating;
@@ -54,13 +64,19 @@ extension SortByFilterX on SortByFilter {
   }
 }
 
-class SearchFiltersModel {
+class SearchFiltersModel extends Equatable {
   final ShowMediaTypeFilter showMediaTypeFilter;
   final List<String> genresFilter;
   final SortByFilter sortByFilter;
   final int ratingFilter;
 
-  SearchFiltersModel({
+  static const ShowMediaTypeFilter defaultShowMediaTypeFilter =
+      ShowMediaTypeFilter.all;
+  static const List<String> defaultGenresFilter = [];
+  static const SortByFilter defaultSortByFiler = SortByFilter.rating;
+  static const int defaultRatingFilter = 5;
+
+  const SearchFiltersModel({
     required this.showMediaTypeFilter,
     required this.genresFilter,
     required this.sortByFilter,
@@ -80,4 +96,21 @@ class SearchFiltersModel {
       ratingFilter: ratingFilter ?? this.ratingFilter,
     );
   }
+
+  factory SearchFiltersModel.defaultFilters() {
+    return const SearchFiltersModel(
+      showMediaTypeFilter: defaultShowMediaTypeFilter,
+      genresFilter: defaultGenresFilter,
+      sortByFilter: defaultSortByFiler,
+      ratingFilter: defaultRatingFilter,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        showMediaTypeFilter,
+        genresFilter,
+        sortByFilter,
+        ratingFilter,
+      ];
 }

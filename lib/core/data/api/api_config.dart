@@ -30,5 +30,4 @@ abstract class ApiConfig {
   static const String imagesPath = "images";
   static const String creditsPath = "credits";
   static const String similarPath = "similar";
-
 }

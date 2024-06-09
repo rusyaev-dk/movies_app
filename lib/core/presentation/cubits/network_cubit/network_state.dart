@@ -6,10 +6,13 @@ enum NetworkStateType {
   unknown,
 }
 
-class NetworkState {
+final class NetworkState extends Equatable{
   final NetworkStateType type;
 
-  NetworkState({
+  const NetworkState({
     this.type = NetworkStateType.unknown,
   });
+  
+  @override
+  List<Object?> get props => [type];
 }

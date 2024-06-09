@@ -1,20 +1,31 @@
 part of 'search_bloc.dart';
 
-class SearchState {}
+sealed class SearchState extends Equatable {}
 
-class SearchLoadingState extends SearchState {
+final class SearchInitialState extends SearchState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class SearchLoadingState extends SearchState {
   final String? query;
 
   SearchLoadingState({required this.query});
+  
+  @override
+  List<Object?> get props => [query];
 }
 
-class SearchLoadedState extends SearchState {
+final class SearchLoadedState extends SearchState {
   final List<TMDBModel> searchModels;
 
   SearchLoadedState({required this.searchModels});
+  
+  @override
+  List<Object?> get props => [searchModels];
 }
 
-class SearchFailureState extends SearchState {
+final class SearchFailureState extends SearchState {
   final ApiRepositoryFailure failure;
   final String? query;
 
@@ -22,4 +33,7 @@ class SearchFailureState extends SearchState {
     required this.failure,
     this.query,
   });
+  
+  @override
+  List<Object?> get props => [failure];
 }

@@ -1,59 +1,74 @@
 part of 'auth_bloc.dart';
 
-class AuthState {}
+sealed class AuthState extends Equatable {}
 
-class AuthUnauthorizedState extends AuthState {
-  @override
-  bool operator ==(Object other) =>
-      other is AuthAuthorizedState && runtimeType == other.runtimeType;
+final class AuthUnauthorizedState extends AuthState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     other is AuthAuthorizedState && runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }
 
-class AuthAuthorizedState extends AuthState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthAuthorizedState && runtimeType == other.runtimeType;
+final class AuthAuthorizedState extends AuthState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthAuthorizedState && runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }
 
-class AuthFailureState extends AuthState {
+final class AuthFailureState extends AuthState {
   final Object error;
 
   AuthFailureState(this.error);
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthFailureState &&
-          runtimeType == other.runtimeType &&
-          error == other.error;
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthFailureState &&
+  //         runtimeType == other.runtimeType &&
+  //         error == other.error;
 
+  // @override
+  // int get hashCode => error.hashCode;
+  
   @override
-  int get hashCode => error.hashCode;
+  List<Object?> get props => [error];
 }
 
-class AuthInProgressState extends AuthState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthInProgressState && runtimeType == other.runtimeType;
+final class AuthInProgressState extends AuthState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthInProgressState && runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }
 
-class AuthStatusCheckInProgressState extends AuthState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthStatusCheckInProgressState &&
-          runtimeType == other.runtimeType;
+final class AuthStatusCheckInProgressState extends AuthState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthStatusCheckInProgressState &&
+  //         runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }

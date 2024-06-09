@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movies_app/core/data/storage/shared_prefs_storage.dart';
 import 'package:movies_app/core/domain/repositories/connectivity_repository.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
 import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:movies_app/core/routing/app_router.dart';
@@ -23,7 +23,7 @@ class MoviesApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ThemeBloc(
-            keyValueStorageRepository: GetIt.I<KeyValueStorageRepository>(),
+            keyValueStorage: GetIt.I<SharedPrefsStorage>(),
           )..add(ThemeRestoreThemeEvent()),
         ),
         BlocProvider(

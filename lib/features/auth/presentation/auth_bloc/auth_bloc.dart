@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
@@ -47,7 +48,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckStatusEvent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthStatusCheckInProgressState());
+    if (state is! AuthStatusCheckInProgressState) {
+      emit(AuthStatusCheckInProgressState());
+    }
     final sessionDataRepoPattern =
         await _sessionDataRepository.onGetSessionId();
     switch (sessionDataRepoPattern) {
@@ -65,7 +68,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginEvent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(AuthInProgressState());
+    if (state is! AuthInProgressState) {
+      emit(AuthInProgressState());
+    }
 
     String? sessionId;
     final authRepoPattern = await _authRepository.onAuth(

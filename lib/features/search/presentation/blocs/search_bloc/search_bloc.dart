@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
+import 'package:movies_app/core/data/storage/storage_interface.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
@@ -26,19 +27,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   late final NetworkCubit _networkCubit;
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
-  late final KeyValueStorageRepository _keyValueStorageRepository;
+  late final KeyValueStorage _keyValueStorage;
   late final SearchFiltersRepository _searchFiltersRepository;
 
   SearchBloc({
     required NetworkCubit networkCubit,
     required MediaRepository mediaRepository,
-    required KeyValueStorageRepository keyValueStorageRepository,
+    required KeyValueStorage keyValueStorage,
     required SearchFiltersRepository searchFiltersRepository,
   })  : _networkCubit = networkCubit,
         _mediaRepository = mediaRepository,
-        _keyValueStorageRepository = keyValueStorageRepository,
+        _keyValueStorage = keyValueStorage,
         _searchFiltersRepository = searchFiltersRepository,
-        super(SearchState()) {
+        super(SearchInitialState()) {
     Future.microtask(
       () {
         _onNetworkStateChanged(networkCubit.state);
@@ -66,7 +67,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchNetworkConnectedEvent event,
     Emitter<SearchState> emit,
   ) {
-    emit(SearchState());
+    emit(SearchInitialState());
   }
 
   Future<void> _onSearch(
@@ -74,21 +75,23 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     if (event.query.isEmpty) {
-      await _keyValueStorageRepository.delete(
+      await _keyValueStorage.delete(
         key: KeyValueStorageKeys.searchQueryKey,
       );
-      return emit(SearchState());
+      return emit(SearchInitialState());
     }
 
-    emit(SearchLoadingState(query: event.query));
+    if (state is! SearchLoadedState) {
+      emit(SearchLoadingState(query: event.query));
+    }
 
-    await _keyValueStorageRepository.set<String>(
+    await _keyValueStorage.set<String>(
       key: KeyValueStorageKeys.searchQueryKey,
       value: event.query,
     );
 
     final SearchFiltersModel searchFiltersModel =
-        await _searchFiltersRepository.loadFiltersModel();
+        await _searchFiltersRepository.restoreFiltersModel();
 
     final MediaRepositoryPattern mediaRepoPattern;
     switch (searchFiltersModel.showMediaTypeFilter) {

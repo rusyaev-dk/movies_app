@@ -1,6 +1,6 @@
 part of 'tv_series_details_bloc.dart';
 
-class TVSeriesDetailsState {
+final class TVSeriesDetailsState extends Equatable {
   final TVSeriesModel? tvSeriesModel;
   final bool? isFavourite;
   final bool? isInWatchlist;
@@ -11,7 +11,7 @@ class TVSeriesDetailsState {
   final int? tvSeriesId;
   final bool isLoading;
 
-  TVSeriesDetailsState({
+  const TVSeriesDetailsState({
     this.tvSeriesModel,
     this.isFavourite,
     this.isInWatchlist,
@@ -46,6 +46,16 @@ class TVSeriesDetailsState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        tvSeriesModel,
+        isFavourite,
+        isInWatchlist,
+        tvSeriesImages,
+        tvSeriesCredits,
+        similarTVSeries,
+        failure,
+        tvSeriesId,
+      ];
 }
-
-

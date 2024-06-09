@@ -1,9 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/db_interface.dart';
+import 'package:movies_app/core/data/storage/storage_interface.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
 
-class SecureStorage implements DataBaseInterface {
+class SecureStorage implements KeyValueStorage {
   SecureStorage({required FlutterSecureStorage storage}) : _secureStorage = storage;
   
   final FlutterSecureStorage _secureStorage;
@@ -16,7 +16,7 @@ class SecureStorage implements DataBaseInterface {
   }
 
   @override
-  Future<T?> get<T>(String key) async {
+  Future<T?> get<T>({required String key}) async {
     Object? value;
     try {
       value = await _secureStorage.read(key: key);
@@ -35,7 +35,7 @@ class SecureStorage implements DataBaseInterface {
   }
 
   @override
-  Future<void> set<T>(String key, T value) async {
+  Future<void> set<T>({required String key, required T value}) async {
     if (sameTypes<T, bool>()) {
       throw Exception('Wrong type for saving to database');
     }
@@ -81,7 +81,7 @@ class SecureStorage implements DataBaseInterface {
   }
 
   @override
-  Future<void> delete<T>(String key) async {
+  Future<void> delete<T>({required String key}) async {
     try {
       await _secureStorage.delete(key: key);
     } on TypeError catch (exception, stackTrace) {

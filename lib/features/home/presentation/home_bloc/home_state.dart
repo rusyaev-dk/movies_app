@@ -1,13 +1,13 @@
 part of 'home_bloc.dart';
 
-abstract class HomeState extends Equatable {}
+sealed class HomeState extends Equatable {}
 
-class HomeLoadingState extends HomeState {
+final class HomeLoadingState extends HomeState {
   @override
   List<Object?> get props => [];
 }
 
-class HomeLoadedState extends HomeState {
+final class HomeLoadedState extends HomeState {
   final List<MovieModel> popularMovies;
   final List<MovieModel> trendingMovies;
   final List<TVSeriesModel> popularTVSeries;
@@ -35,7 +35,7 @@ class HomeLoadedState extends HomeState {
       ];
 }
 
-class HomeFailureState extends HomeState {
+final class HomeFailureState extends HomeState {
   final ApiRepositoryFailure failure;
 
   HomeFailureState({

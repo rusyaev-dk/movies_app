@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/core/data/app_exceptions.dart';
+import 'package:movies_app/core/data/storage/storage_interface.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'theme_event.dart';
@@ -21,7 +22,11 @@ extension ThemeModeX on ThemeMode {
     }
   }
 
-  static ThemeMode fromString(String value) {
+  static ThemeMode fromString(String? value) {
+    if (value == null || value.isEmpty) {
+      return ThemeMode.system;
+    }
+
     switch (value) {
       case 'system':
         return ThemeMode.system;
@@ -38,11 +43,11 @@ extension ThemeModeX on ThemeMode {
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   static const themeModeKey = "theme_mode";
 
-  late final KeyValueStorageRepository _keyValueStorageRepository;
+  late final KeyValueStorage _keyValueStorage;
 
-  ThemeBloc({required KeyValueStorageRepository keyValueStorageRepository})
-      : _keyValueStorageRepository = keyValueStorageRepository,
-        super(ThemeState(themeMode: ThemeMode.system)) {
+  ThemeBloc({required KeyValueStorage keyValueStorage})
+      : _keyValueStorage = keyValueStorage,
+        super(const ThemeState(themeMode: ThemeMode.system)) {
     on<ThemeRestoreThemeEvent>(_onRestoreTheme);
     on<ThemeToggleDarkThemeEvent>(_onToggleDarkTheme);
     on<ThemeToggleLightThemeEvent>(_onToggleLightTheme);
@@ -53,18 +58,17 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeRestoreThemeEvent event,
     Emitter<ThemeState> emit,
   ) async {
-    final KeyValueStorageRepositoryPattern keyValueStorageRepoPattern =
-        await _keyValueStorageRepository.get<String>(key: themeModeKey);
-
-    ThemeMode? themeMode;
-    switch (keyValueStorageRepoPattern) {
-      case (final StorageRepositoryFailure _, null):
-        themeMode = ThemeMode.system;
-        break;
-      case (null, final String resThemeMode):
-        themeMode = ThemeModeX.fromString(resThemeMode);
+    ThemeMode themeMode;
+    try {
+      final String? themeModeStr =
+          await _keyValueStorage.get<String>(key: themeModeKey);
+      themeMode = ThemeModeX.fromString(themeModeStr);
+    } on StorageException catch (err, stackTrace) {
+      GetIt.I<Talker>().handle(err, stackTrace);
+      themeMode = ThemeMode.system;
     }
-    emit(ThemeState(themeMode: themeMode!));
+
+    emit(ThemeState(themeMode: themeMode));
     FlutterNativeSplash.remove();
   }
 
@@ -72,34 +76,48 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     ThemeToggleDarkThemeEvent event,
     Emitter<ThemeState> emit,
   ) async {
-    await _keyValueStorageRepository.set<String>(
-      key: themeModeKey,
-      value: ThemeMode.dark.asString(),
-    );
+    try {
+      await _keyValueStorage.set<String>(
+        key: themeModeKey,
+        value: ThemeMode.dark.asString(),
+      );
+    } on StorageException catch (err, stackTrace) {
+      GetIt.I<Talker>().handle(err, stackTrace);
+    }
 
-    emit(ThemeState(themeMode: ThemeMode.dark));
+    emit(const ThemeState(themeMode: ThemeMode.dark));
   }
 
   Future<void> _onToggleLightTheme(
     ThemeToggleLightThemeEvent event,
     Emitter<ThemeState> emit,
   ) async {
-    await _keyValueStorageRepository.set<String>(
-      key: themeModeKey,
-      value: ThemeMode.light.asString(),
-    );
-    emit(ThemeState(themeMode: ThemeMode.light));
+    try {
+      await _keyValueStorage.set<String>(
+        key: themeModeKey,
+        value: ThemeMode.light.asString(),
+      );
+    } on StorageException catch (err, stackTrace) {
+      GetIt.I<Talker>().handle(err, stackTrace);
+    }
+
+    emit(const ThemeState(themeMode: ThemeMode.light));
   }
 
   Future<void> _onToggleSystemTheme(
     ThemeToggleSystemThemeEvent event,
     Emitter<ThemeState> emit,
   ) async {
-    await _keyValueStorageRepository.set<String>(
-      key: themeModeKey,
-      value: ThemeMode.system.asString(),
-    );
-    emit(ThemeState(themeMode: ThemeMode.system));
+    try {
+      await _keyValueStorage.set<String>(
+        key: themeModeKey,
+        value: ThemeMode.system.asString(),
+      );
+    } on StorageException catch (err, stackTrace) {
+      GetIt.I<Talker>().handle(err, stackTrace);
+    }
+
+    emit(const ThemeState(themeMode: ThemeMode.system));
   }
 
   @override

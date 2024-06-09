@@ -1,13 +1,13 @@
 part of 'account_bloc.dart';
 
-abstract class AccountState extends Equatable {}
+sealed class AccountState extends Equatable {}
 
-class AccountLoadingState extends AccountState {
+final class AccountLoadingState extends AccountState {
   @override
   List<Object?> get props => [];
 }
 
-class AccountLoadedState extends AccountState {
+final class AccountLoadedState extends AccountState {
   final AccountModel account;
 
   AccountLoadedState({required this.account});
@@ -16,7 +16,7 @@ class AccountLoadedState extends AccountState {
   List<Object?> get props => [account];
 }
 
-class AccountFailureState extends AccountState {
+final class AccountFailureState extends AccountState {
   final ApiRepositoryFailure failure;
 
   AccountFailureState({required this.failure});

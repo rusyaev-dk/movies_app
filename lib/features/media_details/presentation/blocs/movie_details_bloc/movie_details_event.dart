@@ -1,8 +1,8 @@
 part of 'movie_details_bloc.dart';
 
-class MovieDetailsEvent {}
+sealed class MovieDetailsEvent extends Equatable {}
 
-class MovieDetailsLoadDetailsEvent extends MovieDetailsEvent {
+final class MovieDetailsLoadDetailsEvent extends MovieDetailsEvent {
   final String locale;
   final int movieId;
 
@@ -10,9 +10,15 @@ class MovieDetailsLoadDetailsEvent extends MovieDetailsEvent {
     this.locale = "en-US",
     required this.movieId,
   });
+
+  @override
+  List<Object?> get props => [
+        locale,
+        movieId,
+      ];
 }
 
-class MovieDetailsAddToFavouriteEvent extends MovieDetailsEvent {
+final class MovieDetailsAddToFavouriteEvent extends MovieDetailsEvent {
   final int movieId;
   final bool isFavorite;
 
@@ -20,9 +26,15 @@ class MovieDetailsAddToFavouriteEvent extends MovieDetailsEvent {
     required this.movieId,
     required this.isFavorite,
   });
+
+  @override
+  List<Object?> get props => [
+        movieId,
+        isFavorite,
+      ];
 }
 
-class MovieDetailsAddToWatchlistEvent extends MovieDetailsEvent {
+final class MovieDetailsAddToWatchlistEvent extends MovieDetailsEvent {
   final int movieId;
   final bool isInWatchlist;
 
@@ -30,4 +42,10 @@ class MovieDetailsAddToWatchlistEvent extends MovieDetailsEvent {
     required this.movieId,
     required this.isInWatchlist,
   });
+
+  @override
+  List<Object?> get props => [
+        movieId,
+        isInWatchlist,
+      ];
 }

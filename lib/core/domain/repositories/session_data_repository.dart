@@ -1,7 +1,8 @@
-import 'package:logging/logging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/secure_storage.dart';
+import 'package:movies_app/core/data/storage/storage_interface.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 typedef SessionDataRepositoryPattern<T> = (ApiRepositoryFailure?, T?);
 
@@ -17,17 +18,17 @@ abstract class SessionDataKeys {
 }
 
 class SessionDataRepository {
-  SessionDataRepository({required SecureStorage secureStorage})
-      : _secureStorage = secureStorage;
+  SessionDataRepository({
+    required KeyValueStorage secureStorage,
+  }) : _secureStorage = secureStorage;
 
-  late final SecureStorage _secureStorage;
-  final Logger _logger = Logger("SessionDataRepo");
+  late final KeyValueStorage _secureStorage;
 
   Future<SessionDataRepositoryPattern<String>> onGetSessionId() async {
     String? sessionId =
-        await _secureStorage.get<String?>(SessionDataKeys.sessionId);
+        await _secureStorage.get<String?>(key: SessionDataKeys.sessionId);
     if (sessionId == null) {
-      _logger.severe(
+      GetIt.I<Talker>().error(
           "Exception caught: $ApiAuthException. StackTrace: ${StackTrace.current}");
       return (
         (1, StackTrace.current, ApiClientExceptionType.auth, ""),
@@ -39,10 +40,10 @@ class SessionDataRepository {
 
   Future<SessionDataRepositoryPattern<int>> onGetAccountId() async {
     final String? accoutId =
-        await _secureStorage.get<String?>(SessionDataKeys.accountId);
+        await _secureStorage.get<String?>(key: SessionDataKeys.accountId);
     int? parsedId = accoutId != null ? int.tryParse(accoutId) : null;
     if (accoutId == null) {
-      _logger.severe(
+      GetIt.I<Talker>().error(
           "Exception caught: $ApiAuthException. StackTrace: ${StackTrace.current}");
       return (
         (1, StackTrace.current, ApiClientExceptionType.auth, ""),
@@ -53,18 +54,24 @@ class SessionDataRepository {
   }
 
   Future<void> onSetSessionId({required String sessionId}) async {
-    await _secureStorage.set<String>(SessionDataKeys.sessionId, sessionId);
+    await _secureStorage.set<String>(
+      key: SessionDataKeys.sessionId,
+      value: sessionId,
+    );
   }
 
   Future<void> onSetAccountId({required int accountId}) async {
-    await _secureStorage.set<int>(SessionDataKeys.accountId, accountId);
+    await _secureStorage.set<int>(
+      key: SessionDataKeys.accountId,
+      value: accountId,
+    );
   }
 
   Future<void> onDeleteSessionId() async {
-    await _secureStorage.delete(SessionDataKeys.sessionId);
+    await _secureStorage.delete(key: SessionDataKeys.sessionId);
   }
 
   Future<void> onDeleteAccountId() async {
-    await _secureStorage.delete(SessionDataKeys.accountId);
+    await _secureStorage.delete(key: SessionDataKeys.accountId);
   }
 }

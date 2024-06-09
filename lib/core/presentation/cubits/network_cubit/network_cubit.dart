@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:equatable/equatable.dart';
 import 'package:movies_app/core/domain/repositories/connectivity_repository.dart';
 
 part 'network_state.dart';
@@ -10,7 +11,7 @@ class NetworkCubit extends Cubit<NetworkState> {
   NetworkCubit({
     required ConnectivityRepository connectivityRepository,
   })  : _connectivityRepository = connectivityRepository,
-        super(NetworkState()) {
+        super(const NetworkState()) {
     _connectivityStream = _connectivityRepository
         .connectivity.onConnectivityChanged
         .listen(_onConnectivityStateChanged);
@@ -21,11 +22,11 @@ class NetworkCubit extends Cubit<NetworkState> {
 
   void _onConnectivityStateChanged(ConnectivityResult res) {
     if (res == ConnectivityResult.wifi || res == ConnectivityResult.mobile) {
-      emit(NetworkState(type: NetworkStateType.connected));
+      emit(const NetworkState(type: NetworkStateType.connected));
     } else if (res == ConnectivityResult.none) {
-      emit(NetworkState(type: NetworkStateType.offline));
+      emit(const NetworkState(type: NetworkStateType.offline));
     } else {
-      emit(NetworkState(type: NetworkStateType.unknown));
+      emit(const NetworkState(type: NetworkStateType.unknown));
     }
   }
 

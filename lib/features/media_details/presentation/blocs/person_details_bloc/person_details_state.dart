@@ -1,18 +1,24 @@
 part of 'person_details_bloc.dart';
 
-class PersonDetailsState {}
+sealed class PersonDetailsState extends Equatable {}
 
-class PersonDetailsLoadingState extends PersonDetailsState {}
+final class PersonDetailsLoadingState extends PersonDetailsState {
+  @override
+  List<Object?> get props => [];
+}
 
-class PersonDetailsLoadedState extends PersonDetailsState {
+final class PersonDetailsLoadedState extends PersonDetailsState {
   final PersonModel personModel;
 
   PersonDetailsLoadedState({
     required this.personModel,
   });
+
+  @override
+  List<Object?> get props => [personModel];
 }
 
-class PersonDetailsFailureState extends PersonDetailsState {
+final class PersonDetailsFailureState extends PersonDetailsState {
   final ApiRepositoryFailure failure;
   final int? personId;
 
@@ -20,4 +26,7 @@ class PersonDetailsFailureState extends PersonDetailsState {
     required this.failure,
     this.personId,
   });
+  
+  @override
+  List<Object?> get props => [failure];
 }

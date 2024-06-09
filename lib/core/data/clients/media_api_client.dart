@@ -4,7 +4,9 @@ import 'package:movies_app/core/data/clients/http_client.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
 
 class MediaApiClient {
-  MediaApiClient({required AppHttpClient httpClient}) : _httpClient = httpClient;
+  MediaApiClient({
+    required AppHttpClient httpClient,
+  }) : _httpClient = httpClient;
 
   final AppHttpClient _httpClient;
   static final _apiKey = dotenv.get('API_KEY');

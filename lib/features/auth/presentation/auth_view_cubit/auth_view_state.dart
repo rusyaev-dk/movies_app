@@ -1,50 +1,62 @@
 part of 'auth_view_cubit.dart';
 
-class AuthViewState {}
+sealed class AuthViewState extends Equatable{}
 
-class AuthViewFormFillInProgressState extends AuthViewState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthViewFormFillInProgressState &&
-          runtimeType == other.runtimeType;
+final class AuthViewFormFillInProgressState extends AuthViewState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthViewFormFillInProgressState &&
+  //         runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }
 
-class AuthViewErrorState extends AuthViewState {
+final class AuthViewErrorState extends AuthViewState {
   final String errorMessage;
 
   AuthViewErrorState(this.errorMessage);
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthViewErrorState &&
-          runtimeType == other.runtimeType &&
-          errorMessage == other.errorMessage;
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthViewErrorState &&
+  //         runtimeType == other.runtimeType &&
+  //         errorMessage == other.errorMessage;
 
+  // @override
+  // int get hashCode => errorMessage.hashCode;
+  
   @override
-  int get hashCode => errorMessage.hashCode;
+  List<Object?> get props => [errorMessage];
 }
 
-class AuthViewAuthInProgressState extends AuthViewState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthViewAuthInProgressState && runtimeType == other.runtimeType;
+final class AuthViewAuthInProgressState extends AuthViewState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthViewAuthInProgressState && runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }
 
-class AuthViewSuccessState extends AuthViewState {
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AuthViewSuccessState && runtimeType == other.runtimeType;
+final class AuthViewSuccessState extends AuthViewState {
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is AuthViewSuccessState && runtimeType == other.runtimeType;
 
+  // @override
+  // int get hashCode => 0;
+  
   @override
-  int get hashCode => 0;
+  List<Object?> get props => [];
 }

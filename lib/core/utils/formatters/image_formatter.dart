@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/api/api_config.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class ApiImageFormatter {
   static String formatImageUrl({required String path, int size = 500}) {
@@ -10,7 +11,6 @@ class ApiImageFormatter {
 
   static const _unknownMediaLigthPath = "assets/images/unknown_media_light.png";
   static const _unknownMediaDarkPath = "assets/images/unknown_media_dark.png";
-  static final Logger _logger = Logger("ApiImageFormatter");
 
   static Widget formatImageWidget(
     BuildContext context, {
@@ -60,7 +60,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        _logger.severe("Exception caught: $value");
+        GetIt.I<Talker>().error("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;
@@ -123,7 +123,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        _logger.severe("Exception caught: $value");
+        GetIt.I<Talker>().error("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;
@@ -183,7 +183,7 @@ class ApiImageFormatter {
         );
       },
       errorListener: (value) {
-        _logger.severe("Exception caught: $value");
+        GetIt.I<Talker>().error("Exception caught: $value");
       },
       errorWidget: (context, url, error) {
         return assetImageWidget;

@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
-import 'package:movies_app/core/data/api/clients/account_api_client.dart';
+import 'package:get_it/get_it.dart';
+import 'package:movies_app/core/data/clients/account_api_client.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 typedef AccountRepositoryPattern<T> = (ApiRepositoryFailure?, T?);
 
@@ -16,13 +17,14 @@ extension AuthRepositoryX<T> on AccountRepositoryPattern {
 }
 
 class AccountRepository {
-  AccountRepository({required AccountApiClient accountApiClient})
-      : _accountApiClient = accountApiClient;
+  AccountRepository({
+    required AccountApiClient accountApiClient,
+    required RepositoryFailureFormatter repositoryFailureFormatter,
+  })  : _accountApiClient = accountApiClient,
+        _failureFormatter = repositoryFailureFormatter;
 
   final AccountApiClient _accountApiClient;
-  static final RepositoryFailureFormatter _failureFormatter =
-      RepositoryFailureFormatter();
-  final Logger _logger = Logger("AccountRepo");
+  final RepositoryFailureFormatter _failureFormatter;
 
   Future<AccountRepositoryPattern<int>> onGetAccountId(
       {required String sessionId}) async {
@@ -31,7 +33,8 @@ class AccountRepository {
           await _accountApiClient.getAccountId(sessionId: sessionId);
       return (null, response.data["id"] as int);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -40,7 +43,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -66,7 +70,8 @@ class AccountRepository {
 
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -75,7 +80,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -101,7 +107,8 @@ class AccountRepository {
 
       return (null, response.data["success"] as bool);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -110,7 +117,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -132,7 +140,8 @@ class AccountRepository {
           AccountModel.fromJson(response.data as Map<String, dynamic>);
       return (null, account);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -141,7 +150,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -186,7 +196,8 @@ class AccountRepository {
           .toList();
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -195,7 +206,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -228,7 +240,8 @@ class AccountRepository {
 
       return (null, accountStateMap);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -237,7 +250,8 @@ class AccountRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null

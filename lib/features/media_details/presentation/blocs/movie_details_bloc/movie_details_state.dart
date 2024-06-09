@@ -1,6 +1,6 @@
 part of 'movie_details_bloc.dart';
 
-class MovieDetailsState {
+final class MovieDetailsState extends Equatable {
   final MovieModel? movieModel;
   final bool? isFavourite;
   final bool? isInWatchlist;
@@ -11,7 +11,7 @@ class MovieDetailsState {
   final int? movieId;
   final bool isLoading;
 
-  MovieDetailsState({
+  const MovieDetailsState({
     this.movieModel,
     this.isFavourite,
     this.isInWatchlist,
@@ -46,4 +46,16 @@ class MovieDetailsState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        movieModel,
+        isFavourite,
+        isInWatchlist,
+        movieImages,
+        movieCredits,
+        similarMovies,
+        failure,
+        movieId,
+      ];
 }

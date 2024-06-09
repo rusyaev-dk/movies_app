@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
@@ -22,7 +23,7 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
   })  : _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
         _mediaRepository = mediaRepository,
-        super(MovieDetailsState()) {
+        super(const MovieDetailsState()) {
     on<MovieDetailsLoadDetailsEvent>(_onLoadMovieDetails);
     on<MovieDetailsAddToFavouriteEvent>(_onAddToFavourite);
     on<MovieDetailsAddToWatchlistEvent>(_onAddToWatchlist);
@@ -32,7 +33,9 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
     MovieDetailsLoadDetailsEvent event,
     Emitter<MovieDetailsState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    if (state.isLoading == false) {
+      emit(state.copyWith(isLoading: true));
+    }
 
     String? sessionId;
     final SessionDataRepositoryPattern sessionDataRepoPattern =
@@ -116,15 +119,17 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
       case (final ApiRepositoryFailure failure, null):
         return emit(state.copyWith(failure: failure, movieId: event.movieId));
       case (null, final List<MovieModel> resSimilarMovies):
-        return emit(state.copyWith(
-          movieModel: movieModel!,
-          isFavourite: isFavourite!,
-          isInWatchlist: isInWatchlist!,
-          movieImages: movieImages!,
-          movieCredits: movieCredits!,
-          similarMovies: resSimilarMovies,
-          failure: null,
-        ));
+        return emit(
+          state.copyWith(
+            movieModel: movieModel!,
+            isFavourite: isFavourite!,
+            isInWatchlist: isInWatchlist!,
+            movieImages: movieImages!,
+            movieCredits: movieCredits!,
+            similarMovies: resSimilarMovies,
+            failure: null,
+          ),
+        );
     }
   }
 
@@ -208,7 +213,12 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
     switch (accountRepoPattern) {
       case (final ApiRepositoryFailure failure, null):
-        return emit(state.copyWith(failure: failure, movieId: event.movieId));
+        return emit(
+          state.copyWith(
+            failure: failure,
+            movieId: event.movieId,
+          ),
+        );
       case (null, final bool res):
         if (res) {
           return emit(state.copyWith(isInWatchlist: !(event.isInWatchlist)));

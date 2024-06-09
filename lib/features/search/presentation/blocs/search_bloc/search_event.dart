@@ -1,8 +1,8 @@
 part of 'search_bloc.dart';
 
-class SearchEvent {}
+sealed class SearchEvent extends Equatable {}
 
-class SearchMediaEvent extends SearchEvent {
+final class SearchMediaEvent extends SearchEvent {
   final String query;
   final String locale;
   final int page;
@@ -12,8 +12,21 @@ class SearchMediaEvent extends SearchEvent {
     this.locale = "en-US",
     this.page = 1,
   });
+
+  @override
+  List<Object?> get props => [
+        query,
+        locale,
+        page,
+      ];
 }
 
-class SearchNetworkErrorEvent extends SearchEvent {}
+final class SearchNetworkErrorEvent extends SearchEvent {
+  @override
+  List<Object?> get props => [];
+}
 
-class SearchNetworkConnectedEvent extends SearchEvent {}
+final class SearchNetworkConnectedEvent extends SearchEvent {
+  @override
+  List<Object?> get props => [];
+}

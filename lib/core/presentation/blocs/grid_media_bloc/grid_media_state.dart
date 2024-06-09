@@ -2,8 +2,8 @@ part of 'grid_media_bloc.dart';
 
 enum GridMediaStatus { initial, success, failure }
 
-class GridMediaState {
-  GridMediaState({
+final class GridMediaState extends Equatable {
+  const GridMediaState({
     this.status = GridMediaStatus.initial,
     this.models = const <TMDBModel>[],
     this.page = 1,
@@ -32,4 +32,12 @@ class GridMediaState {
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        status,
+        models,
+        page,
+        failure,
+      ];
 }

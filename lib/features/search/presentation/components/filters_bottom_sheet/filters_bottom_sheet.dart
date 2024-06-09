@@ -3,14 +3,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/domain/repositories/key_value_storage_repository.dart';
+import 'package:movies_app/core/data/storage/shared_prefs_storage.dart';
 import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_filters_bloc/search_filters_bloc.dart';
-import 'package:movies_app/features/search/presentation/components/filters_bottom_sheet/bottom_sheet_components.dart';
+import 'package:movies_app/features/search/presentation/components/filters_bottom_sheet/filters_sheet_components.dart';
+
 
 class FiltersBottomSheet extends StatelessWidget {
   const FiltersBottomSheet({super.key});
@@ -19,7 +20,7 @@ class FiltersBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchFiltersBloc(
-        keyValueStorageRepository: GetIt.I<KeyValueStorageRepository>(),
+        keyValueStorage: GetIt.I<SharedPrefsStorage>(),
         searchFiltersRepository: GetIt.I<SearchFiltersRepository>(),
         searchBloc: BlocProvider.of<SearchBloc>(context),
       ),

@@ -1,8 +1,8 @@
 part of 'watchlist_bloc.dart';
 
-abstract class WatchlistEvent extends Equatable {}
+sealed class WatchlistEvent extends Equatable {}
 
-class WatchlistloadWatchlistEvent extends WatchlistEvent {
+final class WatchlistloadWatchlistEvent extends WatchlistEvent {
   WatchlistloadWatchlistEvent({
     this.locale = "en-US",
     this.page = 1,
@@ -20,7 +20,7 @@ class WatchlistloadWatchlistEvent extends WatchlistEvent {
       ];
 }
 
-class WatchlisrNetworkErrorEvent extends WatchlistEvent {
+final class WatchlisrNetworkErrorEvent extends WatchlistEvent {
   @override
   List<Object?> get props => [];
 }

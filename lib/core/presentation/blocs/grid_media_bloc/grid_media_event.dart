@@ -1,8 +1,8 @@
 part of 'grid_media_bloc.dart';
 
-class GridMediaEvent {}
+sealed class GridMediaEvent extends Equatable {}
 
-class GridMediaLoadNewMediaEvent extends GridMediaEvent {
+final class GridMediaLoadNewMediaEvent extends GridMediaEvent {
   final int page;
   final ApiMediaQueryType queryType;
   final String locale;
@@ -12,4 +12,10 @@ class GridMediaLoadNewMediaEvent extends GridMediaEvent {
     required this.queryType,
     this.locale = "en-US",
   });
+
+  @override
+  List<Object?> get props => [
+        page,
+        locale,
+      ];
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/account_repository.dart';
@@ -23,7 +24,7 @@ class TVSeriesDetailsBloc
   })  : _sessionDataRepository = sessionDataRepository,
         _accountRepository = accountRepository,
         _mediaRepository = mediaRepository,
-        super(TVSeriesDetailsState()) {
+        super(const TVSeriesDetailsState()) {
     on<TVSeriesDetailsLoadDetailsEvent>(_onLoadTVSeriesDetails);
     on<TVSeriesDetailsAddToFavouriteEvent>(_onAddToFavourite);
     on<TVSeriesDetailsAddToWatchlistEvent>(_onAddToWatchlist);
@@ -33,7 +34,9 @@ class TVSeriesDetailsBloc
     TVSeriesDetailsLoadDetailsEvent event,
     Emitter<TVSeriesDetailsState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    if (state.isLoading == false) {
+      emit(state.copyWith(isLoading: true));
+    }
 
     String? sessionId;
     final SessionDataRepositoryPattern sessionDataRepoPattern =

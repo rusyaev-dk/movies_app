@@ -1,16 +1,13 @@
 part of 'search_filters_bloc.dart';
 
-class SearchFiltersState {}
+sealed class SearchFiltersState extends Equatable {}
 
-class SearchFiltersLoadingState extends SearchFiltersState {}
+final class SearchFiltersLoadingState extends SearchFiltersState {
+  @override
+  List<Object?> get props => [];
+}
 
-// class SearchFiltersInitialState extends SearchFiltersState {
-//   late final SearchFiltersModel searchFilters;
-
-//   SearchFiltersInitialState() : searchFilters = SearchFiltersModel();
-// }
-
-class SearchFiltersLoadedState extends SearchFiltersState {
+final class SearchFiltersLoadedState extends SearchFiltersState {
   final SearchFiltersModel searchFiltersModel;
 
   SearchFiltersLoadedState({
@@ -24,10 +21,16 @@ class SearchFiltersLoadedState extends SearchFiltersState {
       searchFiltersModel: searchFiltersModel ?? this.searchFiltersModel,
     );
   }
+  
+  @override
+  List<Object?> get props => [searchFiltersModel];
 }
 
-class SearchFiltersFailureState extends SearchFiltersState {
+final class SearchFiltersFailureState extends SearchFiltersState {
   final StorageRepositoryFailure failure;
 
   SearchFiltersFailureState({required this.failure});
+  
+  @override
+  List<Object?> get props => [failure];
 }

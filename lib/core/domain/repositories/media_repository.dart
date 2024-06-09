@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
-import 'package:movies_app/core/data/api/clients/media_api_client.dart';
+import 'package:get_it/get_it.dart';
+import 'package:movies_app/core/data/clients/media_api_client.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 enum ApiMediaQueryType {
   popularMovies,
@@ -80,13 +81,14 @@ extension MediaRepositoryPatternX<T> on MediaRepositoryPattern<T> {
 }
 
 class MediaRepository {
-  MediaRepository({required MediaApiClient mediaApiClient})
-      : _mediaApiClient = mediaApiClient;
+  MediaRepository({
+    required MediaApiClient mediaApiClient,
+    required RepositoryFailureFormatter repositoryFailureFormatter,
+  })  : _mediaApiClient = mediaApiClient,
+        _failureFormatter = repositoryFailureFormatter;
 
   final MediaApiClient _mediaApiClient;
-  static final RepositoryFailureFormatter _failureFormatter =
-      RepositoryFailureFormatter();
-  final Logger _logger = Logger("MediaRepo");
+  final RepositoryFailureFormatter _failureFormatter;
 
   List<T> _createModelsList<T>({
     required TMDBModel Function(Map<String, dynamic>) fromJson,
@@ -150,7 +152,7 @@ class MediaRepository {
           _createModelsList<T>(fromJson: fromJson!, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -159,7 +161,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -193,7 +195,7 @@ class MediaRepository {
       }
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -222,7 +224,7 @@ class MediaRepository {
           fromJson: MovieModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -231,7 +233,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -255,7 +257,7 @@ class MediaRepository {
           fromJson: TVSeriesModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -264,7 +266,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -288,7 +290,7 @@ class MediaRepository {
           fromJson: PersonModel.fromJson, response: response);
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -297,7 +299,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -334,7 +336,7 @@ class MediaRepository {
       final T model = fromJson!(response!.data as Map<String, dynamic>) as T;
       return (null, model);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -343,7 +345,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -376,7 +378,7 @@ class MediaRepository {
       );
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -385,7 +387,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -419,7 +421,7 @@ class MediaRepository {
 
       return (null, models.reversed.toList());
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -428,7 +430,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
@@ -467,7 +469,7 @@ class MediaRepository {
 
       return (null, models);
     } on ApiClientException catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
 
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
@@ -476,7 +478,7 @@ class MediaRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      _logger.severe("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null

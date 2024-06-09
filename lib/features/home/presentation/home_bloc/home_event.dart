@@ -1,8 +1,8 @@
 part of 'home_bloc.dart';
 
-abstract class HomeEvent extends Equatable {}
+sealed class HomeEvent extends Equatable {}
 
-class HomeLoadMediaEvent extends HomeEvent {
+final class HomeLoadMediaEvent extends HomeEvent {
   final String locale;
   final int page;
   final Completer? completer;
@@ -17,7 +17,7 @@ class HomeLoadMediaEvent extends HomeEvent {
   List<Object?> get props => [completer];
 }
 
-class HomeNetworkErrorEvent extends HomeEvent {
+final class HomeNetworkErrorEvent extends HomeEvent {
   @override
   List<Object?> get props => [];
 }

@@ -1,13 +1,13 @@
 part of 'watchlist_bloc.dart';
 
-abstract class WatchlistState extends Equatable {}
+sealed class WatchlistState extends Equatable {}
 
-class WatchlistLoadingState extends WatchlistState {
+final class WatchlistLoadingState extends WatchlistState {
   @override
   List<Object?> get props => [];
 }
 
-class WatchlistLoadedState extends WatchlistState {
+final class WatchlistLoadedState extends WatchlistState {
   final List<MovieModel> moviesWatchlist;
   final List<TVSeriesModel> tvSeriesWatchlist;
 
@@ -23,7 +23,7 @@ class WatchlistLoadedState extends WatchlistState {
       ];
 }
 
-class WatchlistFailureState extends WatchlistState {
+final class WatchlistFailureState extends WatchlistState {
   final ApiRepositoryFailure failure;
 
   WatchlistFailureState({required this.failure});
