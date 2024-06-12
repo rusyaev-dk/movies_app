@@ -19,7 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late final StreamSubscription<NetworkState> _networkCubitSubscription;
   late final MediaRepository _mediaRepository;
 
-  static const List<ApiMediaQueryType> _searchTypes = [
+  static const List<ApiMediaQueryType> _queryTypes = [
     ApiMediaQueryType.popularMovies,
     ApiMediaQueryType.trendingMovies,
     ApiMediaQueryType.popularTVSeries,
@@ -69,55 +69,75 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (state is! HomeLoadedState) {
       emit(HomeLoadingState());
     }
-    Map<String, List<dynamic>> modelsMap = {};
 
-    for (ApiMediaQueryType type in _searchTypes) {
-      MediaRepositoryPattern mediaRepoPattern;
-      if (type.asString().contains("movies")) {
-        mediaRepoPattern =
-            await _mediaRepository.onGetMediaModelsFromQueryType<MovieModel>(
-          queryType: type,
-          locale: event.locale,
-          page: event.page,
-        );
-      } else if (type.asString().contains("series")) {
-        mediaRepoPattern =
-            await _mediaRepository.onGetMediaModelsFromQueryType<TVSeriesModel>(
-          queryType: type,
-          locale: event.locale,
-          page: event.page,
-        );
-      } else {
-        mediaRepoPattern =
-            await _mediaRepository.onGetMediaModelsFromQueryType<PersonModel>(
-          queryType: type,
-          locale: event.locale,
-          page: event.page,
-        );
-      }
-
-      switch (mediaRepoPattern) {
-        case (final ApiRepositoryFailure failure, null):
-          event.completer?.complete();
-          return emit(HomeFailureState(failure: failure));
-        case (null, final List<TMDBModel> resModels):
-          modelsMap[type.asString()] = resModels;
-      }
+    List<List<TMDBModel>> models;
+    try {
+      models = await _loadModels(event.locale, event.page);
+    } catch (err, stackTrace) {
+      GetIt.I<Talker>().handle(err, stackTrace);
+      event.completer?.complete();
+      return emit(
+        HomeFailureState(failure: err as ApiRepositoryFailure),
+      );
     }
 
     event.completer?.complete();
     emit(
       HomeLoadedState(
-        popularMovies: modelsMap["popular_movies"] as List<MovieModel>,
-        trendingMovies: modelsMap["trending_movies"] as List<MovieModel>,
-        popularTVSeries: modelsMap["popular_tv_series"] as List<TVSeriesModel>,
-        trendingTVSeries:
-            modelsMap["trending_tv_series"] as List<TVSeriesModel>,
-        onTheAirTVSeries:
-            modelsMap["on_the_air_tv_series"] as List<TVSeriesModel>,
-        popularPersons: modelsMap["popular_persons"] as List<PersonModel>,
+        popularMovies: models[0] as List<MovieModel>,
+        trendingMovies: models[1] as List<MovieModel>,
+        popularTVSeries: models[2] as List<TVSeriesModel>,
+        trendingTVSeries: models[3] as List<TVSeriesModel>,
+        onTheAirTVSeries: models[4] as List<TVSeriesModel>,
+        popularPersons: models[5] as List<PersonModel>,
       ),
     );
+  }
+
+  Future<List<List<TMDBModel>>> _loadModels(String locale, int page) async {
+    List<List<TMDBModel>> models =
+        List.generate(6, (i) => List.of(List.empty()), growable: false);
+
+    List<Future<MediaRepositoryPattern>> futures = List.generate(
+      _queryTypes.length,
+      (i) {
+        final type = _queryTypes[i];
+        if (type.asString().contains("movies")) {
+          return _mediaRepository.onGetMediaModelsFromQueryType<MovieModel>(
+            queryType: type,
+            locale: locale,
+            page: page,
+          );
+        } else if (type.asString().contains("series")) {
+          return _mediaRepository.onGetMediaModelsFromQueryType<TVSeriesModel>(
+            queryType: type,
+            locale: locale,
+            page: page,
+          );
+        } else {
+          return _mediaRepository.onGetMediaModelsFromQueryType<PersonModel>(
+            queryType: type,
+            locale: locale,
+            page: page,
+          );
+        }
+      },
+    );
+
+    List<MediaRepositoryPattern> patterns = await Future.wait(futures);
+
+    int index = 0;
+    for (var pattern in patterns) {
+      switch (pattern) {
+        case (final ApiRepositoryFailure failure, null):
+          throw failure;
+        case (null, final List<TMDBModel> resModels):
+          models[index] = resModels;
+      }
+      index++;
+    }
+
+    return models;
   }
 
   @override
