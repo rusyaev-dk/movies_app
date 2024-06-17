@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class GridMediaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const GridMediaAppBar({
@@ -16,7 +16,7 @@ class GridMediaAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Text(
         queryType.asAppBarTitle(),
-        style: Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+        style: AppTextScheme.of(context).headline,
       ),
       centerTitle: true,
     );

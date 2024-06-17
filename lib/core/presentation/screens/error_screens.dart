@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class RouterErrorScreen extends StatelessWidget {
   const RouterErrorScreen({super.key});
@@ -17,9 +17,7 @@ class RouterErrorScreen extends StatelessWidget {
           Text(
             "Oops, something went wrong...",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle,
+            style: AppTextScheme.of(context).headline,
           ),
           const SizedBox(height: 20),
           CustomGradientButton(

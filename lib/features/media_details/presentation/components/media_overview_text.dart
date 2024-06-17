@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MediaOverviewText extends StatelessWidget {
   const MediaOverviewText({
@@ -45,10 +45,7 @@ class MediaOverviewText extends StatelessWidget {
     if (DataFormatter.countSentences(overview) <= 1) {
       return Text(
         overview,
-        style: Theme.of(context)
-            .extension<ThemeTextStyles>()!
-            .subtitleTextStyle
-            .copyWith(
+        style: AppTextScheme.of(context).label.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 15,
             ),
@@ -62,10 +59,7 @@ class MediaOverviewText extends StatelessWidget {
       children: [
         Text(
           firstSentense,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .subtitleTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).label.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -73,10 +67,8 @@ class MediaOverviewText extends StatelessWidget {
         const SizedBox(height: 15),
         Text(
           otherSensetnses,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .subtitleTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).label.copyWith(
+                fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
         ),

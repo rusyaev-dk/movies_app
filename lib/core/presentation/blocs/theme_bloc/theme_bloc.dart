@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/storage_interface.dart';
+import 'package:movies_app/persistence/storage/storage_interface.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'theme_event.dart';
@@ -52,6 +52,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     on<ThemeToggleDarkThemeEvent>(_onToggleDarkTheme);
     on<ThemeToggleLightThemeEvent>(_onToggleLightTheme);
     on<ThemeToggleSystemThemeEvent>(_onToggleSystemTheme);
+    add(ThemeRestoreThemeEvent());
   }
 
   Future<void> _onRestoreTheme(

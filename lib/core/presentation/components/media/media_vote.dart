@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class MediaVoteWidget extends StatelessWidget {
   const MediaVoteWidget({
@@ -62,10 +62,7 @@ class MediaVoteAdditionalInfo extends StatelessWidget {
       children: [
         Text(
           "$roundedVoteAverage",
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).headline.copyWith(
                 fontSize: 30,
                 color: ApiMediaVoteFormatter.getVoteColor(
                   context: context,
@@ -76,11 +73,8 @@ class MediaVoteAdditionalInfo extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          "${DataFormatter.formatNumberWithThousandsSeparator(voteCount)} ${voteCount > 1 ? 'votes' : 'vote'}" ,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
-              .copyWith(
+          "${DataFormatter.formatNumberWithThousandsSeparator(voteCount)} ${voteCount > 1 ? 'votes' : 'vote'}",
+          style: AppTextScheme.of(context).headline.copyWith(
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 18,
               ),

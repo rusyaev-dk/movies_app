@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class PersonDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -31,9 +31,7 @@ class PersonDetailsAppBar extends StatelessWidget
             duration: const Duration(milliseconds: 200),
             child: Text(
               appBarTitle,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle,
+              style: AppTextScheme.of(context).headline,
             ),
           ),
           centerTitle: true,

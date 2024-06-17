@@ -1,30 +1,25 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/storage_interface.dart';
+import 'package:movies_app/persistence/storage/storage_interface.dart';
 import 'package:movies_app/core/utils/service_functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPrefsStorage implements KeyValueStorage {
-  SharedPrefsStorage({
-    required SharedPreferences prefs,
-  }) : _prefs = prefs;
-
-  final SharedPreferences _prefs;
+class SecureStorage implements KeyValueStorage {
+  SecureStorage({required FlutterSecureStorage storage}) : _secureStorage = storage;
+  
+  final FlutterSecureStorage _secureStorage;
 
   @override
   Future<void> init() async {
-    // await _prefs.clear();
+    throw UnimplementedError(
+      "init() method is not implemented for SecureStorage",
+    );
   }
 
   @override
   Future<T?> get<T>({required String key}) async {
     Object? value;
     try {
-      if (sameTypes<T, List<String>>()) {
-        value = _prefs.getStringList(key);
-      } else {
-        value = _prefs.get(key);
-      }
-
+      value = await _secureStorage.read(key: key);
       return value as T;
     } on TypeError catch (exception, stackTrace) {
       Error.throwWithStackTrace(
@@ -40,29 +35,43 @@ class SharedPrefsStorage implements KeyValueStorage {
   }
 
   @override
-  Future<bool> set<T>({required String key, required T value}) async {
+  Future<void> set<T>({required String key, required T value}) async {
     if (sameTypes<T, bool>()) {
-      return await _prefs.setBool(key, value as bool);
+      throw Exception('Wrong type for saving to database');
     }
 
     if (sameTypes<T, int>()) {
-      return await _prefs.setInt(key, value as int);
+      return await _secureStorage.write(
+        key: key,
+        value: (value as int).toString(),
+      );
     }
 
     if (sameTypes<T, double>()) {
-      return await _prefs.setDouble(key, value as double);
+      return await _secureStorage.write(
+        key: key,
+        value: (value as double).toString(),
+      );
     }
 
     if (sameTypes<T, String>()) {
-      return await _prefs.setString(key, value as String);
+      return await _secureStorage.write(key: key, value: value as String);
     }
 
     if (sameTypes<T, List<String>>()) {
-      return await _prefs.setStringList(key, value as List<String>);
+      Error.throwWithStackTrace(
+        StorageDataTypeException(TypeError,
+            message: "List of strings is not supported for Secure storage"),
+        StackTrace.current,
+      );
     }
 
     if (value is Enum) {
-      return await _prefs.setInt(key, value.index);
+      Error.throwWithStackTrace(
+        StorageDataTypeException(TypeError,
+            message: "Enum of strings is not supported for Secure storage"),
+        StackTrace.current,
+      );
     }
 
     Error.throwWithStackTrace(
@@ -72,9 +81,9 @@ class SharedPrefsStorage implements KeyValueStorage {
   }
 
   @override
-  Future<bool> delete<T>({required String key}) async {
+  Future<void> delete<T>({required String key}) async {
     try {
-      return await _prefs.remove(key);
+      await _secureStorage.delete(key: key);
     } on TypeError catch (exception, stackTrace) {
       Error.throwWithStackTrace(
         StorageDataTypeException(exception, message: exception.toString()),

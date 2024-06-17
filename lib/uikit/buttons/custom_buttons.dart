@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class CustomGradientButton extends StatelessWidget {
   const CustomGradientButton({
@@ -46,13 +47,10 @@ class CustomGradientButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .subtitleTextStyle
-                  .copyWith(
+              style: AppTextScheme.of(context).label.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
-                    color: AppColors.white,
+                    color: ColorPalette.white,
                   ),
             ),
           ),
@@ -134,12 +132,9 @@ class CustomRoundedButton extends StatelessWidget {
               const SizedBox(width: 20),
               Text(
                 text,
-                style: Theme.of(context)
-                    .extension<ThemeTextStyles>()!
-                    .subtitleTextStyle
-                    .copyWith(
+                style: AppTextScheme.of(context).label.copyWith(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: AppColorScheme.of(context).onSurface,
                     ),
               ),
               const Spacer(),
@@ -219,12 +214,9 @@ class CustomFilterButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
+            style: AppTextScheme.of(context).label.copyWith(
                   fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: AppColorScheme.of(context).onSurface,
                 ),
           ),
         ),
@@ -264,11 +256,8 @@ class MediaDetailsIconButton extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             text,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
+            style: AppTextScheme.of(context).label.copyWith(
+                  color: AppColorScheme.of(context).secondary,
                 ),
           )
         ],
@@ -307,24 +296,18 @@ class CustomThemeSwitchButton extends StatelessWidget {
         children: [
           Text(
             text,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
+            style: AppTextScheme.of(context).label.copyWith(
                   fontSize: 15,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: AppColorScheme.of(context).onSurface,
                 ),
           ),
           const SizedBox(height: 10),
           Text(
             subtitle!,
             maxLines: 3,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
+            style: AppTextScheme.of(context).label.copyWith(
                   fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: AppColorScheme.of(context).onSurface,
                 ),
           ),
         ],
@@ -340,12 +323,9 @@ class CustomThemeSwitchButton extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             text,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
+            style: AppTextScheme.of(context).label.copyWith(
                   fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: AppColorScheme.of(context).onSurface,
                 ),
           ),
         ],

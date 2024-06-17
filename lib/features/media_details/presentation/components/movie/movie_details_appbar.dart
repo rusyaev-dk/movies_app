@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MovieDetailsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -21,8 +22,7 @@ class MovieDetailsAppBar extends StatelessWidget
         bool showTitle = false;
         switch (state) {
           case (MediaDetailsAppbarState.filled):
-            appBarColor =
-                Theme.of(context).extension<ThemeColors>()!.background;
+            appBarColor = AppColorScheme.of(context).background;
             showTitle = true;
             break;
           case (MediaDetailsAppbarState.transparent):
@@ -53,9 +53,7 @@ class MovieDetailsAppBar extends StatelessWidget
                   child: Text(
                     appBarTitle,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle,
+                    style: AppTextScheme.of(context).headline,
                   ),
                 ),
               ),

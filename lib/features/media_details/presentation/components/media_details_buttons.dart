@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
 
 class MediaDetailsButtons extends StatelessWidget {
   const MediaDetailsButtons({

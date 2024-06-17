@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 import 'package:movies_app/core/utils/formatters/data_formatter.dart';
 
 class PersonInfoText extends StatelessWidget {
@@ -36,43 +37,34 @@ class PersonInfoText extends StatelessWidget {
         Text(
           name ?? "Unknown name",
           maxLines: 2,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
-              .copyWith(fontSize: 25),
+          style: AppTextScheme.of(context).headline.copyWith(fontSize: 25),
         ),
         const SizedBox(height: 15),
         if (knownForDepartment != null)
           Text(
             knownForDepartment!,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 16),
+            style: AppTextScheme.of(context).label.copyWith(
+                  color: AppColorScheme.of(context).secondary,
+                  fontSize: 16,
+                ),
           ),
         if (knownForDepartment != null) const SizedBox(height: 8),
         if (yearsOfLife.isNotEmpty)
           Text(
             yearsOfLife,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 16),
+            style: AppTextScheme.of(context).label.copyWith(
+                  color: AppColorScheme.of(context).secondary,
+                  fontSize: 16,
+                ),
           ),
         if (yearsOfLife.isNotEmpty) const SizedBox(height: 8),
         if (age.isNotEmpty)
           Text(
             age,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .subtitleTextStyle
-                .copyWith(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 16),
+            style: AppTextScheme.of(context).label.copyWith(
+                  color: AppColorScheme.of(context).secondary,
+                  fontSize: 16,
+                ),
           ),
         // if (age.isNotEmpty) const SizedBox(height: 8),
       ],

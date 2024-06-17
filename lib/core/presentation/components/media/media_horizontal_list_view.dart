@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_card.dart';
-import 'package:movies_app/core/utils/formatters/image_formatter.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/gradients/gradients.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MediaHorizontalListView extends StatelessWidget {
@@ -33,7 +35,7 @@ class MediaHorizontalListView extends StatelessWidget {
   }) {
     return Shimmer(
       direction: ShimmerDirection.ltr,
-      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      gradient: AppGradients.of(context).shimmerGradient,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -120,9 +122,7 @@ class ListTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle,
+            style: AppTextScheme.of(context).headline,
           ),
           if (withAllButton) const Spacer(),
           if (withAllButton)
@@ -130,11 +130,8 @@ class ListTitle extends StatelessWidget {
               onTap: onAllButtonPressed,
               child: Text(
                 "All",
-                style: Theme.of(context)
-                    .extension<ThemeTextStyles>()!
-                    .headingTextStyle
-                    .copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                style: AppTextScheme.of(context).headline.copyWith(
+                      color: AppColorScheme.of(context).primary,
                     ),
               ),
             ),
@@ -186,7 +183,7 @@ class _MediaListViewState extends State<MediaListView> {
   Widget build(BuildContext context) {
     final curUri =
         GoRouter.of(context).routeInformationProvider.value.uri.toString();
-    
+
     String initialPath;
     if (curUri.contains("home")) {
       initialPath = AppRoutes.home;

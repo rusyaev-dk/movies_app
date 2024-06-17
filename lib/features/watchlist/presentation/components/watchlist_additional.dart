@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class NoAddedWatchlistMedia extends StatelessWidget {
   const NoAddedWatchlistMedia({super.key});
@@ -23,11 +24,8 @@ class NoAddedWatchlistMedia extends StatelessWidget {
           Text(
             "You haven't added anything to your watch list yet",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle
-                .copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
+            style: AppTextScheme.of(context).headline.copyWith(
+                  color: AppColorScheme.of(context).secondary,
                 ),
           ),
         ],

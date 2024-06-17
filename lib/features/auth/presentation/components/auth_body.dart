@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
 import 'package:movies_app/features/auth/presentation/auth_view_cubit/auth_view_cubit.dart';
+import 'package:movies_app/features/auth/presentation/components/auth_textfield.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class AuthBody extends StatefulWidget {
   const AuthBody({super.key});
@@ -54,7 +55,7 @@ class _AuthBodyState extends State<AuthBody> {
                           style: TextStyle(
                             fontSize: 54,
                             fontWeight: FontWeight.w900,
-                            color: AppColors.white,
+                            color: ColorPalette.white,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -129,12 +130,9 @@ class ErrorMessageWidget extends StatelessWidget {
                   child: Center(
                     child: Text(
                       errorMessage,
-                      style: Theme.of(context)
-                          .extension<ThemeTextStyles>()!
-                          .subtitleTextStyle
-                          .copyWith(
+                      style: AppTextScheme.of(context).label.copyWith(
                             fontSize: 17,
-                            color: Theme.of(context).colorScheme.error,
+                            color: AppColorScheme.of(context).danger,
                           ),
                     ),
                   ),
@@ -179,18 +177,15 @@ class CustomLoginButton extends StatelessWidget {
                 height: 15,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: AppColors.white,
+                  color: ColorPalette.white,
                 ),
               )
             : Text(
                 "Login",
-                style: Theme.of(context)
-                    .extension<ThemeTextStyles>()!
-                    .subtitleTextStyle
-                    .copyWith(
+                style: AppTextScheme.of(context).label.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
-                      color: AppColors.white,
+                      color: ColorPalette.white,
                     ),
               );
 

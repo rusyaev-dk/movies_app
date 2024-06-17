@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MediaTitleText extends StatelessWidget {
   const MediaTitleText({
@@ -31,9 +31,8 @@ class MediaTitleText extends StatelessWidget {
         Expanded(
           child: Text(
             "$roundedVoteAverage",
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle
+            style: AppTextScheme.of(context)
+                .headline
                 .copyWith(color: voteColor, fontSize: 20),
           ),
         ),
@@ -45,9 +44,7 @@ class MediaTitleText extends StatelessWidget {
             softWrap: true,
             overflow: TextOverflow.ellipsis,
             maxLines: 4,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle,
+            style: AppTextScheme.of(context).headline,
           ),
         ),
       ];
@@ -55,9 +52,8 @@ class MediaTitleText extends StatelessWidget {
       children = [
         Text(
           "$roundedVoteAverage",
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
+          style: AppTextScheme.of(context)
+              .headline
               .copyWith(color: voteColor, fontSize: 18),
         ),
         const SizedBox(width: 10),
@@ -67,8 +63,7 @@ class MediaTitleText extends StatelessWidget {
           softWrap: true,
           overflow: TextOverflow.ellipsis,
           maxLines: 4,
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          style: AppTextScheme.of(context).headline,
         ),
       ];
     }

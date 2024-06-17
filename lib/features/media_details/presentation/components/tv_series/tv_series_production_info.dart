@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class TVSeriesProductionInfo extends StatelessWidget {
   const TVSeriesProductionInfo({
@@ -69,12 +70,9 @@ class TVSeriesProductionInfo extends StatelessWidget {
         Text(
           productionInfoString,
           maxLines: maxLines,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .subtitleTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).label.copyWith(
                 overflow: TextOverflow.ellipsis,
-                color: textColor ?? Theme.of(context).colorScheme.secondary,
+                color: textColor ?? AppColorScheme.of(context).secondary,
                 fontSize: fontSize,
               ),
         ),
@@ -82,12 +80,9 @@ class TVSeriesProductionInfo extends StatelessWidget {
         Text(
           episodesInfoString,
           maxLines: maxLines,
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .subtitleTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).label.copyWith(
                 overflow: TextOverflow.ellipsis,
-                color: textColor ?? Theme.of(context).colorScheme.secondary,
+                color: textColor ?? AppColorScheme.of(context).secondary,
                 fontSize: fontSize,
               ),
         ),

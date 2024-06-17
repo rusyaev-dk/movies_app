@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class AccountSettings extends StatelessWidget {
   const AccountSettings({super.key});
@@ -54,12 +55,8 @@ class SwitchThemeButtonsRow extends StatelessWidget {
               child: CustomThemeSwitchButton(
                 height: 95,
                 color: state.themeMode == ThemeMode.system
-                    ? Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .activatedThemeButtonColor
-                    : Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .inActivatedThemeButtonColor,
+                    ? AppColorScheme.of(context).activatedThemeButtonColor
+                    : AppColorScheme.of(context).inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.system
                     ? Theme.of(context).colorScheme.primary
                     : null,
@@ -77,12 +74,8 @@ class SwitchThemeButtonsRow extends StatelessWidget {
                 height: 95,
                 icon: Icons.nightlight_round_outlined,
                 color: state.themeMode == ThemeMode.dark
-                    ? Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .activatedThemeButtonColor
-                    : Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .inActivatedThemeButtonColor,
+                    ? AppColorScheme.of(context).activatedThemeButtonColor
+                    : AppColorScheme.of(context).inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.dark
                     ? Theme.of(context).colorScheme.primary
                     : null,
@@ -99,12 +92,8 @@ class SwitchThemeButtonsRow extends StatelessWidget {
                 height: 95,
                 icon: Icons.sunny,
                 color: state.themeMode == ThemeMode.light
-                    ? Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .activatedThemeButtonColor
-                    : Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .inActivatedThemeButtonColor,
+                    ? AppColorScheme.of(context).activatedThemeButtonColor
+                    : AppColorScheme.of(context).inActivatedThemeButtonColor,
                 borderColor: state.themeMode == ThemeMode.light
                     ? Theme.of(context).colorScheme.primary
                     : null,
@@ -131,14 +120,11 @@ class LogoutConfirmationDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         "Logout",
-        style: Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+        style: AppTextScheme.of(context).headline,
       ),
       content: Text(
         "Are you sure you want to logout?",
-        style: Theme.of(context)
-            .extension<ThemeTextStyles>()!
-            .subtitleTextStyle
-            .copyWith(fontSize: 17),
+        style: AppTextScheme.of(context).label.copyWith(fontSize: 17),
       ),
       actions: [
         TextButton(
@@ -157,7 +143,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
           child: Text(
             "Logout",
             style: TextStyle(
-              color: Theme.of(context).extension<ThemeColors>()!.onBackground,
+              color: AppColorScheme.of(context).onBackground,
             ),
           ),
         ),

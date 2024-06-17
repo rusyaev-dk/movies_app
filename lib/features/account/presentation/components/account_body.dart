@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/utils/formatters/image_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_failure_widget.dart';
 import 'package:movies_app/features/account/presentation/components/account_settings.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AccountBody extends StatelessWidget {
@@ -48,7 +49,7 @@ class AccountContent extends StatelessWidget {
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
       direction: ShimmerDirection.ltr,
-      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      gradient: AppGradients.of(context).shimmerGradient,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -150,20 +151,15 @@ class AccountContent extends StatelessWidget {
                 const SizedBox(height: 25),
                 Text(
                   accountName,
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle
-                      .copyWith(fontSize: 24),
+                  style:
+                      AppTextScheme.of(context).headline.copyWith(fontSize: 24),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   accountUsername,
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .headingTextStyle
-                      .copyWith(
+                  style: AppTextScheme.of(context).headline.copyWith(
                         fontSize: 21,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: AppColorScheme.of(context).primary,
                       ),
                 ),
               ],

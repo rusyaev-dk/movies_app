@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/data/storage/shared_prefs_storage.dart';
+import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/domain/repositories/connectivity_repository.dart';
 import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
-import 'package:movies_app/core/domain/repositories/account_repository.dart';
 import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
-import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
-import 'package:movies_app/core/routing/app_router.dart';
-import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
+import 'package:movies_app/core/routing/app_router.dart';
+import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/persistence/storage/shared_prefs_storage.dart';
+import 'package:movies_app/uikit/themes/themes.dart';
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({
@@ -24,7 +24,7 @@ class MoviesApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeBloc(
             keyValueStorage: GetIt.I<SharedPrefsStorage>(),
-          )..add(ThemeRestoreThemeEvent()),
+          ),
         ),
         BlocProvider(
           create: (context) => NetworkCubit(
@@ -44,8 +44,8 @@ class MoviesApp extends StatelessWidget {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             routerConfig: AppRouter.router,
-            theme: createLightTheme(),
-            darkTheme: createDarkTheme(),
+            theme: AppThemeData.lightTheme,
+            darkTheme: AppThemeData.darkTheme,
             themeMode: state.themeMode,
           );
         },

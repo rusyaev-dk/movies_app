@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_title_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_production_info.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
 
 class MovieDetailsHead extends StatelessWidget {
   const MovieDetailsHead({
@@ -40,7 +40,7 @@ class MovieDetailsHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).extension<ThemeColors>()!.background,
+      color: AppColorScheme.of(context).background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

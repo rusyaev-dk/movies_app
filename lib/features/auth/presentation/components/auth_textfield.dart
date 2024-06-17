@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -33,10 +33,7 @@ class CustomTextField extends StatelessWidget {
         ),
         prefixIcon: Icon(prefixIcon),
         hintText: hintText,
-        hintStyle: Theme.of(context)
-            .extension<ThemeTextStyles>()!
-            .subtitleTextStyle
-            .copyWith(
+        hintStyle: AppTextScheme.of(context).label.copyWith(
               color: Theme.of(context).colorScheme.secondary,
             ),
       ),

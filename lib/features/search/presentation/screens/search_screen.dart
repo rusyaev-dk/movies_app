@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/data/storage/shared_prefs_storage.dart';
+import 'package:movies_app/persistence/storage/shared_prefs_storage.dart';
 import 'package:movies_app/core/domain/repositories/media_repository.dart';
 import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';

@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
 import 'package:movies_app/core/routing/app_routes.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class FailureWidget extends StatelessWidget {
   const FailureWidget({
@@ -112,14 +113,9 @@ class FailureWidget extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle
-                  .copyWith(
+              style: AppTextScheme.of(context).display.copyWith(
                     fontSize: 18,
-                    color: Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .onBackground,
+                    color: AppColorScheme.of(context).onBackground,
                   ),
             ),
             const SizedBox(height: 20),

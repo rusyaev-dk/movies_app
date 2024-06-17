@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class WatchlistAppBar extends StatelessWidget implements PreferredSizeWidget {
   const WatchlistAppBar({super.key});
@@ -37,9 +37,7 @@ class WatchlistAppBar extends StatelessWidget implements PreferredSizeWidget {
           Text(
             "Watchlist",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle,
+            style: AppTextScheme.of(context).headline,
           )
         ],
       ),

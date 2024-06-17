@@ -3,15 +3,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/data/storage/shared_prefs_storage.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/persistence/storage/shared_prefs_storage.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_filters_bloc/search_filters_bloc.dart';
 import 'package:movies_app/features/search/presentation/components/filters_bottom_sheet/filters_sheet_components.dart';
-
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class FiltersBottomSheet extends StatelessWidget {
   const FiltersBottomSheet({super.key});
@@ -40,9 +40,7 @@ class FiltersBottomSheetContent extends StatelessWidget {
           return Center(
             child: Text(
               "Oops, something went wrong...",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle,
+              style: AppTextScheme.of(context).headline,
             ),
           );
         } else if (state is SearchFiltersLoadedState) {
@@ -59,8 +57,7 @@ class FiltersBottomSheetContent extends StatelessWidget {
                       height: 4,
                       width: 55,
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .extension<ThemeColors>()!
+                        color: AppColorScheme.of(context)
                             .activatedFilterButtonColor,
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -114,8 +111,7 @@ class MediaTypeFilterSection extends StatelessWidget {
       children: [
         Text(
           "Show",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          style: AppTextScheme.of(context).headline,
         ),
         const SizedBox(height: 8),
         MediaTypeFilterRow(filtersModel: filtersModel),
@@ -139,8 +135,7 @@ class SortByFilterSection extends StatelessWidget {
       children: [
         Text(
           "Sort by",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          style: AppTextScheme.of(context).headline,
         ),
         const SizedBox(height: 8),
         SortByFilterRow(filtersModel: filtersModel),
@@ -167,20 +162,15 @@ class RatingFilterSection extends StatelessWidget {
           children: [
             Text(
               "Rating",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle,
+              style: AppTextScheme.of(context).headline,
             ),
             Row(
               children: [
                 Text(
                   "from",
-                  style: Theme.of(context)
-                      .extension<ThemeTextStyles>()!
-                      .subtitleTextStyle
-                      .copyWith(
+                  style: AppTextScheme.of(context).label.copyWith(
                         fontSize: 17,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: AppColorScheme.of(context).secondary,
                       ),
                 ),
                 const SizedBox(width: 6),
@@ -189,12 +179,9 @@ class RatingFilterSection extends StatelessWidget {
                   effects: const [FadeEffect()],
                   child: Text(
                     "${filtersModel.ratingFilter}",
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .subtitleTextStyle
-                        .copyWith(
+                    style: AppTextScheme.of(context).label.copyWith(
                           fontSize: 17,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: AppColorScheme.of(context).secondary,
                         ),
                   ),
                 ),
@@ -244,10 +231,8 @@ class BottomButtonsSection extends StatelessWidget {
                   .add(SearchFiltersResetFiltersEvent()),
               child: Text(
                 "Reset",
-                style: Theme.of(context)
-                    .extension<ThemeTextStyles>()!
-                    .headingTextStyle
-                    .copyWith(fontSize: 17),
+                style:
+                    AppTextScheme.of(context).headline.copyWith(fontSize: 17),
               ),
             ),
           ),

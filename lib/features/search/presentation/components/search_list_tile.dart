@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/utils/formatters/data_formatter.dart';
 import 'package:movies_app/core/utils/formatters/image_formatter.dart';
 import 'package:movies_app/core/utils/formatters/media_genres_formatter.dart';
 import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
-import 'package:movies_app/core/utils/formatters/data_formatter.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/gradients/gradients.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SearchListTile extends StatelessWidget {
@@ -33,7 +35,7 @@ class SearchListTile extends StatelessWidget {
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
       direction: ShimmerDirection.ltr,
-      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      gradient: AppGradients.of(context).shimmerGradient,
       child: SizedBox(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,10 +116,7 @@ class SearchListTile extends StatelessWidget {
       child: Center(
         child: Text(
           "$roundedVoteAverage",
-          style: Theme.of(context)
-              .extension<ThemeTextStyles>()!
-              .headingTextStyle
-              .copyWith(
+          style: AppTextScheme.of(context).headline.copyWith(
                 fontWeight: FontWeight.normal,
                 fontSize: 18,
                 overflow: TextOverflow.ellipsis,
@@ -149,27 +148,19 @@ class SearchListTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle
-                        .copyWith(
+                    style: AppTextScheme.of(context).headline.copyWith(
                           fontWeight: FontWeight.normal,
                           fontSize: 18,
                           overflow: TextOverflow.ellipsis,
-                          color: Theme.of(context)
-                              .extension<ThemeColors>()!
-                              .onBackground,
+                          color: AppColorScheme.of(context).onBackground,
                         ),
                   ),
                   Text(
                     subtitle,
                     maxLines: 3,
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .subtitleTextStyle
-                        .copyWith(
+                    style: AppTextScheme.of(context).label.copyWith(
                           overflow: TextOverflow.ellipsis,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: AppColorScheme.of(context).secondary,
                         ),
                   ),
                   if (!isPerson) genresTextWidget,

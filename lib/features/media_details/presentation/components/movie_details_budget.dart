@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MediaDetailsBudget extends StatelessWidget {
   const MediaDetailsBudget({
@@ -27,13 +28,12 @@ class MediaDetailsBudget extends StatelessWidget {
       children: [
         Text(
           "Box office",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          style: AppTextScheme.of(context).headline,
         ),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          color: Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+          color: AppColorScheme.of(context).surfaceDarker,
           child: Center(
             child: Row(
               children: [
@@ -43,17 +43,14 @@ class MediaDetailsBudget extends StatelessWidget {
                     children: [
                       Text(
                         "Budget:",
-                        style: Theme.of(context)
-                            .extension<ThemeTextStyles>()!
-                            .headingTextStyle,
+                        style: AppTextScheme.of(context).headline,
                       ),
                       const SizedBox(height: 6),
                       Text(
                         budgetString,
                         maxLines: 1,
-                        style: Theme.of(context)
-                            .extension<ThemeTextStyles>()!
-                            .headingTextStyle
+                        style: AppTextScheme.of(context)
+                            .headline
                             .copyWith(fontSize: 18),
                       ),
                     ],
@@ -65,17 +62,14 @@ class MediaDetailsBudget extends StatelessWidget {
                     children: [
                       Text(
                         "Revenue:",
-                        style: Theme.of(context)
-                            .extension<ThemeTextStyles>()!
-                            .headingTextStyle,
+                        style: AppTextScheme.of(context).headline,
                       ),
                       const SizedBox(height: 6),
                       Text(
                         revenueString,
                         maxLines: 1,
-                        style: Theme.of(context)
-                            .extension<ThemeTextStyles>()!
-                            .headingTextStyle
+                        style: AppTextScheme.of(context)
+                            .headline
                             .copyWith(fontSize: 18),
                       ),
                     ],

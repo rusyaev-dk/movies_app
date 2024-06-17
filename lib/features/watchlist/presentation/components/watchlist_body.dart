@@ -5,11 +5,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
 import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/watchlist/presentation/components/watchlist_additional.dart';
 import 'package:movies_app/features/watchlist/presentation/components/watchlist_failure_widget.dart';
 import 'package:movies_app/features/watchlist/presentation/watchlist_bloc/watchlist_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../../uikit/gradients/gradients.dart';
 
 class WatchlistBody extends StatelessWidget {
   const WatchlistBody({super.key});
@@ -64,7 +65,7 @@ class WatchlistContent extends StatelessWidget {
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
       direction: ShimmerDirection.ltr,
-      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      gradient: AppGradients.of(context).shimmerGradient,
       child: Column(
         children: [
           MediaHorizontalListView.shimmerLoading(

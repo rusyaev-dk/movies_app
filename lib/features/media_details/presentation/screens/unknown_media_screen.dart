@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class UnknownMediaScreen extends StatelessWidget {
   const UnknownMediaScreen({super.key});
@@ -23,13 +24,9 @@ class UnknownMediaScreen extends StatelessWidget {
             Text(
               "Oops, it seems we cannot find info about this media :(",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle
-                  .copyWith(
+              style: AppTextScheme.of(context).headline.copyWith(
                     fontSize: 18,
-                    color:
-                        Theme.of(context).extension<ThemeColors>()!.onBackground,
+                    color: AppColorScheme.of(context).onBackground,
                   ),
             ),
             const SizedBox(height: 20),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -34,9 +34,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           Text(
             "The Movie Database",
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle,
+            style: AppTextScheme.of(context).headline,
           )
         ],
       ),

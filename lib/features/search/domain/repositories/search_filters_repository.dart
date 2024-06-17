@@ -1,4 +1,4 @@
-import 'package:movies_app/core/data/storage/storage_interface.dart';
+import 'package:movies_app/persistence/storage/storage_interface.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 
 abstract class KeyValueStorageKeys {

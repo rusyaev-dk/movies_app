@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MediaGenresText extends StatelessWidget {
   const MediaGenresText({
@@ -23,12 +24,9 @@ class MediaGenresText extends StatelessWidget {
       return Text(
         "Unknown genre",
         maxLines: maxLines,
-        style: Theme.of(context)
-            .extension<ThemeTextStyles>()!
-            .subtitleTextStyle
-            .copyWith(
+        style: AppTextScheme.of(context).label.copyWith(
               overflow: TextOverflow.ellipsis,
-              color: textColor ?? Theme.of(context).colorScheme.secondary,
+              color: textColor ?? AppColorScheme.of(context).secondary,
               fontSize: fontSize,
             ),
       );
@@ -46,12 +44,9 @@ class MediaGenresText extends StatelessWidget {
       genresString,
       textAlign: centerText ? TextAlign.center : null,
       maxLines: maxLines,
-      style: Theme.of(context)
-          .extension<ThemeTextStyles>()!
-          .subtitleTextStyle
-          .copyWith(
+      style: AppTextScheme.of(context).label.copyWith(
             overflow: TextOverflow.ellipsis,
-            color: textColor ?? Theme.of(context).colorScheme.secondary,
+            color: textColor ?? AppColorScheme.of(context).secondary,
             fontSize: fontSize,
           ),
     );

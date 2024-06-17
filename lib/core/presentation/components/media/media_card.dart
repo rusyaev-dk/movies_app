@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/presentation/components/media/media_vote.dart';
 import 'package:movies_app/core/utils/formatters/image_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({
@@ -54,9 +54,7 @@ class MediaCard extends StatelessWidget {
               cardText!,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .subtitleTextStyle,
+              style: AppTextScheme.of(context).label,
             ),
           ),
       ],

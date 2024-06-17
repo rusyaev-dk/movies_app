@@ -3,18 +3,18 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/core/domain/models/tmdb_models.dart';
+import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
+import 'package:movies_app/core/utils/formatters/image_formatter.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/movie_details_bloc/movie_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/dark_poster_gradient.dart';
-import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_details_buttons.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_details_rating.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_overview_text.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_failure_widget.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_head.dart';
-import 'package:movies_app/core/utils/formatters/image_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie_details_budget.dart';
 import 'package:movies_app/features/media_details/presentation/cubits/media_details_appbar_cubit/media_details_appbar_cubit.dart';
+import 'package:movies_app/uikit/gradients/gradients.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MovieDetailsBody extends StatelessWidget {
@@ -61,7 +61,7 @@ class MovieDetailsContent extends StatefulWidget {
   static Widget shimmerLoading(BuildContext context) {
     return Shimmer(
       direction: ShimmerDirection.ltr,
-      gradient: Theme.of(context).extension<ThemeGradients>()!.shimmerGradient,
+      gradient: AppGradients.of(context).shimmerGradient,
       child: ListView(
         padding: const EdgeInsets.all(0),
         physics: const NeverScrollableScrollPhysics(),

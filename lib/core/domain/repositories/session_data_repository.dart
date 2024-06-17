@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/data/storage/storage_interface.dart';
+import 'package:movies_app/persistence/storage/storage_interface.dart';
 import 'package:movies_app/core/domain/repositories/repository_failure.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 

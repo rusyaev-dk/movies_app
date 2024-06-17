@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/core/presentation/components/media/media_vote.dart';
+import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/uikit/colors/colors.dart';
+import 'package:movies_app/uikit/text/text.dart';
 
 class MediaDetailsRating extends StatelessWidget {
   const MediaDetailsRating({
@@ -25,13 +26,12 @@ class MediaDetailsRating extends StatelessWidget {
       children: [
         Text(
           "Rating",
-          style:
-              Theme.of(context).extension<ThemeTextStyles>()!.headingTextStyle,
+          style: AppTextScheme.of(context).headline,
         ),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          color: Theme.of(context).extension<ThemeColors>()!.surfaceDarker,
+          color: AppColorScheme.of(context).surfaceDarker,
           child: Row(
             children: [
               SizedBox(
@@ -39,16 +39,15 @@ class MediaDetailsRating extends StatelessWidget {
                 height: 100,
                 child: RadialPercentWidget(
                   percent: voteAverage * 10 / 100,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  fillColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   lineColor: Theme.of(context).colorScheme.primary,
                   freeColor:
                       Theme.of(context).colorScheme.primary.withAlpha(85),
                   lineWidth: 5,
                   child: Text(
                     "${(roundedVoteAverage * 10).toInt()}%",
-                    style: Theme.of(context)
-                        .extension<ThemeTextStyles>()!
-                        .headingTextStyle,
+                    style: AppTextScheme.of(context).headline,
                   ),
                 ),
               ),

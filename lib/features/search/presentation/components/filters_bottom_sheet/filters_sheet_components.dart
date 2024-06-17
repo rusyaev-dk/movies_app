@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/presentation/components/custom_buttons.dart';
-import 'package:movies_app/core/themes/theme.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_filters_bloc/search_filters_bloc.dart';
+import 'package:movies_app/uikit/buttons/custom_buttons.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
 
 class MediaTypeFilterRow extends StatelessWidget {
   const MediaTypeFilterRow({
@@ -20,10 +20,8 @@ class MediaTypeFilterRow extends StatelessWidget {
         Expanded(
           child: CustomFilterButton(
             color: filtersModel.showMediaTypeFilter == ShowMediaTypeFilter.all
-                ? Theme.of(context)
-                    .extension<ThemeColors>()!
-                    .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                ? AppColorScheme.of(context).activatedFilterButtonColor
+                : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -45,10 +43,8 @@ class MediaTypeFilterRow extends StatelessWidget {
           child: CustomFilterButton(
             color:
                 filtersModel.showMediaTypeFilter == ShowMediaTypeFilter.movies
-                    ? Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                    ? AppColorScheme.of(context).activatedFilterButtonColor
+                    : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -69,10 +65,8 @@ class MediaTypeFilterRow extends StatelessWidget {
         Expanded(
           child: CustomFilterButton(
             color: filtersModel.showMediaTypeFilter == ShowMediaTypeFilter.tvs
-                ? Theme.of(context)
-                    .extension<ThemeColors>()!
-                    .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                ? AppColorScheme.of(context).activatedFilterButtonColor
+                : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -94,10 +88,8 @@ class MediaTypeFilterRow extends StatelessWidget {
           child: CustomFilterButton(
             color:
                 filtersModel.showMediaTypeFilter == ShowMediaTypeFilter.persons
-                    ? Theme.of(context)
-                        .extension<ThemeColors>()!
-                        .activatedFilterButtonColor
-                    : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                    ? AppColorScheme.of(context).activatedFilterButtonColor
+                    : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetShowMediaTypeFilterEvent(
@@ -130,10 +122,8 @@ class SortByFilterRow extends StatelessWidget {
         Expanded(
           child: CustomFilterButton(
             color: filtersModel.sortByFilter == SortByFilter.rating
-                ? Theme.of(context)
-                    .extension<ThemeColors>()!
-                    .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                ? AppColorScheme.of(context).activatedFilterButtonColor
+                : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetSortByFilterEvent(
@@ -154,10 +144,8 @@ class SortByFilterRow extends StatelessWidget {
         Expanded(
           child: CustomFilterButton(
             color: filtersModel.sortByFilter == SortByFilter.popularity
-                ? Theme.of(context)
-                    .extension<ThemeColors>()!
-                    .activatedFilterButtonColor
-                : Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+                ? AppColorScheme.of(context).activatedFilterButtonColor
+                : AppColorScheme.of(context).inActivatedFilterButtonColor,
             onPressed: () {
               context.read<SearchFiltersBloc>().add(
                     SearchFiltersSetSortByFilterEvent(
@@ -189,7 +177,7 @@ class RatingSlider extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).extension<ThemeColors>()!.inActivatedFilterButtonColor,
+        color: AppColorScheme.of(context).inActivatedFilterButtonColor,
       ),
       child: Slider(
         value: filtersModel.ratingFilter.toDouble(),

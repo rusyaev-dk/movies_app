@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:movies_app/core/themes/theme.dart';
+import 'package:movies_app/uikit/colors/app_color_sheme.dart';
+import 'package:movies_app/uikit/text/app_text_sheme.dart';
 
 class LetsFindSomethingWidget extends StatelessWidget {
   const LetsFindSomethingWidget({super.key});
@@ -21,10 +22,9 @@ class LetsFindSomethingWidget extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               "Let's find something!",
-              style: Theme.of(context)
-                  .extension<ThemeTextStyles>()!
-                  .headingTextStyle
-                  .copyWith(color: Theme.of(context).colorScheme.secondary),
+              style: AppTextScheme.of(context)
+                  .headline
+                  .copyWith(color: AppColorScheme.of(context).secondary),
             ),
           ],
         ),
@@ -53,10 +53,9 @@ class NothingFoundWidget extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             "Nothing found",
-            style: Theme.of(context)
-                .extension<ThemeTextStyles>()!
-                .headingTextStyle
-                .copyWith(color: Theme.of(context).colorScheme.secondary),
+            style: AppTextScheme.of(context)
+                .headline
+                .copyWith(color: AppColorScheme.of(context).secondary),
           )
         ],
       ),
