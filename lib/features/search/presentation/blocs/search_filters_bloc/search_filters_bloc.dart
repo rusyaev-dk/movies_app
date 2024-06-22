@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/data/app_exceptions.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
 import 'package:movies_app/persistence/storage/storage_interface.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
 import 'package:movies_app/features/search/domain/models/search_filters_model.dart';
 import 'package:movies_app/features/search/domain/repositories/search_filters_repository.dart';
 import 'package:movies_app/features/search/presentation/blocs/search_bloc/search_bloc.dart';

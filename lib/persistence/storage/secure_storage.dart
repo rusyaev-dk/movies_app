@@ -1,11 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:movies_app/core/data/app_exceptions.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
 import 'package:movies_app/persistence/storage/storage_interface.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
+import 'package:movies_app/common/utils/service_functions.dart';
 
 class SecureStorage implements KeyValueStorage {
-  SecureStorage({required FlutterSecureStorage storage}) : _secureStorage = storage;
-  
+  SecureStorage({required FlutterSecureStorage storage})
+      : _secureStorage = storage;
+
   final FlutterSecureStorage _secureStorage;
 
   @override

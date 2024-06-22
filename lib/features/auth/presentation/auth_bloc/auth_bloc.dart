@@ -2,9 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
-import 'package:movies_app/core/domain/repositories/account_repository.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/common/domain/repositories/account_repository.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 

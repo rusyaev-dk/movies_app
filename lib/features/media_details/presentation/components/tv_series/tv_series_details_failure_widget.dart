@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/presentation/components/failure_widget.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/presentation/components/failure_widget.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/tv_series_details_bloc/tv_series_details_bloc.dart';
 
 class TvSeriesDetailsFailureWidget extends StatelessWidget {
@@ -30,8 +30,7 @@ class TvSeriesDetailsFailureWidget extends StatelessWidget {
       case ApiClientExceptionType.network:
         return FailureWidget.networkError(
           context,
-          onPressed: () =>
-               context
+          onPressed: () => context
               .read<TVSeriesDetailsBloc>()
               .add(TVSeriesDetailsLoadDetailsEvent(
                 tvSeriesId: tvSeriesId!,

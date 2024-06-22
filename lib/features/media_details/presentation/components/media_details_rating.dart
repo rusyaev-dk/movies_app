@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/presentation/components/media/media_vote.dart';
-import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/common/presentation/components/media/media_vote.dart';
+import 'package:movies_app/common/utils/formatters/media_vote_formatter.dart';
 import 'package:movies_app/uikit/colors/colors.dart';
 import 'package:movies_app/uikit/text/text.dart';
 

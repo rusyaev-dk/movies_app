@@ -1,6 +1,6 @@
-import 'package:movies_app/core/data/app_exceptions.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
 import 'package:movies_app/persistence/storage/storage_interface.dart';
-import 'package:movies_app/core/utils/service_functions.dart';
+import 'package:movies_app/common/utils/service_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsStorage implements KeyValueStorage {

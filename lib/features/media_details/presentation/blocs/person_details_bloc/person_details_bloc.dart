@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/domain/models/tmdb_models.dart';
+import 'package:movies_app/common/domain/repositories/media_repository.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'person_details_event.dart';

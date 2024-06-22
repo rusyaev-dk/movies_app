@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/common/domain/models/tmdb_models.dart';
+import 'package:movies_app/common/domain/repositories/media_repository.dart';
+import 'package:movies_app/common/router/app_routes.dart';
 import 'package:movies_app/features/home/presentation/components/home_failure_widget.dart';
 import 'package:movies_app/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:movies_app/core/presentation/components/media/media_horizontal_list_view.dart';
+import 'package:movies_app/common/presentation/components/media/media_horizontal_list_view.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});

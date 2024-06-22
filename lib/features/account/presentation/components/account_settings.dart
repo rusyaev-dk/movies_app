@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_app/core/presentation/blocs/theme_bloc/theme_bloc.dart';
-import 'package:movies_app/core/routing/app_routes.dart';
+import 'package:movies_app/common/presentation/blocs/theme_bloc/theme_bloc.dart';
+import 'package:movies_app/common/router/app_routes.dart';
 import 'package:movies_app/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:movies_app/uikit/buttons/custom_buttons.dart';
 import 'package:movies_app/uikit/colors/colors.dart';

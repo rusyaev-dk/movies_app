@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/common/domain/models/tmdb_models.dart';
+import 'package:movies_app/common/utils/formatters/data_formatter.dart';
 import 'package:movies_app/uikit/colors/app_color_sheme.dart';
 import 'package:movies_app/uikit/text/app_text_sheme.dart';
 

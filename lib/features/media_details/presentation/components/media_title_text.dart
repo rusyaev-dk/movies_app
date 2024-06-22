@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/common/utils/formatters/media_vote_formatter.dart';
 import 'package:movies_app/uikit/text/text.dart';
 
 class MediaTitleText extends StatelessWidget {

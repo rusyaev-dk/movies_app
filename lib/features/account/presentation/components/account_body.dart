@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/utils/formatters/image_formatter.dart';
+import 'package:movies_app/common/domain/models/tmdb_models.dart';
+import 'package:movies_app/common/utils/formatters/image_formatter.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_failure_widget.dart';
 import 'package:movies_app/features/account/presentation/components/account_settings.dart';

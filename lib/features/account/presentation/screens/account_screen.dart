@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
-import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
+import 'package:movies_app/common/domain/repositories/account_repository.dart';
+import 'package:movies_app/common/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/common/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:movies_app/features/account/presentation/account_bloc/account_bloc.dart';
 import 'package:movies_app/features/account/presentation/components/account_body.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/media_repository.dart';
-import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/common/domain/repositories/account_repository.dart';
+import 'package:movies_app/common/domain/repositories/media_repository.dart';
+import 'package:movies_app/common/domain/repositories/session_data_repository.dart';
 import 'package:movies_app/features/media_details/presentation/blocs/movie_details_bloc/movie_details_bloc.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_appbar.dart';
 import 'package:movies_app/features/media_details/presentation/components/movie/movie_details_body.dart';

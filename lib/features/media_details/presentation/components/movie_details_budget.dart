@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/utils/formatters/data_formatter.dart';
+import 'package:movies_app/common/utils/formatters/data_formatter.dart';
 import 'package:movies_app/uikit/colors/colors.dart';
 import 'package:movies_app/uikit/text/text.dart';
 

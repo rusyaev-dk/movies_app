@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/core/utils/formatters/data_formatter.dart';
-import 'package:movies_app/core/utils/formatters/image_formatter.dart';
-import 'package:movies_app/core/utils/formatters/media_genres_formatter.dart';
-import 'package:movies_app/core/utils/formatters/media_vote_formatter.dart';
+import 'package:movies_app/common/utils/formatters/data_formatter.dart';
+import 'package:movies_app/common/utils/formatters/image_formatter.dart';
+import 'package:movies_app/common/utils/formatters/media_genres_formatter.dart';
+import 'package:movies_app/common/utils/formatters/media_vote_formatter.dart';
 import 'package:movies_app/features/media_details/presentation/components/media_genres_text.dart';
 import 'package:movies_app/uikit/colors/app_color_sheme.dart';
 import 'package:movies_app/uikit/gradients/gradients.dart';

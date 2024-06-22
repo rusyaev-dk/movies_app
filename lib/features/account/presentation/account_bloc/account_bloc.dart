@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/domain/models/tmdb_models.dart';
-import 'package:movies_app/core/domain/repositories/account_repository.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
-import 'package:movies_app/core/domain/repositories/session_data_repository.dart';
-import 'package:movies_app/core/presentation/cubits/network_cubit/network_cubit.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
+import 'package:movies_app/common/domain/models/tmdb_models.dart';
+import 'package:movies_app/common/domain/repositories/account_repository.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/domain/repositories/session_data_repository.dart';
+import 'package:movies_app/common/presentation/cubits/network_cubit/network_cubit.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 part 'account_event.dart';

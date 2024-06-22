@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/data/clients/auth_api_client.dart';
-import 'package:movies_app/core/data/app_exceptions.dart';
-import 'package:movies_app/core/domain/repositories/repository_failure.dart';
+import 'package:movies_app/common/data/clients/auth_api_client.dart';
+import 'package:movies_app/common/data/app_exceptions.dart';
+import 'package:movies_app/common/domain/repositories/repository_failure.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 typedef AuthRepositoryPattern = (ApiRepositoryFailure?, String?);
@@ -46,8 +46,9 @@ class AuthRepository {
 
       return (null, sessionId);
     } on ApiClientException catch (exception, stackTrace) {
-      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
-    
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
+
       final error = exception.error;
       final errorParams = _failureFormatter.getApiErrorParams(error, exception);
       ApiRepositoryFailure repositoryFailure =
@@ -55,7 +56,8 @@ class AuthRepository {
 
       return (repositoryFailure, null);
     } catch (exception, stackTrace) {
-      GetIt.I<Talker>().error("Exception caught: $exception. StackTrace: $stackTrace");
+      GetIt.I<Talker>()
+          .error("Exception caught: $exception. StackTrace: $stackTrace");
       return (
         (exception, stackTrace, ApiClientExceptionType.unknown, null),
         null
