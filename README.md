@@ -1,4 +1,4 @@
-# Movies App
+# :movie: Movies App
 
 This Flutter application serves as a film encyclopedia, fetching data from The Movie Database (TMDB) API. Below are the key features and architectural details of the application and screenshots:
 
