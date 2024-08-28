@@ -41,5 +41,5 @@ Logging functionality is integrated into the application to provide insights int
 
 Two types of data storage are utilized in the application:
 
-- **SharedPreferences**: Used for storing regular data.
-- **FlutterSecureStorage**: Utilized for storing authentication and session-related data securely.
+- `shared_preferences`: for storing regular data;
+- `flutter_secure_storage`: for storing authentication and session-related data securely.
