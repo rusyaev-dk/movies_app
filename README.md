@@ -3,59 +3,13 @@
 This Flutter application serves as a film encyclopedia, fetching data from The Movie Database (TMDB) API. Below are the key features and architectural details of the application and screenshots:
 
 ## Screenshots
+![Main menu](/screenshots/movies_app_screenshot_1.jpg "Main menu")
 
-<table>
-  <tr>
-    <td>
-      <img src="/screenshots/auth_screen.png" alt="Auth screen" title="Auth screen" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/home_screen.png" alt="Home screen" title="Home screen" width="200"/>
-    </td>
-     <td>
-      <img src="/screenshots/home_screen_2.png" alt="Home screen 2" title="Home screen" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/grid_view.png" alt="Grid view" title="Grid view" width="200"/>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="/screenshots/movie_details_screen_1.png" alt="Movie details 1" title="Movie details 1" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/movie_details_screen_2.png" alt="Movie details 2" title="Movie details 2" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/movie_details_screen_3.png" alt="Movie details 3" title="Movie details 3" width="200"/>
-    </td>
-  </tr>
-  <tr>
-     <td>
-      <img src="/screenshots/tv_series_details_screen_1.png" alt="TV Series details 1" title="TV Series details 1" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/tv_series_details_screen_2.png" alt="TV Series details 2" title="TV Series details 2" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/tv_series_details_screen_3.png" alt="TV Series details 3" title="TV Series details 3" width="200"/>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="/screenshots/search_screen.png" alt="Search screen" title="Search screen" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/filters_sheet.png" alt="Filters sheet" title="Filters sheet" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/watchlist_screen.png" alt="Watchlist screen" title="Watchlist screen" width="200"/>
-    </td>
-    <td>
-      <img src="/screenshots/account_screen.png" alt="Account screen" title="Account screen" width="200"/>
-    </td>
-  </tr>
-</table>
+![Favourites screen](/screenshots/movies_app_screenshot_2.jpg "Movie details")
+
+![Favourites screen](/screenshots/movies_app_screenshot_3.jpg "Search and filters")
+
+![Favourites screen](/screenshots/movies_app_screenshot_4.jpg "Account and person info")
 
 ## Architecture
 
