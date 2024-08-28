@@ -5,11 +5,11 @@ This Flutter application serves as a film encyclopedia, fetching data from The M
 ## Screenshots
 ![Main menu](/screenshots/movies_app_screenshot_1.jpg "Main menu")
 
-![Favourites screen](/screenshots/movies_app_screenshot_2.jpg "Movie details")
+![Movie details](/screenshots/movies_app_screenshot_2.jpg "Movie details")
 
-![Favourites screen](/screenshots/movies_app_screenshot_3.jpg "Search and filters")
+![Search and watchlist screen](/screenshots/movies_app_screenshot_3.jpg "Search and watchlist screen")
 
-![Favourites screen](/screenshots/movies_app_screenshot_4.jpg "Account and person info")
+![Account and person info](/screenshots/movies_app_screenshot_4.jpg "Account and person info")
 
 ## Architecture
 
